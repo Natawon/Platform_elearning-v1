@@ -1,0 +1,15 @@
+version: "3"
+services:
+    db:
+        hostname: db
+        container_name: db
+        image: mysql:5.7
+        ports:
+            - 5506:3306
+        volumes:
+#           - ./config/database_cfg/master.cnf:/etc/mysql/conf.d/master.cnf
+            - /data/database/db:/var/lib/mysql
+        environment:
+            - TZ=Asia/Bangkok
+            - MYSQL_ROOT_PASSWORD=dootvazws3e
+        restart: always

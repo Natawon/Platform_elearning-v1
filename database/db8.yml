@@ -1,0 +1,15 @@
+version: "3"
+services:
+    db8:
+        hostname: db8
+        container_name: db8
+        image: mysql
+        ports:
+            - 4406:3306
+        volumes:
+#           - ./config/database_cfg/master.cnf:/etc/mysql/conf.d/master.cnf
+            - /data/database/db8:/var/lib/mysql
+        environment:
+            - TZ=Asia/Bangkok
+            - MYSQL_ROOT_PASSWORD=dootvazws3e
+        restart: always

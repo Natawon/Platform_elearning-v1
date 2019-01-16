@@ -1,0 +1,22 @@
+version: "3"
+services:
+    nginx-winner:
+        hostname: nginx-winner
+        container_name: nginx-winner
+        image: dootvmedia/ubuntu:nginx-php7.1
+        ports: 
+            - 8001:80
+            - 9001:443
+        volumes:
+            - /data/winner/config/nginx-php/etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+            - /data/winner/config/nginx-php/etc/nginx/sites-enabled:/etc/nginx/sites-enabled
+            - /data/winner/config/nginx-php/etc/nginx/ssl:/etc/nginx/ssl
+            - /data/winner/www:/usr/share/nginx/html
+            - /raid:/raid
+            - /data/winner/config/nginx-php/etc/php-fpm:/etc/php/7.1/fpm
+            - /data/winner/log:/var/log/nginx
+        environment:
+            - TZ=Asia/Bangkok
+        cap_add:
+            - SYS_PTRACE
+        restart: always

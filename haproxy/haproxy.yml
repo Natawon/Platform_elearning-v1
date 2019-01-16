@@ -1,0 +1,15 @@
+version: "3"
+services:
+    haproxy:
+        hostname: haproxy
+        image: haproxy
+        container_name: haproxy
+        ports:
+            - 443:443
+            - 80:80
+            - 1936:1936
+        volumes:
+            - ./config/haproxy:/usr/local/etc/haproxy:ro
+        environment:
+            - TZ=Asia/Bangkok
+        restart: always
