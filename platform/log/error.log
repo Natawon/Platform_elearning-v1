@@ -1,0 +1,5 @@
+2019/01/15 07:53:10 [emerg] 212#212: unknown directive "/usr/share/nginx/html/" in /etc/nginx/sites-enabled/default.conf:2
+2019/01/15 14:54:08 [emerg] 234#234: unknown directive "/usr/share/nginx/html/" in /etc/nginx/sites-enabled/default.conf:2
+2019/01/15 14:54:53 [emerg] 238#238: unknown directive "/usr/share/nginx/html/" in /etc/nginx/sites-enabled/default.conf:2
+2019/01/15 14:55:15 [emerg] 241#241: unknown directive "/usr/share/nginx/html/" in /etc/nginx/sites-enabled/default.conf:2
+2019/01/15 14:55:41 [emerg] 244#244: unknown directive "/usr/share/nginx/html/" in /etc/nginx/sites-enabled/default.conf:2

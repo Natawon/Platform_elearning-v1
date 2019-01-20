@@ -1,0 +1,9 @@
+.DS_Store
+*.sublime-workspace
+*.sublime-project
+sftp-config.json
+app-data/
+api/vendor/
+data-file/**/
+.test-geo.php.swp
+
