@@ -1,0 +1,123 @@
+#/usr/local/sbin/haproxy -p /run/haproxy.pid -f /usr/local/etc/haproxy/haproxy.cfg -Ds
+
+
+global
+    daemon
+    maxconn 65536
+    log 0.0.0.0 local0
+    log 0.0.0.0 local1 notice
+
+    #CPU
+    #nbproc 8
+    #cpu-map 1 0
+    #cpu-map 2 1
+    #cpu-map 3 2
+    #cpu-map 4 3
+    
+    
+    #SSL - https://www.haproxy.com/doc/aloha/7.0/haproxy/tls.html
+    #ssl-default-bind-ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK
+    ssl-default-bind-ciphers ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256
+    ssl-default-bind-options no-sslv3 no-tlsv10 no-tlsv11
+    tune.ssl.cachesize 100000
+    tune.ssl.maxrecord 65536
+    tune.ssl.default-dh-param 2048
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    option tcp-smart-accept
+    option tcp-smart-connect    
+    option http-server-close
+    option tcp-smart-accept
+    option tcp-smart-connect
+    option forwardfor    
+    timeout http-request 30s
+#    timeout connect 5000ms
+#    timeout client 50000ms
+#    timeout server 50000ms
+
+#    timeout connect 30000ms
+#    timeout client 300000ms
+#    timeout server 300000ms
+
+    timeout connect 5s
+    timeout client  20s
+    timeout server  20s
+    timeout queue   30s
+    timeout tunnel  3600s
+    timeout http-request 5s
+    timeout http-keep-alive 15s
+    
+    
+    retries 3 
+
+
+
+frontend https_in
+#frontend http2-ssl
+  #bind 0.0.0.0:443 ssl crt /usr/local/etc/haproxy/elearning_set_or_th.pem crt /usr/local/etc/haproxy/test.elearning.set.or.th.pem crt /usr/local/etc/haproxy/prod.elearning.set.or.th.pem ciphers ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-RC4-SHA:ECDHE-RSA-RC4-SHA:ECDH-ECDSA-RC4-SHA:ECDH-RSA-RC4-SHA:ECDHE-RSA-AES256-SHA:RC4-SHA
+  #bind 0.0.0.0:443 ssl crt /usr/local/etc/haproxy/elearning_set_or_th.pem crt /usr/local/etc/haproxy/test.elearning.set.or.th.pem crt /usr/local/etc/haproxy/prod.elearning.set.or.th.pem crt /usr/local/etc/haproxy/uat.elearning.set.or.th.pem
+  bind 0.0.0.0:443 ssl crt /usr/local/etc/haproxy/live/th-live-13.open-cdn.com/pat.pem
+  reqadd X-Forwarded-Proto:\ https
+  default_backend default_com_backend
+
+frontend http-in
+    bind *:80
+    mode http
+
+    http-request redirect scheme https if { hdr(Host) -i prod.elearning.set.or.th } !{ ssl_fc }
+    http-request redirect scheme https if { hdr(Host) -i test.elearning.set.or.th } !{ ssl_fc }
+    http-request redirect scheme https if { hdr(Host) -i uat.elearning.set.or.th } !{ ssl_fc }	
+    http-request redirect scheme https if { hdr(Host) -i elearning.set.or.th } !{ ssl_fc }
+    
+    # table used to store behaviour of source IPs
+    #stick-table type ip size 200k expire 5m store gpc0,conn_rate(10s)
+    #acl source_is_abuser src_get_gpc0 gt 0
+    #tcp-request connection reject if source_is_abuser
+
+    # connection rate abuses get blocked
+    #acl conn_rate_abuse  sc1_conn_rate gt 300
+    #acl mark_as_abuser   sc1_inc_gpc0  gt 0
+    #tcp-request connection track-sc1 src
+    #tcp-request connection reject if conn_rate_abuse mark_as_abuser
+
+    #ACL
+    acl is_default_com hdr_end(host) -i default.com
+    acl is_pravinia_com hdr_end(host) -i pravinia.open-cdn.com
+    acl is_winner_com hdr_end(host) -i winner.open-cdn.com
+    
+    #BACKEND 
+    use_backend default_com_backend if is_default_com
+    default_backend default_com_backend
+    use_backend pravinia.open-cdn.com_backend if is_pravinia_com
+    use_backend winner.open-cdn.com_backend if is_winner_com
+ 
+    
+backend default_com_backend
+    #balance roundrobin
+    #option httpclose
+    #option forwardfor
+    #server node1 th-live-15.open-cdn.com:81 check maxconn 1000
+    server node2 th-live-13.open-cdn.com:8001 check maxconn 1000
+    #server node1 nginx-php-v4:80 check maxconn 100000
+
+backend pravinia.open-cdn.com_backend
+   server node2 th-live-13.open-cdn.com:8005 check maxconn 1000
+
+backend winner.open-cdn.com_backend
+   server node2 th-live-13.open-cdn.com:8001 check maxconn 1000
+
+
+
+listen stats
+    bind *:1936
+    stats enable
+    timeout connect 10s
+    timeout server 1m
+    timeout client 1m
+    stats uri /
+    #stats auth someuser:somepassword
+
