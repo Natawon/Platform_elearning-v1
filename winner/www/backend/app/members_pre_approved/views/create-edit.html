@@ -1,0 +1,320 @@
+<div class="header">
+    <h2><i class="icon-users"></i> Pre-Approved <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#members_pre_approved">Pre-Approved</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+        <div class="panel" style="min-height: 400px;">
+        <tabset>
+            <tab>
+            <tab-heading><i class="icon-note"></i> รายละเอียดทั่วไป</tab-heading>
+                <form class="form-horizontal members_pre_approved-frm" ng-submit="submitMembersPreApproved(members_pre_approved_data)">
+                    <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-12">
+
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">กลุ่ม (Group) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="members_pre_approved_data.groups_id" ng-options="group.id as group.title for group in groups" >
+                                            <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group" ng-show="[2].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">รหัสองค์กร  <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="company_code" class="form-control form-white" type="text" placeholder="รหัสองค์กร" ng-model="members_pre_approved_data.company_code">
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group" ng-show="selected_groups.internal == 0">
+                                    <label class="col-sm-2 control-label">รหัสผู้ใช้อ้างอิง <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="ref_id" class="form-control form-white" type="text" placeholder="รหัสผู้ใช้อ้างอิง" ng-model="members_pre_approved_data.ref_id">
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Foreign?</label>
+                                    <div class="col-sm-9">
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isForeignOnOffSwitch{{members_pre_approved_data.id}}" ng-click="toggleIsForeign(members_pre_approved_data)" ng-checked="members_pre_approved_data.is_foreign==1">
+                                            <label class="onoffswitch-label" for="isForeignOnOffSwitch{{members_pre_approved_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group">
+                                    <label class="col-sm-2 control-label">คํานําหน้าชื่อ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="name_title" class="form-control form-white" type="text" placeholder="คํานําหน้าชื่อ" ng-model="members_pre_approved_data.name_title">
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group" ng-show="selected_groups.multi_lang_certificate == 1">
+                                    <label class="col-sm-2 control-label">คํานําหน้าชื่อ (EN) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="name_title_en" class="form-control form-white" type="text" placeholder="คํานําหน้าชื่อ (EN)" ng-model="members_pre_approved_data.name_title_en">
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group">
+                                    <label class="col-sm-2 control-label">เพศ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="gender" class="form-control form-white select2" data-style="white" data-search="true" ng-model="members_pre_approved_data.gender" ng-options="gender.value as gender.label for gender in gender">
+                                            <option value="" ng-hide="true">-- เลือกเพศ --</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">ชื่อ <span ng-if="selected_groups.field_approval == 'full_name'" class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="first_name" class="form-control form-white" type="text" placeholder="ชื่อ" ng-model="members_pre_approved_data.first_name">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group" ng-show="selected_groups.multi_lang_certificate == 1">
+                                    <label class="col-sm-2 control-label">ชื่อ (EN) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="first_name_en" class="form-control form-white" type="text" placeholder="ชื่อ (EN)" ng-model="members_pre_approved_data.first_name_en">
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">นามสกุล <span ng-if="selected_groups.field_approval == 'full_name'" class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="last_name" class="form-control form-white" type="text" placeholder="นามสกุล" ng-model="members_pre_approved_data.last_name">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group" ng-show="selected_groups.multi_lang_certificate == 1">
+                                    <label class="col-sm-2 control-label">นามสกุล (EN) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="last_name_en" class="form-control form-white" type="text" placeholder="นามสกุล (EN)" ng-model="members_pre_approved_data.last_name_en">
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">อีเมล์ <span ng-if="selected_groups.field_approval == 'email'" class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="email" class="form-control form-white" type="text" placeholder="อีเมล์" ng-model="members_pre_approved_data.email">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group" ng-show="selected_groups.internal == 1">
+                                    <label class="col-sm-2 control-label">Password <i class="fa fa-question-circle c-grey" rel="popover" data-container="body" data-toggle="popover" data-placement="bottom" data-content="{{hint.password}}" data-original-title="Hint Info."></i> <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9 prepend-icon">
+                                        <input id="password" class="form-control form-white" type="password" placeholder="The password is at least 8 characters long." ng-model="members_pre_approved_data.password" autocomplete="off">
+                                        <i class="icon-lock"></i>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group" ng-show="selected_groups.field_approval == 'id_card'">
+                                    <label class="col-sm-2 control-label">{{members_pre_approved_data.is_foreign == 1 ? 'Passport No.' : 'เลขบัตรประชาชน'}} <span ng-if="selected_groups.field_approval == 'id_card'" class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="id_card" class="form-control form-white" type="text" placeholder="{{members_pre_approved_data.is_foreign == 1 ? 'Passport No.' : 'เลขบัตรประชาชน'}}" ng-model="members_pre_approved_data.id_card">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group">
+                                    <label class="col-sm-2 control-label">หมายเลขโทรศัพท์มือถือ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="mobile_number" class="form-control form-white" type="text" placeholder="หมายเลขโทรศัพท์มือถือ" ng-model="members_pre_approved_data.mobile_number">
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group" ng-show="[2,3,5].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">ตำแหน่งงาน <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="position_id" class="form-control form-white" type="text" placeholder="ตำแหน่งงาน" ng-model="members_pre_approved_data.position_id">
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group" ng-show="[2,3,5].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">ฝ่ายงาน <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="department" class="form-control form-white" type="text" placeholder="ฝ่ายงาน" ng-model="members_pre_approved_data.department">
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group" ng-show="[2].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">บทบาทในระบบต้นทาง <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="role" class="form-control form-white" type="text" placeholder="บทบาทในระบบต้นทาง" ng-model="members_pre_approved_data.role">
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group" ng-show="[2,3,4].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">{{selected_groups.meaning_of_institution_id}} <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="institution_id" class="form-control form-white" type="text" placeholder="{{selected_groups.meaning_of_institution_id}}" ng-model="members_pre_approved_data.institution_id">
+                                    </div>
+                                </div> -->
+                                <div class="form-group" ng-show="[3].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">ประเภทใบอนุญาต <!-- <span class="text-danger">*</span> --></label>
+                                    <div class="col-sm-9">
+                                        <select id="license_type_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="members_pre_approved_data.license_type_id" ng-options="license_type.id as license_type.label for license_type in license_type">
+                                            <option value="" ng-hide="true">-- เลือกประเภทใบอนุญาต --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="[3].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">เลขที่ใบอนุญาต <span ng-if="selected_groups.field_approval == 'license_id'" class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="license_id" class="form-control form-white" type="text" placeholder="เลขที่ใบอนุญาต" ng-model="members_pre_approved_data.license_id">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group" ng-show="[3,4].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">วุฒิการศึกษา <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="education_level_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="members_pre_approved_data.education_level_id" ng-options="education_degree.id as education_degree.label for education_degree in education_degree">
+                                            <option value="" ng-hide="true">-- เลือกวุฒิการศึกษา --</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group">
+                                    <label class="col-sm-2 control-label">รหัสคณะ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="faculty_id" class="form-control form-white" type="text" placeholder="รหัสคณะ" ng-model="members_pre_approved_data.faculty_id">
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group" ng-show="[3,4,5].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">{{selected_groups.meaning_of_occupation_id}} <span ng-if="selected_groups.field_approval == 'occupation_id'" class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="occupation_id" class="form-control form-white" type="text" placeholder="{{selected_groups.meaning_of_occupation_id}}" ng-model="members_pre_approved_data.occupation_id">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group">
+                                    <label class="col-sm-2 control-label">รหัสสาขาวิชา <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="field_study_id" class="form-control form-white" type="text" placeholder="รหัสสาขาวิชา" ng-model="members_pre_approved_data.field_study_id">
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group" ng-show="[4].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">ระดับการศึกษา <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="education_level_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="members_pre_approved_data.education_level_id" ng-options="education_degree.id as education_degree.label for education_degree in education_degree">
+                                            <option value="" ng-hide="true">- เลือกระดับการศึกษา -</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group" ng-show="[5].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">เบอร์โต๊ะ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="table_number" class="form-control form-white" type="text" placeholder="เบอร์โต๊ะ" ng-model="members_pre_approved_data.table_number">
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group" ng-show="[5].indexOf(members_pre_approved_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">ชื่อ-นามสกุล หัวหน้า <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="chief_name" class="form-control form-white" type="text" placeholder="ชื่อ-นามสกุล หัวหน้า" ng-model="members_pre_approved_data.chief_name">
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">สถานะ</label>
+                                    <div class="col-sm-9">
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{members_pre_approved_data.id}}" ng-click="toggleStatus(members_pre_approved_data)" ng-checked="members_pre_approved_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{members_pre_approved_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="m-t-20">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMembersPreApproved(members_pre_approved_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMembersPreApproved(members_pre_approved_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#members" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+
+            <tab>
+                <tab-heading><i class="icon-note"></i> ตั้งค่ากลุ่ม</tab-heading>
+                <form class="form-horizontal" ng-submit="submitMembersPreApproved(members_pre_approved_data)">
+                        <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+                                    <!-- <label class="col-sm-2 control-label">{{selected_groups.meaning_of_sub_groups_id || 'กลุ่มย่อยหลัก'}} <span class="text-danger">*</span><br> (Sub Group)</label> -->
+                                    <label class="col-sm-2 control-label">
+                                        กลุ่มย่อยหลัก <!-- <span class="text-danger">*</span> --><br>
+                                        (Sub Group) <br>
+                                        <span ng-if="selected_groups.meaning_of_sub_groups_id != undefined && selected_groups.meaning_of_sub_groups_id != 'Sub Group'" class="label label-default">{{selected_groups.meaning_of_sub_groups_id || 'กลุ่มย่อยหลัก'}}</span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select id="sub_groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="members_pre_approved_data.sub_groups_id" ng-options="sup_group.id as sup_group.title for sup_group in sub_groups" >
+                                            <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <!-- <label class="col-sm-2 control-label">{{selected_groups.meaning_of_level_groups_id || 'กลุ่มย่อย'}} <span class="text-danger">*</span><br> (Units)</label> -->
+                                    <label class="col-sm-2 control-label">
+                                        กลุ่มย่อย <!-- <span class="text-danger">*</span> --><br>
+                                        (Units) <br>
+                                        <span ng-if="selected_groups.meaning_of_level_groups_id != undefined && selected_groups.meaning_of_level_groups_id != 'Unit'" class="label label-default">{{selected_groups.meaning_of_level_groups_id || 'กลุ่มย่อย'}}</span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select id="member2level_group" ng-options="level_group.id as level_group.title for level_group in level_groups" multiple ng-model="members_pre_approved_data.member2level_group" bs-duallistbox preserve-selection="moved"></select>
+                                    </div>
+                                </div>
+
+                                <div class="m-t-20">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMembersPreApproved(members_pre_approved_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMembersPreApproved(members_pre_approved_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#members" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+        </tabset>
+        </div>
+        </div>
+    </div>
+</div>

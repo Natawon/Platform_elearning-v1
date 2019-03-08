@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html ng-app="newApp">
+<head>
+    <meta charset="utf-8">
+    <title>Admin Thai Livestream</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="" name="description" />
+    <meta content="themes-lab" name="author" />
+    <meta name="robots" content="noindex,nofollow,noarchive">
+
+    <!-- Prevent framing --> <style id="antiClickjack">body{display:none !important;}</style> <script type="text/javascript"> if (self === top) {var antiClickjack = document.getElementById("antiClickjack"); antiClickjack.parentNode.removeChild(antiClickjack); } else {top.location = self.location; } </script> <!-- Remove Query String --> <script type="text/javascript"> var uri = window.location.toString(); if (uri.indexOf("?") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?")); setTimeout(function() {window.location.replace(clean_uri); }, 50); } /* var clean_uri = location.protocol + "//" + location.host + location.pathname; */ /* var hash_pos = location.href.indexOf("#"); if (hash_pos > 0) {var hash = location.href.substring(hash_pos, location.href.length); clean_uri += hash; } */ /* window.history.replaceState({}, document.title, clean_uri); */ </script>
+
+    <link rel="shortcut icon" href="assets/global/images/favicon.png">
+    <link href="assets/global/css/style.css" rel="stylesheet">
+    <link href="assets/global/css/ui.css" rel="stylesheet">
+    <link href="assets/global/plugins/bootstrap-loading/lada.min.css" rel="stylesheet">
+    <link href="assets/global/css/customize.css" rel="stylesheet">
+</head>
+<body class="account separate-inputs" ng-controller="loginCtrl">
+<!-- BEGIN LOGIN BOX -->
+<div class="container" id="login-block">
+    <div class="row">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+            <div class="account-wall">
+                <i class="user-img icons-faces-users-03"></i>
+                <form class="form-signin" role="form" ng-submit="login()">
+                    <div class="append-icon">
+                        <input type="text" name="username" id="username" class="form-control form-white username" placeholder="Username" ng-model="credentials.username" required>
+                        <i class="icon-user"></i>
+                    </div>
+                    <div class="append-icon m-b-20">
+                        <input type="password" name="password" class="form-control form-white password" placeholder="Password" ng-model="credentials.password" required autocomplete="off">
+                        <i class="icon-lock"></i>
+                    </div>
+                    <div class="append-icon">
+                        <label>
+                            <input type="checkbox" ng-model="credentials.remember"> Remember me</label>
+                    </div>
+                    <button type="submit" id="submit-form" class="btn btn-lg btn-success btn-block ladda-button" data-style="expand-left">Sign In</button>
+                </form>
+            </div>
+            <div class="account-wall change-password-wall hide">
+                <i class="user-img icon-key"></i>
+                <form class="form-change-password text-center" role="form" ng-submit="changePassword(new_password, confirm_new_password, true)">
+                    <label class="c-white">กรุณาระบุรหัสผ่านใหม่เพื่อเข้าสู่ระบบ</label>
+                    <div class="append-icon m-t-10 m-b-10">
+                        <input type="password" name="password" id="password" class="form-control form-white password" placeholder="New Password" ng-model="new_password" required autocomplete="off">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                    </div>
+                    <div class="append-icon m-b-20">
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-control form-white password" placeholder="Confirm New Password" ng-model="confirm_new_password" required autocomplete="off">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                    </div>
+                    <button type="submit" id="submit-form-2" class="btn btn-lg btn-success btn-block ladda-button" data-style="expand-left">Change Password</button>
+                </form>
+            </div>
+            <div class="account-wall session-exists-wall hide">
+                <i class="user-img icon-lock"></i>
+                <form class="form-session-exists text-center" role="form">
+                    <label class="c-white">บัญชีผู้ใช้งานดังกล่าวมีการใช้งานอยู่ในขณะนี้</label>
+                    <button type="button" id="btn-login-back" class="btn btn-lg btn-default btn-block ladda-button" data-style="expand-left" ng-click="back()">ย้อนกลับ</button>
+                    <button type="button" id="btn-login-destroy" class="btn btn-lg btn-danger btn-block ladda-button" data-style="expand-left" ng-click="destroyUser()">ตัดการใช้งานปัจจุบันและเข้าสู่ระบบ</button>
+                    <!-- ng-submit="changePassword(new_password, true)" -->
+                </form>
+            </div>
+        </div>
+    </div>
+    <p class="account-copyright">
+        <span>Copyright © 2016 </span><span>Thai Livestream</span>.<span>All rights reserved.</span>
+    </p>
+</div>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/jquery-migrate/jquery-migrate.min.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- BEGIN ANGULARJS SCRIPTS -->
+<script src="plugins/json3/lib/json3.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="bower_components/angular-touch/angular-touch.min.js"></script>
+<script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+<script src="bower_components/checklist-model/checklist-model.js"></script>
+<script src="bower_components/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.min.js"></script>
+<script src="bower_components/angular-bootstrap-duallistbox/dist/angular-bootstrap-duallistbox.min.js"></script>
+<script src="bower_components/angular-bootstrap-duallistbox/src/directives/bsDuallistbox.js"></script>
+
+<!--summernote dependencies-->
+<!-- <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"> -->
+<!--summernote-->
+<link rel="stylesheet" href="bower_components/summernote/dist/summernote.css" />
+<script src="bower_components/summernote/dist/summernote.js"></script>
+<script src="bower_components/summernote/lang/summernote-de-DE.js"></script>
+<!--angular-summernote dependencies -->
+<script src="bower_components/angular-summernote/src/angular-summernote.js"></script>
+<script src="bower_components/angular-ui-sortable/sortable.min.js"></script>
+
+<!-- jQury File Upload -->
+<script src="bower_components/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-ui.js"></script>
+<script src="bower_components/blueimp-tmpl/js/tmpl.min.js"></script>
+<script src="bower_components/blueimp-load-image/js/load-image.all.min.js"></script>
+<script src="bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.min.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-process.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-image.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-audio.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-video.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-validate.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-angular.js"></script>
+
+<script src="app/app.js"></script>
+<script src="directives/ngViewClass.js"></script>
+<script src="app/auth/services/userStorage.js"></script>
+<script src="app/auth/services/sessionService.js"></script>
+<script src="app/auth/services/authenticationService.js"></script>
+
+<script src="assets/global/plugins/gsap/main-gsap.min.js"></script>
+<script src="assets/global/plugins/backstretch/backstretch.min.js"></script>
+<script src="assets/global/plugins/bootstrap-loading/lada.min.js"></script>
+<script src="assets/global/plugins/jquery-validation/jquery.validate.js"></script>
+<script src="assets/global/plugins/jquery-validation/additional-methods.min.js"></script>
+<script src="assets/global/plugins/noty/jquery.noty.packaged.min.js"></script>
+<script src="assets/global/js/pages/login-v1.js"></script>
+
+<script src="app/mainCtrl.js"></script>
+<script src="js/builder.js"></script>
+<script src="js/application.js"></script>
+
+<script src="app/settings/settingService.js"></script>
+<script src="app/settings/functionsService.js"></script>
+<script src="app/auth/controllers/loginCtrl.js"></script>
+<script src="app/admins/services/adminsService.js"></script>
+<script src="app/admins/controllers/adminsCtrl.js"></script>
+
+<!-- ngclipboard -->
+<script src="https://cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.min.js"></script>
+<script src="bower_components/ngclipboard/dist/ngclipboard.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1212 @@
+<div class="header">
+    <h2><i class="icon-list"></i> Certificates <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#certificates">Certificates</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<!-- <div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-header bg-dark">
+                <h3 class="panel-title"><i class="fa fa-eye" aria-hidden="true"></i> ตัวอย่างวุฒิบัตร</h3>
+            </div>
+            <div class="panel-content bg-light">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="preview-pdf m-t-20 m-b-30">
+                            <img class="img-responsive" src="/backend/assets/global/images/example-certificate.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <tabset>
+                <tab class="tab-form">
+                    <tab-heading><i class="icon-note"></i> รายละเอียดทั่วไป</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal certificates-frm" ng-submit="submitCertificates(certificates_data)">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">กลุ่ม (Group) <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select id="groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" name="groups_id" ng-model="certificates_data.groups_id" ng-options="group.id as group.title for group in groups" >
+                                                <option value="" ng-hide="true">-- เลือกกลุ่ม --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">หลักสูตร</label>
+                                        <div class="col-sm-9">
+                                            <select id="courses_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" name="courses_id" ng-model="certificates_data.courses_id" ng-options="course.id as course.title for course in courses" >
+                                                <option value="">ทุกหลักสูตร</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">ชื่อใบรับรอง <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input id="title" class="form-control form-white" type="text" ng-model="certificates_data.title">
+                                        </div>
+                                    </div>
+
+                                    <div class="">
+                                        <h3 class="m-b-5" ng-if="selected_groups.multi_lang_certificate == 1">ข้อมูลภาษา <strong>ไทย</strong> <i class="flag-icon flag-icon-th"></i></h3>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">ข้อความในเนื้อหา 1 <span class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <textarea id="body_text_1" rows="5" class="form-control form-white" placeholder="Write your message... (maximum 100 characters)" ng-model="certificates_data.body_text_1"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">ข้อความในเนื้อหา 2 <span class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <textarea id="body_text_2" rows="5" class="form-control form-white" placeholder="Write your message... (maximum 100 characters)" ng-model="certificates_data.body_text_2"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">ข้อความส่วนท้าย </label>
+                                            <div class="col-sm-9">
+                                                <textarea id="footer_text" rows="5" class="form-control form-white" placeholder="Write your message... (maximum 100 characters)" ng-model="certificates_data.footer_text"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="" ng-if="selected_groups.multi_lang_certificate == 1">
+                                        <h3 class="m-b-5">ข้อมูลภาษา <strong>อังกฤษ</strong> <i class="flag-icon flag-icon-gb"></i></h3>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">ข้อความในเนื้อหา 1 <span class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <textarea id="body_text_1_en" rows="5" class="form-control form-white" placeholder="Write your message... (maximum 100 characters)" ng-model="certificates_data.body_text_1_en"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">ข้อความในเนื้อหา 2 <span class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <textarea id="body_text_2_en" rows="5" class="form-control form-white" placeholder="Write your message... (maximum 100 characters)" ng-model="certificates_data.body_text_2_en"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">ข้อความส่วนท้าย</label>
+                                            <div class="col-sm-9">
+                                                <textarea id="footer_text_en" rows="5" class="form-control form-white" placeholder="Write your message... (maximum 100 characters)" ng-model="certificates_data.footer_text_en"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Status </label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{certificates_data.id}}" ng-click="toggleStatus(certificates_data)" ng-checked="certificates_data.status==1">
+                                                <label class="onoffswitch-label" for="statusOnOffSwitch{{certificates_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-9">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitCertificates(certificates_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitCertificates(certificates_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#certificates" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+
+                <tab class="tab-form">
+                    <tab-heading><i class="fa fa-bullseye" aria-hidden="true"></i> โลโก้</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal certificates-frm" ng-submit="submitCertificates(certificates_data)">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">จำนวนโลโก้ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select id="number_of_logo" class="form-control form-white select2" data-search="false" data-style="white" ng-model="certificates_data.number_of_logo" ng-options="defaultNumberOfLogo.value as defaultNumberOfLogo.title for defaultNumberOfLogo in defaultNumberOfLogos">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-if="certificates_data.number_of_logo >= 1">
+                                        <label class="col-sm-2 control-label">ตำแหน่งของโลโก้ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group" id="logo_align">
+                                                <div class="icheck-inline m-t-0">
+                                                    <label ng-if="[1].indexOf(certificates_data.number_of_logo) >= 0"><input type="radio" ng-model="certificates_data.logo_align" value="L" data-radio="iradio_minimal-blue"> ซ้าย</label>
+                                                    <label ng-if="[1,2,3].indexOf(certificates_data.number_of_logo) >= 0"><input type="radio" ng-model="certificates_data.logo_align" value="C" data-radio="iradio_minimal-blue"> {{certificates_data.number_of_logo == 3 ? 'กึ่งกลาง' : 'กลาง'}}</label>
+                                                    <label ng-if="[1].indexOf(certificates_data.number_of_logo) >= 0"><input type="radio" ng-model="certificates_data.logo_align" value="R" data-radio="iradio_minimal-blue"> ขวา</label>
+                                                    <label ng-if="[2].indexOf(certificates_data.number_of_logo) >= 0"><input type="radio" ng-model="certificates_data.logo_align" value="LR" data-radio="iradio_minimal-blue"> ซ้ายขวา</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="">
+                                        <h3 class="m-b-5" ng-if="certificates_data.number_of_logo >= 1 && selected_groups.multi_lang_certificate == 1">ข้อมูลภาษา <strong>ไทย</strong> <i class="flag-icon flag-icon-th"></i></h3>
+                                        <div class="form-group" ng-if="certificates_data.number_of_logo >= 1">
+                                            <label class="col-sm-2 control-label">โลโก้ที่ 1 <span class="text-danger">*</span><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.logo_1">
+                                                    <a class="" ng-href="{{base_images_logo}}{{certificates_data.logo_1}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_logo}}{{certificates_data.logo_1}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertLogo" ng-click="setImagesField('logo_1')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesLogoUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="logo_1" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="logo_1"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_logo >= 2">
+                                            <label class="col-sm-2 control-label">โลโก้ที่ 2 <span class="text-danger">*</span><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.logo_2">
+                                                    <a class="" ng-href="{{base_images_logo}}{{certificates_data.logo_2}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_logo}}{{certificates_data.logo_2}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertLogo" ng-click="setImagesField('logo_2')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesLogoUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="logo_2" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="logo_2"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_logo >= 3">
+                                            <label class="col-sm-2 control-label">โลโก้ที่ 3 <span class="text-danger">*</span><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.logo_3">
+                                                    <a class="" ng-href="{{base_images_logo}}{{certificates_data.logo_3}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_logo}}{{certificates_data.logo_3}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertLogo" ng-click="setImagesField('logo_3')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesLogoUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="logo_3" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="logo_3"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="" ng-if="certificates_data.number_of_logo >= 1 && selected_groups.multi_lang_certificate == 1">
+                                        <h3 class="m-b-5">ข้อมูลภาษา <strong>อังกฤษ</strong> <i class="flag-icon flag-icon-gb"></i></h3>
+                                        <div class="form-group" ng-if="certificates_data.number_of_logo >= 1">
+                                            <label class="col-sm-2 control-label">โลโก้ที่ 1 <span class="text-danger">*</span><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.logo_1_en">
+                                                    <a class="" ng-href="{{base_images_logo}}{{certificates_data.logo_1_en}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_logo}}{{certificates_data.logo_1_en}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertLogo" ng-click="setImagesField('logo_1_en')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesLogoUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="logo_1_en" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="logo_1_en"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_logo >= 2">
+                                            <label class="col-sm-2 control-label">โลโก้ที่ 2 <span class="text-danger">*</span><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.logo_2_en">
+                                                    <a class="" ng-href="{{base_images_logo}}{{certificates_data.logo_2_en}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_logo}}{{certificates_data.logo_2_en}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertLogo" ng-click="setImagesField('logo_2_en')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesLogoUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="logo_2_en" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="logo_2_en"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_logo >= 3">
+                                            <label class="col-sm-2 control-label">โลโก้ที่ 3 <span class="text-danger">*</span><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.logo_3_en">
+                                                    <a class="" ng-href="{{base_images_logo}}{{certificates_data.logo_3_en}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_logo}}{{certificates_data.logo_3_en}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertLogo" ng-click="setImagesField('logo_3_en')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesLogoUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="logo_3_en" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="logo_3_en"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-9">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitCertificates(certificates_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitCertificates(certificates_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#certificates" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+
+                <tab class="tab-form">
+                    <tab-heading><i class="fa fa-address-card-o" aria-hidden="true"></i> ลายเซ็น</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal certificates-frm" ng-submit="submitCertificates(certificates_data)">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">จำนวนกล่องลายเซ็น <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select id="number_of_signature" class="form-control form-white select2" data-search="false" data-style="white" ng-model="certificates_data.number_of_signature" ng-options="defaultNumberOfSignature.value as defaultNumberOfSignature.title for defaultNumberOfSignature in defaultNumberOfSignatures">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-if="certificates_data.number_of_signature >= 1">
+                                        <label class="col-sm-2 control-label">ตำแหน่งของกล่องลายเซ็น <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group" id="signature_align">
+                                                <div class="icheck-inline m-t-0">
+                                                    <label ng-if="[1].indexOf(certificates_data.number_of_signature) >= 0"><input type="radio" ng-model="certificates_data.signature_align" value="L" data-radio="iradio_minimal-blue"> ซ้าย</label>
+                                                    <label ng-if="[1,2,3].indexOf(certificates_data.number_of_signature) >= 0"><input type="radio" ng-model="certificates_data.signature_align" value="C" data-radio="iradio_minimal-blue"> {{certificates_data.number_of_signature == 2 || certificates_data.number_of_signature == 3 ? 'กึ่งกลาง' : 'กลาง'}}</label>
+                                                    <label ng-if="[1].indexOf(certificates_data.number_of_signature) >= 0"><input type="radio" ng-model="certificates_data.signature_align" value="R" data-radio="iradio_minimal-blue"> ขวา</label>
+                                                    <label ng-if="[2].indexOf(certificates_data.number_of_signature) >= 0"><input type="radio" ng-model="certificates_data.signature_align" value="LR" data-radio="iradio_minimal-blue"> ซ้ายขวา</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="">
+                                        <h3 class="m-b-5" ng-if="certificates_data.number_of_signature >= 1 && selected_groups.multi_lang_certificate == 1">ข้อมูลภาษา <strong>ไทย</strong> <i class="flag-icon flag-icon-th"></i></h3>
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 1">
+                                            <label class="col-sm-2 control-label">ลายเซ็นที่ 1 <!-- <span class="text-danger">*</span> --><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.signature_1">
+                                                    <a class="" ng-href="{{base_images_signature}}{{certificates_data.signature_1}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_signature}}{{certificates_data.signature_1}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertSignature" ng-click="setImagesField('signature_1')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesSignatureUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="signature_1" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="signature_1"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 1">
+                                            <label class="col-sm-2 control-label">ชื่อ - นามสกุล  <span ng-if="certificates_data.signature_1" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 1</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="name_of_signature_1" class="form-control form-white" type="text" ng-model="certificates_data.name_of_signature_1">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 1">
+                                            <label class="col-sm-2 control-label">ตำแหน่ง  <span ng-if="certificates_data.signature_1" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 1</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="position_of_signature_1" class="form-control form-white" type="text" ng-model="certificates_data.position_of_signature_1">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 1">
+                                            <label class="col-sm-2 control-label">ข้อความเพิ่มเติม <br><span class="label label-danger">ใต้ชื่อของลายเซ็นที่ 1</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="remark_of_signature_1" class="form-control form-white" type="text" ng-model="certificates_data.remark_of_signature_1">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 2">
+                                            <label class="col-sm-2 control-label">ลายเซ็นที่ 2 <!-- <span class="text-danger">*</span> --><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.signature_2">
+                                                    <a class="" ng-href="{{base_images_signature}}{{certificates_data.signature_2}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_signature}}{{certificates_data.signature_2}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertSignature" ng-click="setImagesField('signature_2')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesSignatureUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="signature_2" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="signature_2"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 2">
+                                            <label class="col-sm-2 control-label">ชื่อ - นามสกุล  <span ng-if="certificates_data.signature_2" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 2</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="name_of_signature_2" class="form-control form-white" type="text" ng-model="certificates_data.name_of_signature_2">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 2">
+                                            <label class="col-sm-2 control-label">ตำแหน่ง  <span ng-if="certificates_data.signature_2" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 2</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="position_of_signature_2" class="form-control form-white" type="text" ng-model="certificates_data.position_of_signature_2">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 2">
+                                            <label class="col-sm-2 control-label">ข้อความเพิ่มเติม <br><span class="label label-danger">ใต้ชื่อของลายเซ็นที่ 2</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="remark_of_signature_2" class="form-control form-white" type="text" ng-model="certificates_data.remark_of_signature_2">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 3">
+                                            <label class="col-sm-2 control-label">ลายเซ็นที่ 3 <!-- <span class="text-danger">*</span> --><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.signature_3">
+                                                    <a class="" ng-href="{{base_images_signature}}{{certificates_data.signature_3}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_signature}}{{certificates_data.signature_3}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertSignature" ng-click="setImagesField('signature_3')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesSignatureUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="signature_3" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="signature_3"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 3">
+                                            <label class="col-sm-2 control-label">ชื่อ - นามสกุล  <span ng-if="certificates_data.signature_3" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 3</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="name_of_signature_3" class="form-control form-white" type="text" ng-model="certificates_data.name_of_signature_3">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 3">
+                                            <label class="col-sm-2 control-label">ตำแหน่ง  <span ng-if="certificates_data.signature_3" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 3</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="position_of_signature_3" class="form-control form-white" type="text" ng-model="certificates_data.position_of_signature_3">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 3">
+                                            <label class="col-sm-2 control-label">ข้อความเพิ่มเติม <br><span class="label label-danger">ใต้ชื่อของลายเซ็นที่ 3</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="remark_of_signature_3" class="form-control form-white" type="text" ng-model="certificates_data.remark_of_signature_3">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="" ng-if="certificates_data.number_of_signature >= 1 && selected_groups.multi_lang_certificate == 1">
+                                        <h3 class="m-b-5">ข้อมูลภาษา <strong>อังกฤษ</strong> <i class="flag-icon flag-icon-gb"></i></h3>
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 1">
+                                            <label class="col-sm-2 control-label">ลายเซ็นที่ 1 <!-- <span class="text-danger">*</span> --><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.signature_1_en">
+                                                    <a class="" ng-href="{{base_images_signature}}{{certificates_data.signature_1_en}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_signature}}{{certificates_data.signature_1_en}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertSignature" ng-click="setImagesField('signature_1_en')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesSignatureUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="signature_1_en" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="signature_1_en"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 1">
+                                            <label class="col-sm-2 control-label">ชื่อ - นามสกุล <span ng-if="certificates_data.signature_1_en" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 1</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="name_of_signature_1_en" class="form-control form-white" type="text" ng-model="certificates_data.name_of_signature_1_en">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 1">
+                                            <label class="col-sm-2 control-label">ตำแหน่ง <span ng-if="certificates_data.signature_1_en" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 1</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="position_of_signature_1_en" class="form-control form-white" type="text" ng-model="certificates_data.position_of_signature_1_en">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 1">
+                                            <label class="col-sm-2 control-label">ข้อความเพิ่มเติม<br><span class="label label-danger">ใต้ชื่อของลายเซ็นที่ 1</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="remark_of_signature_1_en" class="form-control form-white" type="text" ng-model="certificates_data.remark_of_signature_1_en">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 2">
+                                            <label class="col-sm-2 control-label">ลายเซ็นที่ 2 <!-- <span class="text-danger">*</span> --><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.signature_2_en">
+                                                    <a class="" ng-href="{{base_images_signature}}{{certificates_data.signature_2_en}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_signature}}{{certificates_data.signature_2_en}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertSignature" ng-click="setImagesField('signature_2_en')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesSignatureUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="signature_2_en" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="signature_2_en"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 2">
+                                            <label class="col-sm-2 control-label">ชื่อ - นามสกุล <span ng-if="certificates_data.signature_2_en" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 2</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="name_of_signature_2_en" class="form-control form-white" type="text" ng-model="certificates_data.name_of_signature_2_en">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 2">
+                                            <label class="col-sm-2 control-label">ตำแหน่ง <span ng-if="certificates_data.signature_2_en" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 2</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="position_of_signature_2_en" class="form-control form-white" type="text" ng-model="certificates_data.position_of_signature_2_en">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 2">
+                                            <label class="col-sm-2 control-label">ข้อความเพิ่มเติม<br><span class="label label-danger">ใต้ชื่อของลายเซ็นที่ 2</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="remark_of_signature_2_en" class="form-control form-white" type="text" ng-model="certificates_data.remark_of_signature_2_en">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 3">
+                                            <label class="col-sm-2 control-label">ลายเซ็นที่ 3 <!-- <span class="text-danger">*</span> --><br><span class="label label-danger">size 240px * 160px</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box-preview-browse-server m-b-10" ng-if="certificates_data.signature_3_en">
+                                                    <a class="" ng-href="{{base_images_signature}}{{certificates_data.signature_3_en}}" target="_blank">
+                                                        <img class="img-thumbnail" ng-src="{{base_images_signature}}{{certificates_data.signature_3_en}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-embossed btn-sm m-t-5 m-l-0" data-toggle="modal" data-target="#modalCertSignature" ng-click="setImagesField('signature_3_en')">
+                                                    Browse on server
+                                                </button>
+                                                <span class="bold">or</span>
+                                                <div class="inline" ng-controller='imagesSignatureUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                                    <input id="signature_3_en" type="file" class="form-control" nv-file-select="" uploader="img_uploader" data-images-field="signature_3_en"/>
+                                                    <table class="table">
+                                                        <tbody>
+                                                        <tr ng-repeat="item in img_uploader.queue">
+                                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 3">
+                                            <label class="col-sm-2 control-label">ชื่อ - นามสกุล <span ng-if="certificates_data.signature_3_en" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 3</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="name_of_signature_3_en" class="form-control form-white" type="text" ng-model="certificates_data.name_of_signature_3_en">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 3">
+                                            <label class="col-sm-2 control-label">ตำแหน่ง <span ng-if="certificates_data.signature_3_en" class="text-danger">*</span><br><span class="label label-danger">เจ้าของลายเซ็นที่ 3</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="position_of_signature_3_en" class="form-control form-white" type="text" ng-model="certificates_data.position_of_signature_3_en">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="certificates_data.number_of_signature >= 3">
+                                            <label class="col-sm-2 control-label">ข้อความเพิ่มเติม<br><span class="label label-danger">ใต้ชื่อของลายเซ็นที่ 3</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="remark_of_signature_3_en" class="form-control form-white" type="text" ng-model="certificates_data.remark_of_signature_3_en">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-9">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitCertificates(certificates_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitCertificates(certificates_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#certificates" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+
+                <tab class="tab-form">
+                    <tab-heading><i class="fa fa-paint-brush" aria-hidden="true"></i> ธีมสีและรูปแบบ</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal certificates-frm" ng-submit="submitCertificates(certificates_data)">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สีพื้นหลัง <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input id="background_color" type="text" data-show-palette="true" data-use-default-palette="true" class="color-picker form-control form-white" placeholder="#ffffff" data-color="{{certificates_data.background_color}}" ng-model="certificates_data.background_color">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สีตัวอักษร <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input id="text_color" type="text" data-show-palette="true" data-use-default-palette="true" class="color-picker form-control form-white" placeholder="#000000" data-color="{{certificates_data.text_color}}" ng-model="certificates_data.text_color">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">เส้นขอบ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="is_borderOnOffSwitch{{certificates_data.id}}" ng-click="toggleIsBorder(certificates_data)" ng-checked="certificates_data.is_border==1">
+                                                <label class="onoffswitch-label" for="is_borderOnOffSwitch{{certificates_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-if="certificates_data.is_border == 1">
+                                        <label class="col-sm-2 control-label">สีเส้นขอบ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input id="border_color" type="text" data-show-palette="true" data-use-default-palette="true" class="color-picker form-control form-white" placeholder="#ffa400" data-color="{{certificates_data.border_color}}" ng-model="certificates_data.border_color">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-if="certificates_data.is_border == 1">
+                                        <label class="col-sm-2 control-label">รูปแบบเส้นขอบ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select id="border_style" class="form-control form-white select2" data-search="false" data-style="white" ng-model="certificates_data.border_style">
+                                                <option value="normal">ปกติ</option>
+                                                <option value="radius">โค้ง</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-9">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitCertificates(certificates_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitCertificates(certificates_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#certificates" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+
+                <tab class="tab-form">
+                    <tab-heading><i class="fa fa-cogs" aria-hidden="true"></i> สิทธิ์การใช้งาน</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal certificates-frm" ng-submit="submitCertificates(certificates_data)">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สามารถ เปิด-ปิด โลโก้ ได้หรือไม่ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="is_control_logoOnOffSwitch{{certificates_data.id}}" ng-click="toggleIsControlLogo(certificates_data)" ng-checked="certificates_data.is_control_logo==1">
+                                                <label class="onoffswitch-label" for="is_control_logoOnOffSwitch{{certificates_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สามารถอัพโหลด โลโก้ ได้หรือไม่ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="is_upload_logoOnOffSwitch{{certificates_data.id}}" ng-click="toggleIsUploadLogo(certificates_data)" ng-checked="certificates_data.is_upload_logo==1">
+                                                <label class="onoffswitch-label" for="is_upload_logoOnOffSwitch{{certificates_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สามารถ เปิด-ปิด กล่องลายเซ็น ได้หรือไม่ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="is_control_signatureOnOffSwitch{{certificates_data.id}}" ng-click="toggleIsControlSignature(certificates_data)" ng-checked="certificates_data.is_control_signature==1">
+                                                <label class="onoffswitch-label" for="is_control_signatureOnOffSwitch{{certificates_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สามารถอัพโหลด ลายเซ็น ได้หรือไม่ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="is_upload_signatureOnOffSwitch{{certificates_data.id}}" ng-click="toggleIsUploadSignature(certificates_data)" ng-checked="certificates_data.is_upload_signature==1">
+                                                <label class="onoffswitch-label" for="is_upload_signatureOnOffSwitch{{certificates_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สามารถ เปิด-ปิด ส่วนท้าย ได้หรือไม่ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="is_control_footerOnOffSwitch{{certificates_data.id}}" ng-click="toggleIsControlFooter(certificates_data)" ng-checked="certificates_data.is_control_footer==1">
+                                                <label class="onoffswitch-label" for="is_control_footerOnOffSwitch{{certificates_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สามารถแก้ไข ส่วนท้าย ได้หรือไม่ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="is_edit_footerOnOffSwitch{{certificates_data.id}}" ng-click="toggleIsEditFooter(certificates_data)" ng-checked="certificates_data.is_edit_footer==1">
+                                                <label class="onoffswitch-label" for="is_edit_footerOnOffSwitch{{certificates_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-9">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitCertificates(certificates_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitCertificates(certificates_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#certificates" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+
+                <tab class="tab-form" select="previewCertification(certificates_data)">
+                    <tab-heading><i class="fa fa-eye" aria-hidden="true"></i> Preview Cert.</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-3 col-md-offset-1">
+                                <select id="certLang" class="form-control form-white select2" data-search="false" data-style="white" ng-model="languageOptions.certLang" ng-options="certificateLanguage.value as certificateLanguage.title for certificateLanguage in certificateLanguages">
+                                </select>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-dark btn-embossed m-r-0" ng-click="previewCertification(certificates_data)"><i class="fa fa-refresh" aria-hidden="true"></i> Reload</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <div class="embed-responsive embed-responsive-4by3 shadow-in">
+                                    <iframe id="box-preview-certificates" src="" frameborder="0" class="embed-responsive-item preview-pdf"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalCertLogo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-mh">
+        <div class="modal-content">
+            <div class="modal-header bg-orange">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                <h4 class="modal-title"><strong><i class="fa fa-paperclip f-16" aria-hidden="true"></i> เลือกโลโก้ที่ต้องการ</strong></h4>
+            </div>
+            <div class="modal-body mh-500">
+                <p class="hide"></p>
+                <div class="row">
+                    <div class="col-md-2" ng-repeat="images_logo in images_logos">
+                        <div class="thumbnail-images">
+                            <button type="button" class="btn btn-sm btn-icon btn-rounded btn-danger btn-close-thumbnail force-p-0" ng-click="deleteImages(images_logo)"><i class="fa fa-times"></i></button>
+                            <a class="thumbnail cs-pointer" ng-click="setLogo(images_logo.picture)">
+                                <img ng-src="{{base_images_logo}}{{images_logo.picture}}" alt="{{images_logo.title}}">
+                                <div class="caption p-5">
+                                    <div class="caption-overflow f-12" data-rel="tooltip" tooltip-placement="bottom" tooltip="{{images_logo.title}}">{{images_logo.title}}</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-12" ng-if="images_logos.length <= 0">
+                        <div class="text-center">
+                            <h3><i class="fa fa-exclamation-triangle f-20 c-yellow" aria-hidden="true"></i><br>ยังไม่มีโลโก้ที่พร้อมใช้งาน</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCertSignature" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-mh">
+        <div class="modal-content">
+            <div class="modal-header bg-orange">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                <h4 class="modal-title"><strong><i class="fa fa-paperclip f-16" aria-hidden="true"></i> เลือกลายเซ็นที่ต้องการ</strong></h4>
+            </div>
+            <div class="modal-body mh-500">
+                <p class="hide"></p>
+                <div class="row">
+                    <div class="col-md-2" ng-repeat="images_signature in images_signatures">
+                        <div class="thumbnail-images">
+                            <button type="button" class="btn btn-sm btn-icon btn-rounded btn-danger btn-close-thumbnail force-p-0" ng-click="deleteImages(images_signature)"><i class="fa fa-times"></i></button>
+                            <a class="thumbnail cs-pointer" ng-click="setSignature(images_signature.picture)">
+                                <img ng-src="{{base_images_signature}}{{images_signature.picture}}" alt="{{images_signature.title}}">
+                                <div class="caption p-5">
+                                    <div class="caption-overflow f-12" data-rel="tooltip" tooltip-placement="bottom" tooltip="{{images_signature.title}}">{{images_signature.title}}</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-12" ng-if="images_signatures.length <= 0">
+                        <div class="text-center">
+                            <h3><i class="fa fa-exclamation-triangle f-20 c-yellow" aria-hidden="true"></i><br>ยังไม่มีลายเซ็นที่พร้อมใช้งาน</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

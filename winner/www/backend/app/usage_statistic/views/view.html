@@ -1,0 +1,243 @@
+<div class="header">
+    <h2><i class="icon-bar-chart"></i> รายละเอียดข้อมูลการเรียนรายบุคคล</h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="#usage_statistic">Usage Statistic</a></li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+
+            <div class="panel">
+                <tabset>
+                    <tab>
+                        <tab-heading><i class="icon-users"></i> รายละเอียดทั่วไป</tab-heading>
+                        <div class="panel-content">
+                            <div class="row">
+
+                                <div class="row col-md-12">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="panel">
+                                            <div class="panel-header bg-primary">
+                                                <h3><i class="icon-users"></i> รายละเอียดผู้ลงทะเบียน</h3>
+                                            </div>
+                                            <div class="panel-content">
+                                                <p>ชื่อ - สกุล : {{usage_statistic_data.members.first_name}} {{usage_statistic_data.members.last_name}}</p>
+                                                <p>Groups : {{usage_statistic_data.groups.title}}</p>
+                                                <p>REF : {{usage_statistic_data.members.ref_id}}</p>
+                                                <p>อีเมล์ : {{usage_statistic_data.members.email}}</p>
+                                                <p>เข้าสู่ระบบครั้งล่าสุด : {{usage_statistic_data.members.last_login}}</p>
+                                                <p>สมัครสมาชิกเมื่อ : {{usage_statistic_data.members.create_datetime}}</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="panel">
+                                            <div class="panel-header bg-blue">
+                                                <h3><i class="fa fa-play-circle"></i> รายละเอียดหลักสูตร</h3>
+                                            </div>
+                                            <div class="panel-content">
+                                                <p>รหัส : {{usage_statistic_data.courses.code}}</p>
+                                                <p>ชื่อหลักสูตร : {{usage_statistic_data.courses.title}}</p>
+                                                <p>ระยะเวลา : {{usage_statistic_data.courses.duration}}</p>
+                                                <p ng-if="usage_statistic_data.courses.percentage">เงื่อนไขการผ่านหลักสูตร : {{usage_statistic_data.courses.percentage}} %</p>
+                                                <p ng-if="usage_statistic_data.courses.not_skip">ห้ามข้ามบทเรียน : เปิด</p>
+                                                <p ng-if="usage_statistic_data.courses.not_seek">ห้ามข้ามเวลา : เปิด</p>
+                                                <p>สร้างหลักสูตรเมื่อ : {{usage_statistic_data.courses.create_datetime}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="panel">
+                                        <div class="panel-header bg-orange">
+                                            <h3><i class="fa fa-certificate"></i> วุฒิบัตร</h3>
+                                        </div>
+                                        <div class="panel-content">
+                                            <p ng-if="usage_statistic_data.certificate_reference_number">{{usage_statistic_data.certificate_reference_number}}</p>
+                                            <p ng-if="usage_statistic_data.certificate_reference_number">ออกเมื่อ : {{usage_statistic_data.certificate_datetime}}</p>
+                                            <p ng-if="!usage_statistic_data.certificate_reference_number">ยังไม่พิมพ์วุฒิบัตร</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </tab>
+
+                    <tab>
+                        <tab-heading><i class="fa fa-play-circle"></i> รายละเอียดบทเรียน</tab-heading>
+                        <div class="panel-content">
+                            <div class="panel-header bg-dark">
+                                <h3><i class="fa fa-play-circle"></i> รายละเอียดบทเรียน <label class="label label-primary">สถานะการเรียน : {{usage_statistic_data.duration2percentage | number}} %</label> <label class="label label-default" ng-if="usage_statistic_data.courses.percentage">เงื่อนไขการผ่านหลักสูตร : {{usage_statistic_data.courses.percentage}} %</label></h3>
+                            </div>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>หัวข้อ</th>
+                                    <th></th>
+                                    <th class="text-center">เวลาในการเรียน</th>
+                                    <th class="text-center">วันที่เริ่มเรียน</th>
+                                </tr>
+                                </thead>
+                                <tbody ng-repeat="topics_data in usage_statistic_data.courses.topics">
+                                <tr>
+                                    <td colspan="4"><strong>{{topics_data.title}}</strong></td>
+                                </tr>
+                                <tr ng-repeat="sub_topics_data in topics_data.sub_topics">
+                                    <td></td>
+                                    <td>● {{sub_topics_data.title}}</td>
+                                    <td class="text-center">{{sub_topics_data.percentage | number}} %</td>
+                                    <td class="text-center">{{sub_topics_data.enroll2topic.datetime}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </tab>
+
+
+                    <tab>
+                        <tab-heading><i class="fa fa-question-circle"></i> แบบทดสอบก่อนเรียน (Pre-Test)</tab-heading>
+                        <div class="panel-content">
+                            <div class="panel-header bg-dark">
+                                <h3><i class="fa fa-question-circle"></i> แบบทดสอบก่อนเรียน (Pre-Test) <label class="label label-danger" ng-if="!usage_statistic_data.pre_test">ยังไม่ได้ทำ</label>
+                                    <label class="label label-success" ng-if="usage_statistic_data.pre_test">ทำแล้ว</label>
+                                    <label class="label label-primary" ng-if="usage_statistic_data.pre_test">คะแนนที่ทำได้ : {{usage_statistic_data.pre_test.percentage | number}} %</label>
+                                    <label class="label label-default" ng-if="usage_statistic_data.pre_test.quiz.passing_score">เงื่อนไขการผ่าน : {{usage_statistic_data.pre_test.quiz.passing_score | number}} %</label>
+                                    <label class="label label-danger" ng-if="!usage_statistic_data.pre_test.learning">สถานะ : ไม่ผ่าน</label>
+                                    <label class="label label-success" ng-if="usage_statistic_data.pre_test.learning">สถานะ : ผ่าน</label>
+                                </h3>
+                            </div>
+                                <table class="table table-hover">
+                                    <tbody ng-repeat="pre_test_questions_data in usage_statistic_data.pre_test.quiz.questions2answer">
+                                    <tr>
+                                        <td colspan="3"><strong ng-bind-html="pre_test_questions_data.questions.questions"></strong></td>
+                                    </tr>
+                                    <tr ng-if="pre_test_questions_data.answer_type != 3" ng-repeat="answer_data in pre_test_questions_data.questions.answer">
+                                        <td>
+                                            <label ng-if="answer_data.questions2answer" class="label label-primary">ข้อที่เลือก</label>
+                                        </td>
+                                        <td>
+                                            <label ng-if="answer_data.correct" class="label label-success">ข้อที่ถูก</label>
+                                        </td>
+                                        <td>{{answer_data.answer}}</td>
+                                    </tr>
+                                    <tr ng-if="pre_test_questions_data.answer_type == 3">
+                                        <td colspan="2"></td>
+                                        <td>{{pre_test_questions_data.answer_text}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </tab>
+
+                    <tab>
+                        <tab-heading><i class="fa fa-question-circle"></i> แบบทดสอบหลังเรียน (Post-Test)</tab-heading>
+                        <div class="panel-content">
+                            <div class="panel-header bg-dark">
+                                <h3><i class="fa fa-play-circle"></i> แบบทดสอบหลังเรียน (Post-Test) <label class="label label-danger" ng-if="!usage_statistic_data.post_test">ยังไม่ได้ทำ</label>
+                                    <label class="label label-success" ng-if="usage_statistic_data.post_test">ทำแล้ว</label>
+                                    <label class="label label-primary" ng-if="usage_statistic_data.post_test">คะแนนที่ทำได้ : {{usage_statistic_data.post_test.percentage | number}} %</label>
+                                    <label class="label label-default" ng-if="usage_statistic_data.post_test.quiz.passing_score">เงื่อนไขการผ่าน : {{usage_statistic_data.post_test.quiz.passing_score | number}} %</label>
+                                    <label class="label label-danger" ng-if="!usage_statistic_data.post_test.learning">สถานะ : ไม่ผ่าน</label>
+                                    <label class="label label-success" ng-if="usage_statistic_data.post_test.learning">สถานะ : ผ่าน</label></h3>
+                            </div>
+                            <table class="table table-hover">
+                                <tbody ng-repeat="post_test_questions_data in usage_statistic_data.post_test.quiz.questions2answer">
+                                <tr>
+                                    <td colspan="3"><strong ng-bind-html="post_test_questions_data.questions.questions"></strong></td>
+                                </tr>
+                                <tr ng-if="post_test_questions_data.answer_type != 3" ng-repeat="answer_data in post_test_questions_data.questions.answer">
+                                <td>
+                                        <label ng-if="answer_data.questions2answer" class="label label-primary">ข้อที่เลือก</label>
+                                    </td>
+                                    <td>
+                                        <label ng-if="answer_data.correct" class="label label-success">ข้อที่ถูก</label>
+                                    </td>
+                                    <td>{{answer_data.answer}}</td>
+                                </tr>
+                                <tr ng-if="post_test_questions_data.answer_type == 3">
+                                    <td colspan="2"></td>
+                                    <td>{{post_test_questions_data.answer_text}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </tab>
+
+                    <tab>
+                        <tab-heading><i class="fa fa-pencil-square"></i> แบบทดสอบเพื่อวัดความรู้ (Examination)</tab-heading>
+                        <div class="panel-content">
+                            <div class="panel-header bg-dark">
+                                <h3><i class="fa fa-play-circle"></i> แบบทดสอบเพื่อวัดความรู้ (Examination) <label class="label label-danger" ng-if="!usage_statistic_data.exam">ยังไม่ได้ทำ</label>
+                                    <label class="label label-success" ng-if="usage_statistic_data.exam">ทำแล้ว</label>
+                                    <label class="label label-primary" ng-if="usage_statistic_data.exam">คะแนนที่ทำได้ : {{usage_statistic_data.exam.percentage | number}} %</label>
+                                    <label class="label label-default" ng-if="usage_statistic_data.exam.quiz.passing_score">เงื่อนไขการผ่าน : {{usage_statistic_data.exam.quiz.passing_score | number}} %</label>
+                                    <label class="label label-danger" ng-if="!usage_statistic_data.exam.learning">สถานะ : ไม่ผ่าน</label>
+                                    <label class="label label-success" ng-if="usage_statistic_data.exam.learning">สถานะ : ผ่าน</label></h3>
+                            </div>
+                            <table class="table table-hover">
+                                <tbody ng-repeat="exam_questions_data in usage_statistic_data.exam.quiz.questions2answer">
+                                <tr>
+                                    <td colspan="3"><strong ng-bind-html="exam_questions_data.questions.questions"></strong></td>
+                                </tr>
+                                <tr ng-if="exam_questions_data.answer_type != 3" ng-repeat="answer_data in exam_questions_data.questions.answer">
+                                    <td>
+                                        <label ng-if="answer_data.questions2answer" class="label label-primary">ข้อที่เลือก</label>
+                                    </td>
+                                    <td>
+                                        <label ng-if="answer_data.correct" class="label label-success">ข้อที่ถูก</label>
+                                    </td>
+                                    <td>{{answer_data.answer}}</td>
+                                </tr>
+                                <tr ng-if="exam_questions_data.answer_type == 3">
+                                    <td colspan="2"></td>
+                                    <td>{{exam_questions_data.answer_text}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </tab>
+
+                    <tab>
+                        <tab-heading><i class="fa fa-pencil-square-o"></i> แบบสอบถาม</tab-heading>
+                        <div class="panel-content">
+                            <div class="panel-header bg-dark">
+                                <h3><i class="fa fa-pencil-square-o"></i> แบบสอบถาม <label class="label label-danger" ng-if="!usage_statistic_data.survey">ยังไม่ได้ทำ</label>
+                                    <label class="label label-success" ng-if="usage_statistic_data.survey">ทำแล้ว</label></h3>
+                            </div>
+                            <table class="table table-hover">
+                            <tbody ng-repeat="survey_questions_data in usage_statistic_data.survey.quiz.questions2answer">
+                                <tr>
+                                    <td colspan="3"><strong ng-bind-html="survey_questions_data.questions.questions"></strong></td>
+                                </tr>
+                                <tr ng-if="survey_questions_data.answer_type != 3" ng-repeat="answer_data in survey_questions_data.questions.answer">
+                                    <td>
+                                        <label ng-if="answer_data.questions2answer" class="label label-primary">ข้อที่เลือก</label>
+                                    </td>
+                                    <td>
+                                        <label ng-if="answer_data.correct" class="label label-success">ข้อที่ถูก</label>
+                                    </td>
+                                    <td>{{answer_data.answer}}</td>
+                                </tr>
+                                <tr ng-if="survey_questions_data.answer_type == 3">
+                                    <td colspan="2"></td>
+                                    <td>{{survey_questions_data.answer_text}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </tab>
+
+                </tabset>
+            </div>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="header">
+    <h2><i class="icon-fire"></i> Q&A <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#qa">Q&A</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal qa-frm" ng-submit="submitQA(qa_data)">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Question <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input id="question" class="form-control form-white" type="text" ng-model="qa_data.question">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Answer <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <textarea id="answer" ck-editor ng-model="qa_data.answer"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Status</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{qa_data.id}}" ng-click="toggleStatus(qa_data)" ng-checked="qa_data.status==1">
+                                        <label class="onoffswitch-label" for="statusOnOffSwitch{{qa_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitQA(qa_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitQA(qa_data, 'continue_editing')">Save and continue editing</button>
+                                    <a href="#qa" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+{
+  "name": "jschardet",
+  "homepage": "https://github.com/aadsm/jschardet",
+  "version": "1.6.0",
+  "_release": "1.6.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.6.0",
+    "commit": "28152dd8db5904dc2cf9aa12ef4f8783f713e79a"
+  },
+  "_source": "https://github.com/aadsm/jschardet.git",
+  "_target": "^1.6.0",
+  "_originalSource": "https://github.com/aadsm/jschardet.git",
+  "_direct": true
+}

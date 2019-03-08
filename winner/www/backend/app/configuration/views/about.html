@@ -1,0 +1,32 @@
+<div class="header">
+    <h2><i class="icon-wrench"></i> About <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li>About</li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal about-frm" ng-submit="submitConfiguration(configuration_data)">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="form-group">
+                                <textarea id="about" ck-editor ng-model="configuration_data.about"></textarea>
+                            </div>
+
+
+                                <div class="form-group">
+                                        <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

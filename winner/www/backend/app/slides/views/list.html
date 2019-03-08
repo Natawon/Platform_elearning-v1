@@ -1,0 +1,131 @@
+<div class="header">
+    <h2><i class="icon-layers"></i> Slides <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">Slides</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fa fa-table"></i> <strong>Slides List</strong> tables</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div ng-controller="slidesPdfUploadCtrl" class="m-b-10">
+                            <!-- <div ng-if="selected_courses.id" class="" ng-controller='slidesPdfUploadCtrl' nv-file-drop="" uploader="img_uploader" style="display: inline-block; width: auto;"> -->
+                            <div class="" nv-file-drop="" uploader="img_uploader" style="display: inline-block; width: auto;">
+                                <span class="btn btn-embossed btn-default btn-file">
+                                    <span class="fileinput-new"><i class="fa fa-upload"></i> Upload PDF <small>(Convert)</small></span>
+                                    <!-- <input type="file" name=""> -->
+                                    <input type="file" class="form-control" id="upload-convert-pdf" nv-file-select="" uploader="img_uploader" />
+                                </span>
+                            </div>
+
+                            <div class="btn-group">
+                                <!-- <a href="#slides/create" id="table-edit_new" class="btn btn-embossed btn-primary"><i class="fa fa-plus"></i> Create New Slides</a> -->
+                                <a ng-href id="table-edit_new" class="btn btn-embossed btn-primary" ng-click="createSlide()"><i class="fa fa-plus"></i> Create New Slides</a>
+                            </div>
+                            <br>
+                            <div class="progress progress-striped active" style="margin-bottom: 0; display: inline-block; width: 100%;" ng-show="isProgress">
+                                <div class="progress-bar " ng-class="{ 'progress-bar-warning': isProgressConvert  }" role="progressbar" ng-style="{ 'width': progressFile + '%' }"></div>
+                            </div>
+                            <span class="" ng-show="isProgressConvert"> &nbsp;Converting {{totalConvert}} slide(s)...</span>
+                        </div>
+
+                        <div class="col-lg-12 p-10 m-b-10 bg-primary">
+
+                            <form class="frm-filter">
+                            <div class="col-lg-6 m-t-10 m-b-10">
+                                <div class="form-group">
+                                    <label class="col-sm-12 p-0">หลักสูตร</label>
+                                    <div class="col-sm-12 p-0">
+                                        <select class="form-control form-white select2" data-style="white" data-search="true" ng-model="selected_courses" ng-options="course.id as course.title for course in courses track by course.id" ng-change="changeFilterCourses()">
+                                            <option value="">-- เลือก หลักสูตร --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 m-t-10 m-b-10">
+                                <div class="form-group">
+                                    <label class="col-sm-12 p-0">หัวข้อย่อย</label>
+                                    <div class="col-sm-12 p-0">
+                                        <select class="form-control form-white select2" data-style="white" data-search="true" name="topics_id" ng-model="topics_id" ng-options="parent.id as parent.title for parent in parents track by parent.id" ng-change="changeFilterTopics()">
+                                            <option value="">-- เลือก หัวข้อย่อย --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+
+                        </div>
+
+                        <div class="filter-left">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>
+                                        <a ng-click="sort_by('picture')"><i class="fa fa-sort"></i></a>Slide
+                                    </th>
+                                    <th>หลักสูตร</th>
+                                    <!-- <th class="order">
+                                        <a ng-click="sort_by('order')"><i class="fa fa-sort"></i></a>ลำดับ
+                                    </th> -->
+                                    <th class="status">
+                                        <a ng-click="sort_by('status')"><i class="fa fa-sort"></i></a>สถานะ
+                                    </th>
+                                    <th>แก้ไข</th>
+                                    <th>ลบ</th>
+                                </tr>
+                                </thead>
+                                <tbody ui-sortable-disabled="sortableOptions" ng-model="slides">
+                                <tr ng-repeat="slides_data in slides" data-id="{{slides_data.id}}">
+                                    <td>{{slides_data.no}}</td>
+                                    <td>
+                                        <img ng-src="{{base_slides_picture}}{{slides_data.picture}}" class="img-responsive" style="width: 100px;">
+                                    </td>
+                                    <td>
+                                        <label class="label label-success">{{slides_data.courses.code}} : {{slides_data.courses.title | limitTo: 60 }}</label><br>
+                                        <div ng-repeat="slides_times_data in slides_data.slides_times">
+                                            <label class="label label-default">{{slides_times_data.topics.title}} - {{slides_times_data.time}}</label><br>
+                                        </div>
+                                    </td>
+                                    <!-- <td>
+                                        <input style="width: 70px; text-align: center;" class="form-control form-white" type="text" ng-model="slides_data.order" ng-blur="sortOrder(slides_data)" ng-focus="disableSortable()">
+                                    </td> -->
+                                    <td>
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{slides_data.id}}" ng-click="updateStatus(slides_data)" ng-checked="slides_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{slides_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-sm btn-primary icon icon-note" ng-href="#slides/{{slides_data.id}}/edit{{slides_data.editTopic ? '?topics_id='+slides_data.editTopic : ''}}"></a>
+                                    </td>
+                                    <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteSlides(slides_data)"></a></td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="tbl-footer">
+                                <td colspan="9">
+                                    <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{total}}</b> record(s)</div>
+                                    <div class="pull-right">
+                                        <pagination total-items="total" ng-model="current_page" items-per-page="per_page" num-pages="last_page" class="pagination pagination-alt" boundary-links="true" max-size="max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                    </div>
+                                </td>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

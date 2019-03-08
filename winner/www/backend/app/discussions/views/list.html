@@ -1,0 +1,217 @@
+<div class="header">
+    <h2><i class="icon-note"></i> Discussions <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">Discussions</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fa fa-table"></i> <strong>Discussions List</strong> tables</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div class="m-b-10">
+                            <div class="btn-group">
+                                <a ng-href="#discussions/create{{selected_courses.id !== undefined ? '?courses_id='+selected_courses.id : ''}}" id="table-edit_new" class="btn btn-embossed btn-primary"><i class="fa fa-plus"></i> Create New Discussions</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 p-0">
+                            <div class="col-lg-4 p-0">
+                                <div class="form-group">
+                                    <select class="form-control form-white select2" data-style="white" data-search="true" ng-model="selected_courses" ng-options="course.id as course.title for course in courses track by course.id" ng-change="changeFilter()">
+                                        <option value="">-- Select Courses --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2"></div>
+
+                            <div class="col-lg-6 p-0">
+                                <form class="form-inline text-right">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2">แสดงเฉพาะที่ยังไม่ได้อ่าน</label>
+                                        <div class="onoffswitch2 pull-right">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isReadOnOffSwitch" ng-click="toggleIsUnread()" ng-checked="filters.is_unread == 1">
+                                            <label class="onoffswitch-label m-r-0" for="isReadOnOffSwitch">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail2">เรียลไทม์</label>
+                                        <div class="onoffswitch2 pull-right">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isRealtimeOnOffSwitch" ng-click="toggleRealtime()" ng-checked="is_realtime">
+                                            <label class="onoffswitch-label m-r-0" for="isRealtimeOnOffSwitch">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="filter-left">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th style="min-width: 100px; max-width: 200px;">หลักสูตร</th>
+                                    <th class="title">
+                                        <a ng-click="sort_by('title')"><i class="fa fa-sort"></i></a>หัวเรื่อง
+                                    </th>
+                                    <th>
+                                        <a ng-click="sort_by('view')"><i class="fa fa-sort"></i></a>จำนวนคนอ่าน
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-sort"></i>จำนวนคำตอบ
+                                    </th>
+                                    <!-- <th>
+                                        <i class="fa fa-sort"></i>วันเวลาที่ตอบล่าสุด
+                                    </th> -->
+                                    <th>
+                                        <i class="fa fa-sort"></i>การสนทนา
+                                    </th>
+                                    <!-- <th class="order">
+                                        <a ng-click="sort_by('order')"><i class="fa fa-sort"></i></a>ลำดับ
+                                    </th> -->
+                                    <th width="128" class="">
+                                        การปฏิเสธ
+                                    </th>
+                                    <th class="status">
+                                        <a ng-click="sort_by('status')"><i class="fa fa-sort"></i></a>สถานะ
+                                    </th>
+                                    <th>แก้ไข</th>
+                                    <th>ลบ</th>
+                                </tr>
+                                </thead>
+                                <tbody ui-sortable-disabled="sortableOptions" ng-model="discussions">
+                                <tr ng-repeat="discussions_data in discussions" data-id="{{discussions_data.id}}" ng-class="{'hl-default': discussions_data.unread}">
+                                    <td>{{discussions_data.no}}</td>
+                                    <td>{{discussions_data.courses.code}}<br>{{discussions_data.courses.title | limitTo: 60 }}</td>
+                                    <td>
+                                        <a ng-href="#discussions/{{discussions_data.id}}/edit">{{discussions_data.topic | limitTo: 60 }}{{discussions_data.topic.length > 60 ? '...' : ''}}</a><br>
+                                        <label class="label label-default" ng-if="discussions_data.create_by" ><i class="icon-user"></i><strong>{{discussions_data.create_by}}</strong> ({{discussions_data.create_datetime}})</label>
+                                        <label class="label label-default" ng-if="discussions_data.members_id" ><i class="icon-user-following"></i><strong>{{discussions_data.members.first_name}}</strong> ({{discussions_data.create_datetime}})</label>
+                                    </td>
+                                    <td>{{discussions_data.view | number}}</td>
+                                    <td>{{discussions_data.count_reply | number}}</td>
+                                    <!-- <td>{{discussions_data.latest_reply_datetime || '-'}}</td> -->
+                                    <td>
+                                        <a ng-href="#discussions/{{discussions_data.id}}/board" target="_blank" class="btn btn-info btn-sm">
+                                            <i class="fa fa-comments"></i>
+                                        </a>
+                                    </td>
+                                    <!-- <td>
+                                        <input style="width: 70px; text-align: center;" class="form-control form-white" type="text" ng-model="discussions_data.order" ng-blur="sortOrder(discussions_data)" ng-focus="disableSortable()">
+                                    </td> -->
+                                    <td>
+                                        <div class="onoffswitch2 onoffswitch-red m-0">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isRejectOnOffSwitch{{discussions_data.id}}" ng-click="toggleRejectModal(discussions_data)" ng-checked="discussions_data.is_reject==1">
+                                            <label class="onoffswitch-label" for="isRejectOnOffSwitch{{discussions_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                        <button ng-class="{'disabled opa-02': discussions_data.is_reject == 0}" ng-disabled="discussions_data.is_reject == 0" ng-click="viewRejectRemarkModal(discussions_data)" type="button" class="btn btn-sm btn-default m-l-5 m-r-0"><i class="fa fa-info"></i></button>
+                                    </td>
+                                    <td>
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{discussions_data.id}}" ng-click="updateStatus(discussions_data)" ng-checked="discussions_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{discussions_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#discussions/{{discussions_data.id}}/edit"></a></td>
+                                    <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteDiscussions(discussions_data)"></a></td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="tbl-footer">
+                                <td colspan="12">
+                                    <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{total}}</b> record(s)</div>
+                                    <div class="pull-right">
+                                        <pagination total-items="total" ng-model="current_page" items-per-page="per_page" num-pages="last_page" class="pagination pagination-alt" boundary-links="true" max-size="max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                    </div>
+                                </td>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="rejectRemarkModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><strong>ยืนยันการปฏิเสธ</strong></h4>
+            </div>
+            <div class="modal-body">
+                <!-- <p></p> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">หมายเหตุ </label>
+                                <div class="col-sm-10">
+                                    <textarea id="reject_remark" class="form-control form-white" ng-model="reject_discussion_data.reject_remark" rows="5"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                <button type="button" class="btn btn-primary" ng-click="updateIsReject(reject_discussion_data)">ยืนยัน</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="viewRejectRemarkModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-red">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><strong>รายละเอียดการปฏิเสธ</strong></h4>
+            </div>
+            <div class="modal-body">
+                <!-- <p></p> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">หมายเหตุ : </label>
+                                <div class="col-sm-10">
+                                    {{show_reject_discussion_data.reject_remark || '-'}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">โดย : </label>
+                                <div class="col-sm-10">
+                                    {{show_reject_discussion_data.reject_by}} <i class="icon-clock p-l-5"></i> {{show_reject_discussion_data.reject_datetime}}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+

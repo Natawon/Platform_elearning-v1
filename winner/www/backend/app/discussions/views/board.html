@@ -1,0 +1,294 @@
+<div class="header">
+    <h2><i class="fa fa-comments-o"></i> Discussions <strong>Board</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">Discussions</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-border-grey" ng-class="{'panel-rejected': (discussions_data.is_reject == 1 || (discussions_data.parent != null && discussions_data.parent.is_reject == 1)), 'panel-hl-warning': discussions_data.is_read == 0}">
+                            <div class="panel-content">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="m-b-10"><strong class="m-b-10 f-18">{{discussions_data.topic}}</strong></div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <div class="icheck-inline">
+                                                <label>
+                                                    <input type="checkbox" data-checkbox="icheckbox_square-orange" id="checkboxIsPublic"> Public
+                                                </label>
+                                                <label>
+                                                    <input type="checkbox" data-checkbox="icheckbox_square-orange" id="checkboxIsSentInstructor"> Send to Instructor
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="m-b-10" ng-if="discussions_data.file"><img ng-src="{{base_discussions_file}}{{discussions_data.file}}" alt="" class="img-responsive m-w-50"></div>
+                                <div class="m-b-5" ng-bind-html="discussions_data.description"></div>
+                            </div>
+                            <div class="panel-footer f-12 c-black">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="m-t-5" ng-if="discussions_data.members != null">
+                                            โดย สมาชิก : <strong>{{discussions_data.members.first_name}} {{discussions_data.members.last_name}}</strong> <i class="icon-clock p-l-5 p-r-5"></i> {{discussions_data.create_datetime}}
+                                        </div>
+                                        <div class="m-t-5" ng-if="discussions_data.members == null">
+                                            โดย ผู้ดูแลระบบ : <strong>{{discussions_data.modify_by}}</strong> <i class="icon-clock p-l-5 p-r-5"></i> {{discussions_data.create_datetime}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-right">
+                                            <div class="inline-block c-red m-t-5" ng-if="discussions_data.is_reject == 1">REJECTED</div>
+                                            <button type="button" class="btn btn-sm btn-primary btn-embossed m-r-0" ng-click="reply()" ng-disabled="discussions_data.is_reject == 1 || (discussions_data.parent != null && discussions_data.parent.is_reject == 1)"><i class="fa fa-reply p-r-5"></i> Reply</button>
+                                            <div class="btn-group m-r-0">
+                                                <button type="button" class="btn btn-default btn-sm btn-transparent dropdown-toggle m-r-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v p-0"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li ng-if="discussions_data.is_reject != 1"><a role="button" ng-click="rejectModal(discussions_data)"><i class="fa fa-times"></i> Reject</a></li>
+                                                    <li ng-if="discussions_data.is_reject == 1"><a role="button" ng-click="viewRejectRemarkModal(discussions_data)"><i class="fa fa-info-circle"></i> Rejected Remark</a></li>
+                                                    <li ng-if="discussions_data.is_reject == 1"><a role="button" ng-click="updateIsReject(discussions_data)"><i class="fa fa-undo"></i> Cancel Rejection</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-repeat="replie in discussions_data.replies" class="col-md-12" id="discussionId_{{replie.id}}">
+                        <div class="panel panel-border-grey" ng-class="{'panel-rejected': (replie.is_reject == 1 || (replie.parent != null && replie.parent.is_reject == 1)), 'panel-hl-warning': replie.is_read == 0}">
+                            <div class="panel-content">
+                                <div class="m-b-10" ng-if="replie.file"><img ng-src="{{base_discussions_file}}{{replie.file}}" alt="" class="img-responsive m-w-50"></div>
+                                <div class="m-b-5" ng-bind-html="replie.description"></div>
+                            </div>
+                            <div class="panel-footer f-12 c-black">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="m-t-5" ng-if="replie.members != null">
+                                            โดย สมาชิก : <strong>{{replie.members.first_name}} {{replie.members.last_name}}</strong> <i class="icon-clock p-l-5 p-r-5"></i> {{replie.create_datetime}}
+                                        </div>
+                                        <div class="m-t-5" ng-if="replie.members == null">
+                                            โดย ผู้ดูแลระบบ : <strong>{{replie.modify_by}}</strong> <i class="icon-clock p-l-5 p-r-5"></i> {{replie.create_datetime}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-right">
+                                            <div class="inline-block c-red m-t-5" ng-if="replie.is_reject == 1">REJECTED</div>
+                                            <button type="button" class="btn btn-sm btn-primary btn-embossed m-r-0" ng-click="reply(replie, 1)" ng-disabled="replie.is_reject == 1 || (replie.parent != null && replie.parent.is_reject == 1)"><i class="fa fa-reply p-r-5"></i> Reply</button>
+                                            <div class="btn-group m-r-0">
+                                                <button type="button" class="btn btn-default btn-sm btn-transparent dropdown-toggle m-r-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v p-0"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li ng-if="replie.is_reject != 1"><a role="button" ng-click="rejectModal(replie)"><i class="fa fa-times"></i> Reject</a></li>
+                                                    <li ng-if="replie.is_reject == 1"><a role="button" ng-click="viewRejectRemarkModal(replie)"><i class="fa fa-info-circle"></i> Rejected Remark</a></li>
+                                                    <li ng-if="replie.is_reject == 1"><a role="button" ng-click="updateIsReject(replie)"><i class="fa fa-undo"></i> Cancel Rejection</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-repeat="sub_replie in replie.replies" class="panel panel-border-lightgrey bg-light m-l-30" ng-class="{'panel-rejected': (discussions_data.is_reject == 1 || sub_replie.is_reject == 1 || (sub_replie.parent != null && sub_replie.parent.is_reject == 1)), 'panel-hl-warning': sub_replie.is_read == 0}" id="discussionId_{{sub_replie.id}}">
+                            <div class="panel-content">
+                                <div class="m-b-10" ng-if="sub_replie.file"><img ng-src="{{base_discussions_file}}{{sub_replie.file}}" alt="" class="img-responsive m-w-50"></div>
+                                <div class="m-b-5" ng-bind-html="sub_replie.description"></div>
+                            </div>
+                            <div class="panel-footer f-12 c-black">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="m-t-5" ng-if="sub_replie.members != null">
+                                            โดย สมาชิก : <strong>{{sub_replie.members.first_name}} {{sub_replie.members.last_name}}</strong> <i class="icon-clock p-l-5 p-r-5"></i> {{sub_replie.create_datetime}}
+                                        </div>
+                                        <div class="m-t-5" ng-if="sub_replie.members == null">
+                                            โดย ผู้ดูแลระบบ : <strong>{{sub_replie.modify_by}}</strong> <i class="icon-clock p-l-5 p-r-5"></i> {{sub_replie.create_datetime}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-right">
+                                            <div class="inline-block c-red m-t-5" ng-if="sub_replie.is_reject == 1">REJECTED</div>
+                                            <button type="button" class="btn btn-sm btn-primary btn-embossed m-r-0" ng-click="reply(sub_replie, 2)" ng-disabled="discussions_data.is_reject == 1 || sub_replie.is_reject == 1 || (sub_replie.parent != null && sub_replie.parent.is_reject == 1)"><i class="fa fa-reply p-r-5"></i> Reply</button>
+                                            <div class="btn-group m-r-0">
+                                                <button type="button" class="btn btn-default btn-sm btn-transparent dropdown-toggle m-r-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v p-0"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li ng-if="sub_replie.is_reject != 1"><a role="button" ng-click="rejectModal(sub_replie)"><i class="fa fa-times"></i> Reject</a></li>
+                                                    <li ng-if="sub_replie.is_reject == 1"><a role="button" ng-click="viewRejectRemarkModal(sub_replie)"><i class="fa fa-info-circle"></i> Rejected Remark</a></li>
+                                                    <li ng-if="sub_replie.is_reject == 1"><a role="button" ng-click="updateIsReject(sub_replie)"><i class="fa fa-undo"></i> Cancel Rejection</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel bg-dark">
+                    <div class="panel-header">
+                        <h3 ng-if="selected_discussion == null"><strong>แสดงความคิดเห็น</strong> </h3>
+                        <h3 ng-if="selected_discussion"><strong>ตอบกลับความคิดเห็น</strong> <a role="button" class="text-danger f-12 m-l-5" ng-click="cancelReply()"><i class="fa fa-times p-0"></i> ยกเลิกการตอบกลับ</a></h3>
+                        <div id="panel-selected_discussion" class="panel panel-border-2-grey" ng-if="selected_discussion">
+                            <div class="panel-content">
+                                <div class="m-b-10" ng-if="selected_discussion.file"><img ng-src="{{base_discussions_file}}{{selected_discussion.file}}" alt="" class="img-responsive m-w-20"></div>
+                                <div class="m-b-5" ng-bind-html="selected_discussion.description"></div>
+                            </div>
+                            <div class="panel-footer f-12 c-black">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="m-t-5" ng-if="selected_discussion.members != null">
+                                            โดย สมาชิก : <strong>{{selected_discussion.members.first_name}} {{selected_discussion.members.last_name}}</strong> <i class="icon-clock p-l-5 p-r-5"></i> {{selected_discussion.create_datetime}}
+                                        </div>
+                                        <div class="m-t-5" ng-if="selected_discussion.members == null">
+                                            โดย ผู้ดูแลระบบ : <strong>{{selected_discussion.modify_by}}</strong> <i class="icon-clock p-l-5 p-r-5"></i> {{selected_discussion.create_datetime}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-content p-t-10">
+                        <form class="form-horizontal discussions-frm" ng-submit="submitDiscussions(discussions_data_send)">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ข้อความ <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <textarea id="description" class="form-control form-white" ng-model="discussions_data_send.description" rows="10"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">
+                                    รูปภาพ
+                                </label>
+                                <div class="col-sm-9">
+                                    <div ng-controller='discussionsFilelUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                        <a ng-if="discussions_data_send.file" ng-href="{{base_discussions_file}}{{discussions_data_send.file}}" target="_blank" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-paperclip"></i>
+                                        </a>
+                                        <input id="file" type="file" class="form-control" nv-file-select="" uploader="img_uploader" />
+                                        <table class="table">
+                                            <tbody>
+                                            <tr ng-repeat="item in img_uploader.queue">
+                                                <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                <td width="30%" ng-show="img_uploader.isHTML5">
+                                                    <div class="progress" style="margin-bottom: 0;">
+                                                        <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                </td>
+                                                <td nowrap>
+                                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m-t-20">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-embossed btn-success">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="rejectRemarkModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><strong>ยืนยันการปฏิเสธ</strong></h4>
+            </div>
+            <div class="modal-body">
+                <!-- <p></p> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">หมายเหตุ </label>
+                                <div class="col-sm-10">
+                                    <textarea id="reject_remark" class="form-control form-white" ng-model="reject_discussion_data.reject_remark" rows="5"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                <button type="button" class="btn btn-primary" ng-click="updateIsReject(reject_discussion_data)">ยืนยัน</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="viewRejectRemarkModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-red">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><strong>รายละเอียดการปฏิเสธ</strong></h4>
+            </div>
+            <div class="modal-body">
+                <!-- <p></p> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">หมายเหตุ : </label>
+                                <div class="col-sm-10">
+                                    {{show_reject_discussion_data.reject_remark || '-'}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">โดย : </label>
+                                <div class="col-sm-10">
+                                    {{show_reject_discussion_data.reject_by}} <i class="icon-clock p-l-5"></i> {{show_reject_discussion_data.reject_datetime}}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

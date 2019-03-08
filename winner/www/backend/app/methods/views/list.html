@@ -1,0 +1,123 @@
+<div class="header">
+    <h2><i class="icon-credit-card"></i> Methods <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">Methods</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fa fa-table"></i> <strong>Methods List</strong> tables</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div class="m-b-20">
+                            <div class="btn-group">
+                                <a href="#methods/create" id="table-edit_new" class="btn btn-embossed btn-primary"><i class="fa fa-plus"></i> Create New Methods</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 p-10 m-b-10 bg-primary">
+                            <div class="col-lg-6 p-r-0">
+                                <div class="form-group">
+                                    <label class="col-sm-12 p-0">ค้นหา</label>
+                                    <div class="col-sm-12 p-0 append-icon">
+                                        <input type="text" id="finder" name="search" class="form-control form-white" placeholder="ค้นหาชื่อ" autofocus="" ng-model="filters.search" ng-change="changeFilter()">
+                                        <i class="icon-magnifier"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class="col-sm-12">ประเภท</label>
+                                    <div class="col-sm-12">
+                                        <select id="filter_type" class="form-control form-white select2" data-style="white" data-search="false" data-style="white" name="type" ng-model="filters.type" ng-options="methods_type.value as methods_type.title for methods_type in methods_types" ng-change="changeFilter()">
+                                            <option value="">-- ประเภท (Type) --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 p-l-0 text-f-right">
+                                <label class="col-sm-12 p-0">&nbsp;</label>
+                                <button type="submit" id="btnFiltersSubmit" class="btn btn-dark" ng-click="changeFilter()"><i class="fa fa-search" aria-hidden="true"></i> &nbsp;ค้นหา</button>
+                                <button type="button" id="btnFiltersClear" class="btn btn-default m-r-0" ng-click="clearFilters()"><i class="fa fa-refresh" aria-hidden="true"></i> &nbsp;ล้าง</button>
+                            </div>
+                        </div>
+
+                        <div class="filter-left">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="id">
+                                        <a ng-click="sort_by('id')"><i class="fa fa-sort"></i></a>#
+                                    </th>
+                                    <th class="picture">
+                                        <a ng-click="sort_by('picture')"><i class="fa fa-sort"></i></a>Picture
+                                    </th>
+                                    <th class="title">
+                                        <a ng-click="sort_by('title')"><i class="fa fa-sort"></i></a>Title
+                                    </th>
+                                    <th class="type">
+                                        <a ng-click="sort_by('type')"><i class="fa fa-sort"></i></a>Type
+                                    </th>
+                                    <th class="business_email">
+                                        <a ng-click="sort_by('business_email')"><i class="fa fa-sort"></i></a>Business Email
+                                    </th>
+                                    <th class="order">
+                                        <a ng-click="sort_by('order')"><i class="fa fa-sort"></i></a>Order
+                                    </th>
+                                    <th class="status">
+                                        <a ng-click="sort_by('status')"><i class="fa fa-sort"></i></a>Status
+                                    </th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody ui-sortable="sortableOptions" ng-model="methods">
+                                <tr ng-repeat="methods_data in methods" data-id="{{methods_data.id}}">
+                                    <td>{{methods_data.id}}</td>
+                                    <td>
+                                        <img ng-if="methods_data.picture" ng-src="{{base_methods_picture}}{{methods_data.picture}}" class="img-responsive" style="width: 140px;">
+                                    </td>
+                                    <td>
+                                        <a ng-href="#methods/{{methods_data.id}}/edit">{{methods_data.title}}</a><br>
+                                        <label class="label label-default" ng-if="methods_data.modify_by!=''" ><i class="icon-user"></i><strong>{{methods_data.modify_by}}</strong> ({{methods_data.modify_datetime}})</label>
+                                    </td>
+                                    <td>{{methods_data.type_title}}</td>
+                                    <td>{{methods_data.business_email}}</td>
+                                    <td>
+                                        <input style="width: 70px; text-align: center;" class="form-control form-white" type="text" ng-model="methods_data.order" ng-blur="sortOrder(methods_data)" ng-focus="disableSortable()">
+                                    </td>
+                                    <td>
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{methods_data.id}}" ng-click="updateStatus(methods_data)" ng-checked="methods_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{methods_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#methods/{{methods_data.id}}/edit"></a></td>
+                                    <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteMethodsCenter(methods_data)"></a></td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="tbl-footer">
+                                <td colspan="9">
+                                    <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{total}}</b> record(s)</div>
+                                    <div class="pull-right">
+                                        <pagination total-items="total" ng-model="current_page" items-per-page="per_page" num-pages="last_page" class="pagination pagination-alt" boundary-links="true" max-size="max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                    </div>
+                                </td>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

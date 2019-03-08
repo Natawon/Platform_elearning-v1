@@ -1,0 +1,69 @@
+<div class="header">
+    <h2><i class="icon-briefcase"></i> สถาบัน / หน่วยงาน <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#institutions">สถาบัน / หน่วยงาน</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal" ng-submit="submitInstitutions(institutions_data)">
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+                                <label class="col-sm-2">Group</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="institutions_data.groups_id" ng-options="group.id as group.title for group in groups" >
+                                        <option value="">-- Select Groups --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2">ชื่อ</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control form-white" type="text" ng-model="institutions_data.title" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2">รหัส</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control form-white" type="text" ng-model="institutions_data.code">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2">สถานะ</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{institutions_data.id}}" ng-click="toggleStatus(institutions_data)" ng-checked="institutions_data.status==1">
+                                        <label class="onoffswitch-label" for="statusOnOffSwitch{{institutions_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">บันทึก</button>
+                                    <a href="#institutions" class="btn btn-embossed btn-default">ยกเลิก</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

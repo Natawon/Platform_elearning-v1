@@ -1,0 +1,294 @@
+<div class="header">
+    <h2><i class="icon-users"></i> สมาชิก <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">สมาชิก</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="panel">
+                    <tabset>
+                        <tab>
+                            <tab-heading><i class="fa fa-table"></i> สมาชิก List</tab-heading>
+                            <div class="panel-content p-0">
+                                <div class="m-b-10">
+                                    <div class="btn-group">
+                                        <a href="#members/create" id="table-edit_new" class="btn btn-embossed btn-dark"><i class="fa fa-plus"></i> สร้าง สมาชิก</a>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 p-10 m-b-10 bg-primary">
+
+                                    <div class="col-lg-3 p-0">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">เลือกวันที่</label>
+                                            <div class="col-sm-12 p-0 prepend-icon">
+                                                <input type="text" id="start_date" name="datepicker" class="date-picker form-control form-white" ng-model="filters.from_date" ng-change="changeFilter()">
+                                                <i class="icon-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 p-r-0">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">ถึงวันที่</label>
+                                            <div class="col-sm-12 p-0 prepend-icon">
+                                                <input type="text" id="to_date" name="datepicker" class="date-picker form-control form-white" ng-model="filters.to_date" ng-change="changeFilter()">
+                                                <i class="icon-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 p-r-0 pull-right">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">ค้นหา</label>
+                                            <div class="col-sm-12 p-0 append-icon">
+                                                <input type="text" id="finder" class="form-control form-white" placeholder="ระบุอีเมล์" autofocus="" ng-model="filters.search" ng-change="changeFilter()">
+                                                <i class="icon-magnifier"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 p-0 m-t-10">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">7 วันย้อนหลัง</label>
+                                            <div class="col-sm-12 p-0 prepend-icon">
+                                                <button ng-click="changeLast7day(last_7day);" type="button" class="btn btn-sm btn-dark m-r-0" ng-model="last_7days" ng-repeat="last_7day in last_7days">{{last_7day}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 p-0">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">การอนุมัติ</label>
+                                            <div class="col-sm-12 p-0 ">
+                                                <select ng-change="changeFilter()" class="form-control form-white select2" data-search="false" data-style="white" ng-model="filters.approved_type" ng-options="approved_type.value as approved_type.title for approved_type in approved_types">
+                                                    <option value="">แสดงทั้งหมด</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 p-r-0">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">การเปิดใช้งาน</label>
+                                            <div class="col-sm-12 p-0 ">
+                                                <select ng-change="changeFilter()" class="form-control form-white select2" data-search="false" data-style="white" ng-model="filters.active" ng-options="activation.value as activation.title for activation in activations">
+                                                    <option value="">แสดงทั้งหมด</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="filter-left">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="first_name">
+                                                <a ng-click="sort_by('first_name')"><i class="fa fa-sort"></i></a>ชื่อ - นามสกุล
+                                            </th>
+                                            <th class="email">
+                                                <a ng-click="sort_by('email')"><i class="fa fa-sort"></i></a>อีเมล์
+                                            </th>
+                                            <th class="sub_groups_id">
+                                                <a ng-click="sort_by('sub_groups_id')"><i class="fa fa-sort"></i></a>SubGroups
+                                            </th>
+                                            <th class="groups_id">
+                                                <a ng-click="sort_by('groups_id')"><i class="fa fa-sort"></i></a>Groups
+                                            </th>
+                                            <th class="approved_type">
+                                                <a ng-click="sort_by('approved_type')"><i class="fa fa-sort"></i></a>การอนุมัติ
+                                            </th>
+                                            <th class="last_login">
+                                                <a ng-click="sort_by('last_login')"><i class="fa fa-sort"></i></a>ล็อกอินล่าสุด
+                                            </th>
+                                            <th class="status">
+                                                <a ng-click="sort_by('status')"><i class="fa fa-sort"></i></a>สถานะ
+                                            </th>
+                                            <th>แก้ไข</th>
+                                            <th>ลบ</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="members_data in members">
+                                            <td>{{members_data.no}}</td>
+                                            <td>
+                                                <a ng-href="#members/{{members_data.id}}/edit">{{members_data.first_name}} {{members_data.last_name}}</a><br>
+                                                <label class="label label-default" ng-if="members_data.modify_by!=''" ><i class="icon-user"></i> {{members_data.create_datetime}}</label>
+                                            </td>
+                                            <td>{{members_data.email}}</td>
+                                            <td><label class="label label-primary">{{members_data.sub_groups.title}}</label></td>
+                                            <td><label class="label label-warning">{{members_data.groups.title}}</label></td>
+                                            <td ng-switch on="members_data.approved_type">
+                                                <label class="label label-success" ng-switch-when="1">Pre-Approved</label>
+                                                <label class="label label-success" ng-switch-when="2">Manual</label>
+                                                <label class="label label-success" ng-switch-when="3">Bypass Approval</label>
+                                                <label class="label label-default" ng-if="members_data.reject_status != 1" ng-switch-default>Waiting</label>
+                                                <label class="label label-danger" ng-if="members_data.reject_status == 1" ng-switch-default>Rejected</label>
+                                                <!-- <br> -->
+                                                <!-- <label class="label label-success">{{members_data.approved_datetime}}</label> -->
+                                            </td>
+                                            <td><label class="label label-success" ng-if="members_data.last_login"><i class="icon-clock"></i>{{members_data.last_login}}</label></td>
+                                            <td>
+                                                <div class="onoffswitch2">
+                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{members_data.id}}" ng-click="toggleStatus(members_data)" ng-checked="members_data.status==1">
+                                                    <label class="onoffswitch-label" for="statusOnOffSwitch{{members_data.id}}">
+                                                        <span class="onoffswitch-inner"></span>
+                                                        <span class="onoffswitch-switch"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#members/{{members_data.id}}/edit"></a></td>
+                                            <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteMembers(members_data)"></a></td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot class="tbl-footer">
+                                        <td colspan="9">
+                                            <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{defaultOptions.total}}</b> record(s)</div>
+                                            <div class="pull-right">
+                                                <pagination total-items="defaultOptions.total" ng-model="defaultOptions.current_page" items-per-page="defaultOptions.per_page" num-pages="defaultOptions.last_page" class="pagination pagination-alt" boundary-links="true" max-size="defaultOptions.max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                            </div>
+                                        </td>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </tab>
+
+                        <tab>
+                            <tab-heading><i class="fa fa-table"></i> Pre-Approved List</tab-heading>
+                            <div class="panel-content p-0">
+                                <div class="m-b-10">
+                                    <div class="btn-group">
+                                        <a href="#members_pre_approved/create" id="table-edit_new" class="btn btn-embossed btn-dark"><i class="fa fa-plus"></i> สร้าง Pre-Approved</a>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 p-10 m-b-10 bg-primary">
+
+                                    <div class="col-lg-3 p-0">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">เลือกวันที่</label>
+                                            <div class="col-sm-12 p-0 prepend-icon">
+                                                <input type="text" id="start_date" name="datepicker" class="date-picker form-control form-white" ng-model="filtersPreApproved.from_date" ng-change="changeFilterPreApproved()">
+                                                <i class="icon-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 p-r-0">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">ถึงวันที่</label>
+                                            <div class="col-sm-12 p-0 prepend-icon">
+                                                <input type="text" id="to_date" name="datepicker" class="date-picker form-control form-white" ng-model="filtersPreApproved.to_date" ng-change="changeFilterPreApproved()">
+                                                <i class="icon-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 p-r-0 pull-right">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">ค้นหา</label>
+                                            <div class="col-sm-12 p-0 append-icon">
+                                                <input type="text" id="finder" class="form-control form-white" placeholder="ระบุอีเมล์" autofocus="" ng-model="filtersPreApproved.search" ng-change="changeFilterPreApproved()">
+                                                <i class="icon-magnifier"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 p-0 m-t-10">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">7 วันย้อนหลัง</label>
+                                            <div class="col-sm-12 p-0 prepend-icon">
+                                                <button ng-click="changeLast7dayPreApproved(last_7day_pre_approved);" type="button" class="btn btn-sm btn-dark m-r-0" ng-model="last_7days_pre_approved" ng-repeat="last_7day_pre_approved in last_7days_pre_approved">{{last_7day_pre_approved}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="filter-left">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="first_name">
+                                                <a ng-click="sort_by_pre_approved('first_name')"><i class="fa fa-sort"></i></a>ชื่อ - นามสกุล
+                                            </th>
+                                            <th class="email">
+                                                <a ng-click="sort_by_pre_approved('email')"><i class="fa fa-sort"></i></a>อีเมล์
+                                            </th>
+                                            <th class="sub_groups_id">
+                                                <a ng-click="sort_by_pre_approved('sub_groups_id')"><i class="fa fa-sort"></i></a>SubGroups
+                                            </th>
+                                            <th class="groups_id">
+                                                <a ng-click="sort_by_pre_approved('groups_id')"><i class="fa fa-sort"></i></a>Groups
+                                            </th>
+                                            <!-- <th class="approved_type">
+                                                <a ng-click="sort_by_pre_approved('approved_type')"><i class="fa fa-sort"></i></a>การอนุมัติ
+                                            </th> -->
+                                            <!-- <th class="last_login">
+                                                <a ng-click="sort_by_pre_approved('last_login')"><i class="fa fa-sort"></i></a>ล็อกอินล่าสุด
+                                            </th> -->
+                                            <!-- <th class="status">
+                                                <a ng-click="sort_by_pre_approved('status')"><i class="fa fa-sort"></i></a>สถานะ
+                                            </th> -->
+                                            <th>แก้ไข</th>
+                                            <th>ลบ</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="members_pre_approved_data in members_pre_approved">
+                                            <td>{{members_pre_approved_data.no}}</td>
+                                            <td>
+                                                <a ng-href="#members_pre_approved/{{members_pre_approved_data.id}}/edit">{{members_pre_approved_data.first_name}} {{members_pre_approved_data.last_name}}</a><br>
+                                                <label class="label label-default" ng-if="members_pre_approved_data.modify_by!=''" ><i class="icon-user"></i> {{members_pre_approved_data.create_datetime}}</label>
+                                            </td>
+                                            <td>{{members_pre_approved_data.email}}</td>
+                                            <td><label class="label label-primary">{{members_pre_approved_data.sub_groups.title}}</label></td>
+                                            <td><label class="label label-warning">{{members_pre_approved_data.groups.title}}</label></td>
+                                            <!-- <td ng-switch on="members_pre_approved_data.approved_type">
+                                                <label class="label label-success" ng-switch-when="1">Pre-Approved</label>
+                                                <label class="label label-success" ng-switch-when="2">Manual</label>
+                                                <label class="label label-success" ng-switch-when="3">Bypass Approval</label>
+                                                <label class="label label-default" ng-if="members_pre_approved_data.reject_status != 1" ng-switch-default>Waiting</label>
+                                                <label class="label label-danger" ng-if="members_pre_approved_data.reject_status == 1" ng-switch-default>Rejected</label>
+                                            </td> -->
+                                            <!-- <td><label class="label label-success" ng-if="members_pre_approved_data.last_login"><i class="icon-clock"></i>{{members_pre_approved_data.last_login}}</label></td> -->
+                                            <!-- <td>
+                                                <div class="onoffswitch2">
+                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{members_pre_approved_data.id}}" ng-click="toggleStatusPreApproved(members_pre_approved_data)" ng-checked="members_pre_approved_data.status==1">
+                                                    <label class="onoffswitch-label" for="statusOnOffSwitch{{members_pre_approved_data.id}}">
+                                                        <span class="onoffswitch-inner"></span>
+                                                        <span class="onoffswitch-switch"></span>
+                                                    </label>
+                                                </div>
+                                            </td> -->
+                                            <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#members_pre_approved/{{members_pre_approved_data.id}}/edit"></a></td>
+                                            <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteMembersPreApproved(members_pre_approved_data)"></a></td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot class="tbl-footer">
+                                        <td colspan="9">
+                                            <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{defaultOptionsPreApproved.total}}</b> record(s)</div>
+                                            <div class="pull-right">
+                                                <pagination total-items="defaultOptionsPreApproved.total" ng-model="defaultOptionsPreApproved.current_page" items-per-page="defaultOptionsPreApproved.per_page" num-pages="defaultOptionsPreApproved.last_page" class="pagination pagination-alt" boundary-links="true" max-size="defaultOptionsPreApproved.max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                            </div>
+                                        </td>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

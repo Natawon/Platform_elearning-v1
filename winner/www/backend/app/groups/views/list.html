@@ -1,0 +1,95 @@
+<div class="header">
+    <h2><i class="icon-screen-desktop"></i> Groups <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">Groups</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fa fa-table"></i> <strong>Groups List</strong> tables</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div class="col-lg-6 p-l-0">
+                            <div class="m-b-20" ng-if="admin.admins_groups_id == 1">
+                                <div class="btn-group">
+                                    <a href="#groups/create" id="table-edit_new" class="btn btn-embossed btn-primary"><i class="fa fa-plus"></i> Create Groups</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 p-r-0">
+                            <form class="frm-filter">
+                                <div class="form-group m-b-10">
+                                    <div class="col-sm-12 p-0 append-icon">
+                                        <input type="text" id="finder" class="form-control form-white" placeholder="ค้นหา..." autofocus="" name="search" ng-model="search" ng-change="changeFilter()">
+                                        <i class="icon-magnifier"></i>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="filter-left">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="id">
+                                        <a ng-click="sort_by('id')"><i class="fa fa-sort"></i></a>#
+                                    </th>
+                                    <th class="title">
+                                        <a ng-click="sort_by('title')"><i class="fa fa-sort"></i></a>Title
+                                    </th>
+                                    <th>Courses</th>
+                                    <!-- <th class="order" ng-if="admin.admins_groups_id == 1">
+                                        <a ng-click="sort_by('order')"><i class="fa fa-sort"></i></a>Order
+                                    </th> -->
+                                    <th class="status" ng-if="admin.admins_groups_id == 1">
+                                        <a ng-click="sort_by('status')"><i class="fa fa-sort"></i></a>Status
+                                    </th>
+                                    <th>Edit</th>
+                                    <th ng-if="admin.admins_groups_id == 1">Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody ui-sortable-disabled="sortableOptions" ng-model="groups">
+                                <tr ng-repeat="groups_data in groups">
+                                    <td>{{groups_data.id}}</td>
+                                    <td>
+                                        <a ng-href="#groups/{{groups_data.id}}/edit">{{groups_data.title}} ({{groups_data.subject}})</a> <label ng-if="groups_data.internal" class="label label-warning">กลุ่มภายใน</label><br>
+                                        <label class="label label-default" ng-if="groups_data.modify_by!=''" ><i class="icon-user"></i><strong>{{groups_data.modify_by}}</strong> ({{groups_data.modify_datetime}})</label>
+                                    </td>
+                                    <td><a class="btn btn-sm btn-default icon icon-folder-alt" ng-href="#groups/{{groups_data.id}}/courses"></a></td>
+                                    <!-- <td ng-if="admin.admins_groups_id == 1">
+                                        <input style="width: 70px; text-align: center;" class="form-control form-white" type="text" ng-model="groups_data.order" ng-blur="sortOrder(groups_data)" ng-focus="disableSortable()">
+                                    </td> -->
+                                    <td ng-if="admin.admins_groups_id == 1">
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{groups_data.id}}" ng-click="updateStatus(groups_data)" ng-checked="groups_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{groups_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#groups/{{groups_data.id}}/edit"></a></td>
+                                    <td ng-if="admin.admins_groups_id == 1"><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteGroups(groups_data)"></a></td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="tbl-footer">
+                                <td colspan="{{admin.admins_groups_id == 1 ? 7 : 4}}">
+                                    <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{total}}</b> record(s)</div>
+                                    <div class="pull-right">
+                                        <pagination total-items="total" ng-model="current_page" items-per-page="per_page" num-pages="last_page" class="pagination pagination-alt" boundary-links="true" max-size="max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                    </div>
+                                </td>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

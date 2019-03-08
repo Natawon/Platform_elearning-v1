@@ -1,0 +1,209 @@
+<div class="header">
+    <h2><i class="fa fa-commenting-o"></i> Subtitles {{mode}}<br><strong>{{videos_data.title}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#subtitles">Subtitles</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+            <div class="row">
+               <form class="form-horizontal" ng-submit="submitSubtitles(videos_data)">
+               <div class="panel">
+                   <div class="panel-content">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2">ไฟล์วีดีโอ</label>
+                                    <div class="col-sm-9">
+                                        {{videos_data.name}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2">หลักสูตร</label>
+                                    <div class="col-sm-9">
+                                        <a ng-href="#courses/{{videos_data.topics.courses.id}}/edit" target="_blank">{{videos_data.topics.courses.code}} - {{videos_data.topics.courses.title}}</a>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2">หัวข้อหลัก</label>
+                                    <div class="col-sm-9">
+                                        <a ng-href="#topics/{{videos_data.topics.parent_topics.id}}/edit" target="_blank">{{videos_data.topics.parent_topics.title}}</a>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2">หัวข้อย่อย</label>
+                                    <div class="col-sm-9">
+                                        <a ng-href="#topics/{{videos_data.topics.id}}/edit" target="_blank">{{videos_data.topics.title}}</a>
+                                    </div>
+                                </div>
+
+                                <hr>
+                            </div>
+
+                            <div class="col-md-12">
+                                <p>
+                                    <strong>อัพโหลดไฟล์ <span class="label label-danger">*.srt only.</span></strong> <span class="label label-danger"><i class="fa fa-exclamation-triangle"></i> การอัพโหลดไฟล์จะเป็นการเขียนทับคำบรรยายเดิม</span>
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput">
+                                                <i class="glyphicon glyphicon-file fileinput-exists"></i><span class="fileinput-filename"></span>
+                                            </div>
+                                            <span class="input-group-addon btn btn-default btn-file">
+                                                <span class="fileinput-new">Choose...</span><span class="fileinput-exists">Change</span>
+                                                <input type="file" id="file" name="file" accept=".srt"> <!-- accept=".csv" -->
+                                            </span>
+                                            <a href="#" id="removeFile" class="input-group-addon btn btn-danger fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-embossed btn-default m-0" id="btn-upload-file" ng-click="uploadFile(videos_data);"><i class="fa fa-upload" aria-hidden="true"></i> Upload</button>
+                                    </div>
+                                </div>
+                                <div class="p-10"></div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="panel bg-dark panel-subtitles">
+                                    <div class="panel-content">
+                                        <div class="c-gray text-center" ng-if="videos_data.subtitles.length == 0" style="margin-top: 105px;">
+                                            เพิ่มคำบรรยายแรกของคุณ<br>
+                                            คลิก &nbsp;&nbsp;&nbsp;<a href="javascript:;" ng-click="addSubtitle(videos_data)"><i class="fa fa-plus"></i> Add Message</a>&nbsp;&nbsp;&nbsp; เพื่อเริ่มต้นใช้งาน
+                                        </div>
+                                        <div class="box-subtitles" ng-repeat="subtitles_data in videos_data.subtitles | limitTo:totalDisplayed">
+                                            <div class="form-group">
+                                                <div class="col-sm-5">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-white input-sm from-time" type="text" data-mask="99:99:99"  ng-model="subtitles_data.from_time" placeholder="00:00:00">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-warning btn-input-sm m-0 m-b-5" type="button" ng-click="snapTimeCurrent('from',$index)">SNAP</button>
+                                                        </span>
+                                                    </div><!-- /input-group -->
+                                                    <div class="input-group">
+                                                        <input class="form-control form-white input-sm to-time" type="text" data-mask="99:99:99"  ng-model="subtitles_data.to_time" placeholder="00:00:00">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-warning btn-input-sm m-0 m-b-5" type="button" ng-click="snapTimeCurrent('to',$index)">SNAP</button>
+                                                        </span>
+                                                    </div><!-- /input-group -->
+                                                </div>
+                                                <div class="col-md-6 p-0">
+                                                    <textarea class="form-control form-white rs-none" ng-focus="ReviewTimeSync(subtitles_data.from_time)" ng-keypress="pauseVideo()" ng-model="subtitles_data.message" rows="3"></textarea>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <a href="javascript:;" ng-click="deleteSubtitle(subtitles_data, videos_data)"><i class="fa fa-times text-danger"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary btn-sm m-l-0 m-r-0 w-100" type="button" id="btnLoadMore" ng-if="totalDisplayed < videos_data.subtitles.length" ng-click="loadMore()">Load more</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="videos_data.subtitles.length > 0">
+                                    <!-- <label class="col-sm-2"></label> -->
+                                    <div class="col-sm-9">
+                                        <a href="javascript:;" ng-click="addSubtitle(videos_data)"><i class="fa fa-plus"></i> Add Message</a>
+                                    </div>
+                                </div>
+
+                                <div class="m-t-20">
+                                    <div class="form-group">
+                                        <!-- <label class="col-sm-2"></label> -->
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <!-- <a href="#subtitles" class="btn btn-embossed btn-default">Cancel</a> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <div id="player"></div>
+                                </div>
+                                <div class="m-t-20">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <input type="checkbox" id="checkboxIsPauseOnKey" ng-model="isPauseOnKey"> หยุดวิดีโอชั่วคราวขณะพิมพ์
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="text-right">
+                                                <button type="button" class="btn btn-embossed btn-danger" ng-click="loadVideo()"><i class="fa fa-refresh"></i> Reload</button>
+                                                <button type="button" class="btn btn-embossed btn-warning m-r-0" ng-click="downloadFile()"><i class="fa fa-download"></i> Download</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="p-t-5"></div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">รูปแบบขอบตัวอักษร</label>
+                                        <select id="subtitle_edge_style" class="form-control form-white select2 m-b-10" data-search="false" data-style="white" ng-model="videos_data.subtitle_edge_style" ng-change="updateSubtitlesStyle('edgeStyle', videos_data.subtitle_edge_style)">
+                                            <option value="none">None</option>
+                                            <option value="dropshadow">Drop Shadow</option>
+                                            <option value="raised">Raised</option>
+                                            <option value="depressed">Depressed</option>
+                                            <option value="uniform">Uniform</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">สีข้อความ</label>
+                                        <input id="subtitle_font_color" type="text" data-show-palette="true" data-use-default-palette="true" class="color-picker form-control form-white m-b-10" placeholder="#ffffff" data-color="{{videos_data.subtitle_font_color}}" ng-model="videos_data.subtitle_font_color" ng-change="updateSubtitlesStyle('color', videos_data.subtitle_font_color)">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="control-label">ค่าทึบแสง</label>
+                                        <div style="width:95%" class="warning slide-ios-sm slide-ios-fade-tooltip m-t-10">
+                                            <div data-slider-tooltip="always" class="slide-ios" id="subtitle_font_opacity" data-slider-max="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">สีพื้นหลังข้อความ</label>
+                                        <input id="subtitle_background_color" type="text" data-show-palette="true" data-use-default-palette="true" class="color-picker form-control form-white m-b-10" placeholder="#000000" data-color="{{videos_data.subtitle_background_color}}" ng-model="videos_data.subtitle_background_color" ng-change="updateSubtitlesStyle('backgroundColor', videos_data.subtitle_background_color)">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="control-label">ค่าทึบแสง</label>
+                                        <div style="width:95%" class="warning slide-ios-sm slide-ios-fade-tooltip m-t-10">
+                                            <div data-slider-tooltip="always" class="slide-ios" id="subtitle_background_opacity" data-slider-max="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">สีพื้นหลังทั้งหมด</label>
+                                        <input id="subtitle_window_color" type="text" data-show-palette="true" data-use-default-palette="true" class="color-picker form-control form-white m-b-10" placeholder="#000000" data-color="{{videos_data.subtitle_window_color}}" ng-model="videos_data.subtitle_window_color" ng-change="updateSubtitlesStyle('windowColor', videos_data.subtitle_window_color)">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="control-label">ค่าทึบแสง</label>
+                                        <div style="width:95%" class="warning slide-ios-sm slide-ios-fade-tooltip m-t-10">
+                                            <div data-slider-tooltip="always" class="slide-ios" id="subtitle_window_opacity" data-slider-max="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                   </div>
+               </div>
+
+               </form>
+
+            </div>
+
+
+    </div>
+</div>

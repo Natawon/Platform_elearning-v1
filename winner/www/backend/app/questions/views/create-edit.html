@@ -1,0 +1,117 @@
+<div class="header">
+    <h2><i class="icon-note"></i> คำถาม <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#questions">คำถาม</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+            <div class="row">
+               <form class="form-horizontal questions-frm" ng-submit="submitQuestions(questions_data)">
+               <div class="panel">
+                   <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">แบบทดสอบ <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <select id="quiz_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="questions_data.quiz_id" ng-options="quiz.id as quiz.title for quiz in quiz" >
+                                    <option value="" ng-hide="true">-- เลือกแบบทดสอบ --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">คำถาม <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <textarea id="questions" ck-editor ng-model="questions_data.questions"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ประเภทคำถาม <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <select id="type" class="form-control form-white select2" data-style="white" data-search="true" ng-model="questions_data.type" ng-options="type.id as type.label for type in type" ng-change="checkType()">
+                                    <option value="" ng-hide="true">-- เลือกประเภทคำถาม --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="answer-header" class="form-group">
+                            <label class="col-sm-2 control-label"></label>
+                            <label class="col-sm-1" id="answer-header-correct">เลือกข้อถูก</label>
+                            <label class="col-sm-7">คำตอบ</label>
+                            <label class="col-sm-1">ลบ</label>
+                        </div>
+                        <div id="answer" ng-repeat="answer_data in questions_data.answer">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-1" id="correct">
+                                    <div class="input-group">
+                                        <label><input type="checkbox" ng-model="answer_data.correct" ng-true-value="1"></label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <input class="form-control form-white" type="text" placeholder="คำตอบ" ng-model="answer_data.answer">
+                                </div>
+                                <div class="col-sm-1"><a href="javascript:void(0);" ng-click="deleteAnswer(answer_data, questions_data)"><i class="fa fa-times text-danger"></i></a></div>
+                            </div>
+                        </div>
+
+                        <div id="answer-plus" class="form-group">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="col-sm-9">
+                                <a href="javascript:void(0);" ng-click="addAnswer(questions_data)"><i class="fa fa-plus"></i> เพิ่ม คำตอบ</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">คำอธิบายเฉลย</label>
+                            <div class="col-sm-9">
+                                <textarea ck-editor ng-model="questions_data.answer_info"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">สถานะ</label>
+                            <div class="col-sm-9">
+                                <div class="onoffswitch2">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{questions_data.id}}" ng-click="toggleStatus(questions_data)" ng-checked="questions_data.status==1">
+                                    <label class="onoffswitch-label" for="statusOnOffSwitch{{questions_data.id}}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="m-t-20">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                        <button type="button" class="btn btn-embossed btn-primary" ng-click="submitQuestions(questions_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                        <button type="button" class="btn btn-embossed btn-primary" ng-click="submitQuestions(questions_data, 'continue_editing')">Save and continue editing</button>
+                                        <a href="#/quiz/{{questions_data.quiz_id}}/questions" class="btn btn-embossed btn-default" ng-if="questions_data.quiz_id" >Cancel</a>
+                                        <a href="#/questions" class="btn btn-embossed btn-default" ng-if="!questions_data.quiz_id" >Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                   </div>
+               </div>
+
+               </form>
+
+            </div>
+
+
+    </div>
+</div>

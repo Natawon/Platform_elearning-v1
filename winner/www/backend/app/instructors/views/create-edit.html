@@ -1,0 +1,145 @@
+<div class="header">
+    <h2><i class="icon-badge"></i> ผู้บรรยาย <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#instructors">ผู้บรรยาย</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal instructors-frm" ng-submit="submitInstructors(instructors_data)">
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">กลุ่ม (Group) <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select id="groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="instructors_data.groups_id" ng-options="group.id as group.title for group in groups" >
+                                        <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">กลุ่มย่อยหลัก <br>(Sub Group)</label>
+                                <div class="col-sm-9">
+                                    <select id="sub_groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="instructors_data.sub_groups_id" ng-options="sup_group.id as sup_group.title for sup_group in sub_groups" >
+                                        <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">รหัสผ่านกระดานสนทนา </label>
+                                <div class="col-sm-9">
+                                    <input id="code" class="form-control form-white" type="text" ng-model="instructors_data.code">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ชื่อผู้บรรยาย <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input id="title" class="form-control form-white" type="text" ng-model="instructors_data.title">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">อีเมล์ <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input id="email" class="form-control form-white" type="text" ng-model="instructors_data.email">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">หมายเหตุแบบสั้น</label>
+                                <div class="col-sm-9">
+                                    <input id="short_remark" class="form-control form-white" type="text" ng-model="instructors_data.short_remark">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">รายละเอียดย่อย</label>
+                                <div class="col-sm-9">
+                                    <textarea id="subject" class="form-control form-white" ng-model="instructors_data.subject"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">PDF <span class="text-danger">*</span><br>
+                                    <span class="label label-danger">Allow Type: .pdf</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <div ng-controller='instructorsPdfUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                        <a ng-if="instructors_data.pdf" ng-href="{{base_instructors_pdf}}{{instructors_data.pdf}}" target="_blank" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-file-pdf-o"></i> &nbsp; PDF<!-- {{instructors_data.pdf}} -->
+                                        </a>
+                                        <br>
+                                        <input id="pdf" type="file" class="form-control" nv-file-select="" uploader="img_uploader" accept="application/pdf" />
+                                        <table class="table">
+                                            <tbody>
+                                            <tr ng-repeat="item in img_uploader.queue">
+                                                <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                <td width="30%" ng-show="img_uploader.isHTML5">
+                                                    <div class="progress" style="margin-bottom: 0;">
+                                                        <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                </td>
+                                                <td nowrap>
+                                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">สถานะ</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{instructors_data.id}}" ng-click="toggleStatus(instructors_data)" ng-checked="instructors_data.status==1">
+                                        <label class="onoffswitch-label" for="statusOnOffSwitch{{instructors_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitInstructors(instructors_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitInstructors(instructors_data, 'continue_editing')">Save and continue editing</button>
+                                    <a href="#instructors" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

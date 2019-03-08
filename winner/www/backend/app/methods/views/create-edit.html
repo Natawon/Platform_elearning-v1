@@ -1,0 +1,144 @@
+<div class="header">
+    <h2><i class="icon-credit-card"></i> Methods <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#methods">Methods</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal methods-frm" ng-submit="submitMethods(methods_data)">
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Title <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input id="title" class="form-control form-white" type="text" ng-model="methods_data.title" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Type <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select id="type" class="form-control form-white select2" data-search="false" data-style="white" ng-model="methods_data.type" ng-options="methods_type.value as methods_type.title for methods_type in methods_types">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Business Email</label>
+                                <div class="col-sm-9">
+                                    <input id="business_email" class="form-control form-white" type="text" ng-model="methods_data.business_email">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Payment URL</label>
+                                <div class="col-sm-9">
+                                    <input id="payment_url" class="form-control form-white" type="text" ng-model="methods_data.payment_url">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Currency</label>
+                                <div class="col-sm-9">
+                                    <input id="currency" class="form-control form-white" type="text" ng-model="methods_data.currency">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Merchant</label>
+                                <div class="col-sm-9">
+                                    <input id="merchant" class="form-control form-white" type="text" ng-model="methods_data.merchant">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">TERM</label>
+                                <div class="col-sm-9">
+                                    <input id="term" class="form-control form-white" type="text" ng-model="methods_data.term">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">MD5 Key</label>
+                                <div class="col-sm-9">
+                                    <input id="md5_key" class="form-control form-white" type="text" ng-model="methods_data.md5_key">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Picture <br><span class="label label-light">size 670 x 80 px</span></label>
+                                <div class="col-sm-9">
+                                    <div ng-controller='methodsUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                        <a ng-if="methods_data.picture" ng-href="{{base_methods_picture}}{{methods_data.picture}}" target="_blank"><img ng-src="{{base_methods_picture}}{{methods_data.picture}}"></a>
+                                        <br>
+                                        <input id="picture" type="file" class="form-control" nv-file-select="" uploader="img_uploader" />
+                                        <table class="table">
+                                            <tbody>
+                                            <tr ng-repeat="item in img_uploader.queue">
+                                                <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                <td width="30%" ng-show="img_uploader.isHTML5">
+                                                    <div class="progress" style="margin-bottom: 0;">
+                                                        <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                </td>
+                                                <td nowrap>
+                                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Status</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{methods_data.id}}" ng-click="toggleStatus(methods_data)" ng-checked="methods_data.status==1">
+                                        <label class="onoffswitch-label" for="statusOnOffSwitch{{methods_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMethods(methods_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMethods(methods_data, 'continue_editing')">Save and continue editing</button>
+                                    <a href="#methods" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

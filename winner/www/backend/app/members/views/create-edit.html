@@ -1,0 +1,534 @@
+<div class="header">
+    <h2><i class="icon-users"></i> สมาชิก <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#members">สมาชิก</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+        <div class="panel" style="min-height: 400px;">
+        <tabset>
+            <tab>
+            <tab-heading><i class="icon-note"></i> รายละเอียดทั่วไป</tab-heading>
+                <form class="form-horizontal members-frm" ng-submit="submitMembers(members_data)">
+                    <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-12">
+
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">กลุ่ม (Group) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="members_data.groups_id" ng-options="group.id as group.title for group in groups" >
+                                            <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="[2].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">รหัสองค์กร  <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="company_code" class="form-control form-white" type="text" placeholder="รหัสองค์กร" ng-model="members_data.company_code">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="selected_groups.internal == 0">
+                                    <label class="col-sm-2 control-label">รหัสผู้ใช้อ้างอิง <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="ref_id" class="form-control form-white" type="text" placeholder="รหัสผู้ใช้อ้างอิง" ng-model="members_data.ref_id">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Foreign?</label>
+                                    <div class="col-sm-9">
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isForeignOnOffSwitch{{members_data.id}}" ng-click="toggleIsForeign(members_data)" ng-checked="members_data.is_foreign==1">
+                                            <label class="onoffswitch-label" for="isForeignOnOffSwitch{{members_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="members_data.is_foreign != 1 || selected_groups.multi_lang_certificate == 1">
+                                    <label class="col-sm-2 control-label">คํานําหน้าชื่อ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="name_title" class="form-control form-white" type="text" placeholder="คํานําหน้าชื่อ" ng-model="members_data.name_title">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="members_data.is_foreign == 1 || selected_groups.multi_lang_certificate == 1">
+                                    <label class="col-sm-2 control-label">คํานําหน้าชื่อ (EN) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="name_title_en" class="form-control form-white" type="text" placeholder="คํานําหน้าชื่อ (EN)" ng-model="members_data.name_title_en">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">เพศ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="gender" class="form-control form-white select2" data-style="white" data-search="false" ng-model="members_data.gender" ng-options="gender.value as gender.label for gender in gender">
+                                            <option value="" ng-hide="true">-- เลือกเพศ --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="members_data.is_foreign != 1 || selected_groups.multi_lang_certificate == 1">
+                                    <label class="col-sm-2 control-label">ชื่อ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="first_name" class="form-control form-white" type="text" placeholder="ชื่อ" ng-model="members_data.first_name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="members_data.is_foreign != 1 || selected_groups.multi_lang_certificate == 1">
+                                    <label class="col-sm-2 control-label">นามสกุล <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="last_name" class="form-control form-white" type="text" placeholder="นามสกุล" ng-model="members_data.last_name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="members_data.is_foreign == 1 || selected_groups.multi_lang_certificate == 1">
+                                    <label class="col-sm-2 control-label">ชื่อ (EN) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="first_name_en" class="form-control form-white" type="text" placeholder="ชื่อ (EN)" ng-model="members_data.first_name_en">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="members_data.is_foreign == 1 || selected_groups.multi_lang_certificate == 1">
+                                    <label class="col-sm-2 control-label">นามสกุล (EN) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="last_name_en" class="form-control form-white" type="text" placeholder="นามสกุล (EN)" ng-model="members_data.last_name_en">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">อีเมล์ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="email" class="form-control form-white" type="text" placeholder="อีเมล์" autocomplete="off" ng-model="members_data.email">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="selected_groups.internal == 1">
+                                    <label class="col-sm-2 control-label">Password <i class="fa fa-question-circle c-grey" rel="popover" data-container="body" data-toggle="popover" data-placement="bottom" data-content="{{hint.password}}" data-original-title="Hint Info."></i> <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9 prepend-icon">
+                                        <input id="password" class="form-control form-white" type="password" placeholder="The password is at least 8 characters long." ng-model="members_data.password" autocomplete="new-password" readonly="readonly">
+                                        <i class="icon-lock"></i>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="selected_groups.field_approval == 'id_card'">
+                                    <label class="col-sm-2 control-label">{{members_data.is_foreign == 1 ? 'Passport No.' : 'เลขบัตรประชาชน'}} <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="id_card" class="form-control form-white" type="text" placeholder="{{members_data.is_foreign == 1 ? 'Passport No.' : 'เลขบัตรประชาชน'}}" ng-model="members_data.id_card">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="[3,4].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">สัญชาติ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="nationality" class="form-control form-white" type="text" placeholder="สัญชาติ" ng-model="members_data.nationality">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">หมายเลขโทรศัพท์มือถือ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="mobile_number" class="form-control form-white" type="text" placeholder="หมายเลขโทรศัพท์มือถือ" ng-model="members_data.mobile_number">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="[2,3,5].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">ตำแหน่งงาน <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="position_id" class="form-control form-white" type="text" placeholder="ตำแหน่งงาน" ng-model="members_data.position_id">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group" ng-show="[2,3,5].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">ฝ่ายงาน <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="department" class="form-control form-white" type="text" placeholder="ฝ่ายงาน" ng-model="members_data.department">
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group" ng-show="[2].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">บทบาทในระบบต้นทาง <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="role" class="form-control form-white" type="text" placeholder="บทบาทในระบบต้นทาง" ng-model="members_data.role">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group" ng-show="[2,3,4].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">{{selected_groups.meaning_of_institution_id}} <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="institution_id" class="form-control form-white" type="text" placeholder="{{selected_groups.meaning_of_institution_id}}" ng-model="members_data.institution_id">
+                                    </div>
+                                </div> -->
+                                <!-- <div class="form-group" ng-show="[3].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">ประเภทใบอนุญาต <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="license_type_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="members_data.license_type_id" ng-options="license_type.id as license_type.label for license_type in license_type">
+                                            <option value="" ng-hide="true">-- เลือกประเภทใบอนุญาต --</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group" ng-show="[3].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">เลขที่ใบอนุญาต<br>(IC License)</label>
+                                    <div class="col-sm-9">
+                                        <input id="license_id" class="form-control form-white" type="text" placeholder="เลขที่ใบอนุญาต" ng-model="members_data.license_id">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="[3,4].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">วุฒิการศึกษา <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="education_level_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="members_data.education_level_id" ng-options="education_degree.id as education_degree.label for education_degree in education_degree">
+                                            <option value="" ng-hide="true">-- เลือกวุฒิการศึกษา --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group">
+                                    <label class="col-sm-2 control-label">รหัสคณะ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="faculty_id" class="form-control form-white" type="text" placeholder="รหัสคณะ" ng-model="members_data.faculty_id">
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group" ng-show="[3,4,5].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">{{selected_groups.meaning_of_occupation_id}} <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="occupation_id" class="form-control form-white" type="text" placeholder="{{selected_groups.meaning_of_occupation_id}}" ng-model="members_data.occupation_id">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group">
+                                    <label class="col-sm-2 control-label">รหัสสาขาวิชา <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="field_study_id" class="form-control form-white" type="text" placeholder="รหัสสาขาวิชา" ng-model="members_data.field_study_id">
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group" ng-show="[4].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">ระดับการศึกษา <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="education_level_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="members_data.education_level_id" ng-options="education_degree.id as education_degree.label for education_degree in education_degree">
+                                            <option value="" ng-hide="true">- เลือกระดับการศึกษา -</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group" ng-show="[5].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">เบอร์โต๊ะ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="table_number" class="form-control form-white" type="text" placeholder="เบอร์โต๊ะ" ng-model="members_data.table_number">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="[5].indexOf(members_data.groups_id) >= 0">
+                                    <label class="col-sm-2 control-label">ชื่อ-นามสกุล หัวหน้า <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input id="chief_name" class="form-control form-white" type="text" placeholder="ชื่อ-นามสกุล หัวหน้า" ng-model="members_data.chief_name">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-group">
+                                    <label class="col-sm-2 control-label">วันหมดอายุ</label>
+                                    <div class="col-sm-4 prepend-icon">
+                                        <input type="text" id="expire" name="datetimepicker" class="datetimepicker form-control form-white" ng-model="members_data.expire">
+                                        <i class="icon-calendar"></i>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group" ng-if="mode === 'Edit'">
+                                    <label class="col-sm-2 control-label">การอนุมัติ </label>
+                                    <div class="col-sm-9">
+                                        <div ng-switch on="members_data.approved_type">
+                                            <div class="" ng-switch-when="1">
+                                                <label class="label label-success">Pre-Approved (โดย {{members_data.approved_admin.first_name}})</label><br>
+                                                <label class="label label-success">{{members_data.approved_datetime}}</label>
+                                            </div>
+
+                                            <div class="" ng-switch-when="2">
+                                                <label class="label label-success">Manual (โดย {{members_data.approved_admin.first_name}})</label><br>
+                                                <label class="label label-success">{{members_data.approved_datetime}}</label>
+                                            </div>
+
+                                            <div class="" ng-switch-when="3">
+                                                <label class="label label-success">Bypass Approval</label><br>
+                                                <label class="label label-success">{{members_data.approved_datetime}}</label>
+                                            </div>
+
+                                            <div class="btn-group" role="group" aria-label="..." ng-if="members_data.reject_status != 1" ng-switch-default>
+                                                <button type="button" class="btn btn-success btn-embossed btn-sm" ng-click="approveMember($event, members_data, true)"><i class="fa fa-check"></i> Approve</button>
+                                                <button type="button" class="btn btn-danger btn-embossed btn-sm" ng-click="rejectMember($event, members_data, true)"><i class="fa fa-close"></i> Reject</button>
+                                            </div>
+
+                                            <div class="" ng-if="members_data.reject_status == 1" ng-switch-default>
+                                                <label class="label label-danger">Rejected (โดย {{members_data.rejected_admin.first_name}})</label><br>
+                                                <label class="label label-danger">{{members_data.rejected_datetime}}</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">การเปิดใช้งาน <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="active" class="form-control form-white select2" data-search="false" data-style="white" ng-model="members_data.active" ng-options="activation.value as activation.title for activation in activations">
+                                            <option value="" ng-hide="true">-- เลือก --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">ล็อกอินล่าสุด </label>
+                                    <div class="col-sm-9">
+                                        <i class="icon-clock" ng-if="members_data.last_login"></i>{{members_data.last_login || '-'}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">วันที่เข้าสู่ระบบ </label>
+                                    <div class="col-sm-9">
+                                        <i class="icon-clock"></i>{{members_data.create_datetime}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">สถานะ</label>
+                                    <div class="col-sm-9">
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{members_data.id}}" ng-click="toggleStatus(members_data)" ng-checked="members_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{members_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="m-t-20">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMembers(members_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMembers(members_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#members" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+
+            <tab>
+                <tab-heading><i class="icon-note"></i> รายละเอียดใบเสร็จรับเงิน/ใบกำกับภาษี</tab-heading>
+                <form class="form-horizontal members-frm" ng-submit="submitMembers(members_data)">
+                        <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-underline">แบบบุคคลธรรมดา </label>
+                                    <div class="col-sm-9"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">ชื่อผู้เสียภาษี </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_personal_first_name" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_personal_first_name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">นามสกุลผู้เสียภาษี </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_personal_last_name" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_personal_last_name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">เลขประจำตัวผู้เสียภาษี (เลขที่บัตรประชาชน) </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_personal_tax_id" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_personal_tax_id">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">ที่อยู่สำหรับออกใบกำกับภาษี  </label>
+                                    <div class="col-sm-9">
+                                        <textarea id="inv_personal_address" rows="3" class="form-control form-white" placeholder="Maximum 100 characters" ng-model="members_data.inv_personal_address"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">รหัสไปรษณีย์ </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_personal_zip_code" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_personal_zip_code">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">เบอร์โทรศัพท์ </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_personal_tel" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_personal_tel">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">อีเมล์สำหรับจัดส่งใบกำกับภาษี </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_personal_email" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_personal_email">
+                                    </div>
+                                </div>
+
+                                <br>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-underline">แบบนิติบุคคล </label>
+                                    <div class="col-sm-9"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">ชื่อ-นามสกุล / ชื่อบริษัท </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_corporate_name" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_corporate_name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">สำนักงานใหญ่ / สาขา </label>
+                                    <div class="col-sm-9">
+                                        <select id="inv_corporate_branch" class="form-control select2 form-white" data-search="false" data-style="white" ng-model="members_data.inv_corporate_branch" ng-options="branch_tax_invoice.value as branch_tax_invoice.title for branch_tax_invoice in branch_tax_invoices">
+                                            <option value="">-- เลือกสำนักงาน --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">สาขาที่ </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_corporate_branch_no" class="form-control" type="text" placeholder="" ng-model="members_data.inv_corporate_branch_no" ng-disabled="members_data.inv_corporate_branch == 0"  ng-class="{'form-white': members_data.inv_corporate_branch == 1}" ng-blur="setPadBranchNo()">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">เลขประจำตัวผู้เสียภาษี </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_corporate_tax_id" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_corporate_tax_id">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">ที่อยู่สำหรับออกใบกำกับภาษี </label>
+                                    <div class="col-sm-9">
+                                        <textarea id="inv_corporate_address" rows="3" class="form-control form-white" placeholder="Maximum 100 characters" ng-model="members_data.inv_corporate_address"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">รหัสไปรษณีย์ </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_corporate_zip_code" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_corporate_zip_code">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">เบอร์โทรศัพท์ </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_corporate_tel" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_corporate_tel">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">อีเมล์สำหรับจัดส่งใบกำกับภาษี </label>
+                                    <div class="col-sm-9">
+                                        <input id="inv_corporate_email" class="form-control form-white" type="text" placeholder="" ng-model="members_data.inv_corporate_email">
+                                    </div>
+                                </div>
+
+                                <div class="m-t-20">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMembers(members_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMembers(members_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#members" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+
+            <tab>
+                <tab-heading><i class="icon-note"></i> ตั้งค่ากลุ่ม</tab-heading>
+                <form class="form-horizontal members-frm" ng-submit="submitMembers(members_data)">
+                        <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+                                    <!-- <label class="col-sm-2 control-label">{{selected_groups.meaning_of_sub_groups_id || 'กลุ่มย่อยหลัก'}} <span class="text-danger">*</span><br> (Sub Group)</label> -->
+                                    <label class="col-sm-2 control-label">
+                                        กลุ่มย่อยหลัก <span class="text-danger" ng-show="selected_groups.internal == 1">*</span><br>
+                                        (Sub Group) <br>
+                                        <span ng-if="selected_groups.meaning_of_sub_groups_id != undefined && selected_groups.meaning_of_sub_groups_id != 'Sub Group'" class="label label-default">{{selected_groups.meaning_of_sub_groups_id || 'กลุ่มย่อยหลัก'}}</span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select id="sub_groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="members_data.sub_groups_id" ng-options="sup_group.id as sup_group.title for sup_group in sub_groups" >
+                                            <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <!-- <label class="col-sm-2 control-label">{{selected_groups.meaning_of_level_groups_id || 'กลุ่มย่อย'}} <span class="text-danger">*</span><br> (Units)</label> -->
+                                    <label class="col-sm-2 control-label">
+                                        กลุ่มย่อย <span class="text-danger" ng-show="selected_groups.internal == 1">*</span><br>
+                                        (Units) <br>
+                                        <span ng-if="selected_groups.meaning_of_level_groups_id != undefined && selected_groups.meaning_of_level_groups_id != 'Unit'" class="label label-default">{{selected_groups.meaning_of_level_groups_id || 'กลุ่มย่อย'}}</span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select id="member2level_group" ng-options="level_group.id as level_group.title for level_group in level_groups" multiple ng-model="members_data.member2level_group" bs-duallistbox preserve-selection="moved"></select>
+                                    </div>
+                                </div>
+
+                                <div class="m-t-20">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMembers(members_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMembers(members_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#members" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+        </tabset>
+        </div>
+        </div>
+    </div>
+</div>

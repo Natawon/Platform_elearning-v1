@@ -1,0 +1,578 @@
+<div class="header">
+    <h2><i class="icon-equalizer"></i> Live Control</h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#livestreams">Livestreams</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div id="live-control-content" class="col-md-12">
+        <div class="row">
+           <div class="panel">
+                <tabset id="main-tabs" class="tab-form">
+                    <tab id="info">
+                        <tab-heading><i class="icon-list"></i> ข้อมูลสำหรับการถ่ายทอดสด</tab-heading>
+                        <form class="form-horizontal">
+                            <div class="panel-content p-t-10">
+                                <div class="row">
+                                    <div class="col-md-12 m-0">
+                                        <h1 class="m-t-0 text-primary" style="font-weight: 500;">Usage</h1>
+
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-2">URL</label>
+                                            <div class="col-sm-5 append-icon">
+                                                <input id="url_for_streaming" class="form-control" type="text" ng-model="topics_data.url_for_streaming" readonly>
+                                                <i id="copy_url_for_streaming" class="fa fa-clipboard copy-to-clipboard" ngclipboard data-clipboard-target="#url_for_streaming" ngclipboard-success="copySuccess(e);" aria-hidden="true"></i>
+                                            </div> 
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-2">Stream name / Stream key</label>
+                                            <div class="col-sm-5 append-icon">
+                                                <input id="streaming_streamname" class="form-control" type="text" ng-model="topics_data.streaming_streamname" readonly>
+                                                <i id="copy_streaming_streamname" class="fa fa-clipboard copy-to-clipboard" ngclipboard data-clipboard-target="#streaming_streamname" ngclipboard-success="copySuccess(e);" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="m-t-30 m-b-20">
+
+                                <div class="row">
+                                    <div class="col-md-12 m-0">
+                                        <h1 class="m-t-0" style="font-weight: 500;">Information</h1>
+
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-2">Stearming server</label>
+                                            <div class="col-sm-5">
+                                                <input class="form-control" type="text" ng-model="topics_data.streaming_server" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-2">Application name</label>
+                                            <div class="col-sm-5">
+                                                <input class="form-control" type="text" ng-model="topics_data.streaming_applications" disabled>
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="form-group">
+                                            <label for="" class="col-sm-2">Prefix streamname</label>
+                                            <div class="col-sm-5">
+                                                <input class="form-control" type="text" ng-model="topics_data.streaming_prefix_streamname" disabled>
+                                            </div>
+                                        </div> -->
+
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-2">Stream name / Stream key</label>
+                                            <div class="col-sm-5">
+                                                <input class="form-control" type="text" ng-model="topics_data.streaming_streamname" disabled>
+                                            </div>
+                                        </div>
+
+                                        <!-- <h3 class="m-t-0 text-muted" style="font-weight: 500;text-transform: none;">Example</h3> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab id="live-control">
+                        <tab-heading class="text-red"><i class="icon-feed"></i> ควบคุมการถ่ายทอดสด</tab-heading>
+                        <div class="panel-header bg-dark">
+                           <h2 class="panel-title"><i class="icon-share"></i> {{topics_data.title}}</h2>
+                        </div>
+                        <div class="panel-content">
+                            <div class="row">
+                                <h3 class="col-md-12" style="margin-top: 0;">
+                                    <div class="col-md-12 alert-secondary">
+                                        <div class="col-md-3 text-center">
+                                            Broadcast signal : 
+                                            <strong ng-if="hasSignal && !loadSignal" class="text-has-signal">
+                                                <i id="icon-signal" class="fa fa-rss" data-toggle="tooltip" data-placement="bottom" title="มีสัญญาณ" style="position: relative; top: 2px; font-size: 22px;"></i>
+                                            </strong>
+                                            <strong ng-if="!hasSignal && !loadSignal" class="text-red">
+                                                <i class="fa fa-exclamation-circle p-0" data-toggle="tooltip" data-placement="bottom" title="กรุณาตรวจสอบสัญญาณจากอุปกรณ์หรือโปรแกรมถ่ายทอดสด"></i>
+                                                No signal
+                                            </strong>
+                                            <strong ng-if="loadSignal" class="">
+                                                <i class="fa fa-spinner fa-spin p-0"></i>
+                                            </strong>    
+                                        </div>
+                                        <div class="col-md-3 text-center">
+                                            Stream status : <strong>{{statusStreaming}}</strong>
+                                        </div>
+                                        <div class="col-md-3 text-center">
+                                            Record : <strong>{{statusRecorder}}</strong>
+                                        </div>
+                                        <div class="col-md-3 text-center">
+                                            Timing : <strong>{{msgTimer}}</strong>
+                                        </div>
+                                    </div>
+                                </h3>
+                                <div class="col-md-6">
+                                    <div id="wrapper-player" class="embed-responsive embed-responsive-16by9">
+                                        <div id="player"></div>
+                                        <div id="notification-player" class="player-overlay" ng-show="showNotyPlayer">
+                                            <h3 class="text" ng-show="showNotyPlayerText">ไม่มีสัญญาณถ่ายทอดสด กรุณาตรวจสอบอีกครั้ง</h3>
+                                        </div>
+                                    </div>
+                                    <div class="p-15 m-t-10 m-b-15" style="border: 1px solid #ddd;">
+                                        <div class="m-b-15"><i class="fa fa-file-text-o"></i> แผนการถ่ายทอดสด</div>
+                                        <div class="m-b-5"><span class="f-13">ชื่อหัวข้อ:</span> <strong>{{topics_data.title}}</strong></div>
+                                        <div class="row">
+                                            <div class="col-xs-6"><span class="f-13">เวลาเริ่ม:</span> <strong class="text-success">{{live_start_datetime}}</strong></div>
+                                            <div class="col-xs-6"><span class="f-13">เวลาสิ้นสุด:</span> <strong class="text-danger">{{live_end_datetime}}</strong></div>
+                                        </div>
+                                    </div>
+                                    <table class="table borderless">
+                                        <tr>
+                                            <td width="170px">โหลดวีดีโอใหม่</td>
+                                            <td><button id="btn-reload" type="button" class="btn btn-default btn-md m-r-0" ng-click="toggleReload(topics_data)" data-loading-text="<i class='fa fa-refresh fa-spin p-0'></i> <span class='m-l-5'>Reloading...</span>"><i class="fa fa-refresh"></i> Reload</button></td>
+                                        </tr>
+                                        <tr ng-show="topics_data.is_stop_stream == 0">
+                                            <td>ควบคุมการถ่ายทอดสด</td>
+                                            <td>
+                                                <button ng-show="showBtnPause" id="btn-toggle-pause" type="button" class="btn btn-warning btn-md m-b-5" ng-click="toggleStreamingPause(topics_data)" ng-bind-html="btnPauseResume"></button>
+                                                <button id="btn-toggle-stream" type="button" class="btn btn-danger btn-md m-b-5 {{btnClassStreamStatus}}" ng-click="toggleStreamingStatus(topics_data)" ng-bind-html="btnStatus" data-loading-text="<i class='fa fa-refresh fa-spin p-0'></i> <span class='m-l-5'>Streaming...</span>"></button>
+                                            </td>
+                                        </tr>
+                                        <!-- <tr ng-show="topics_data.is_stop_stream == 1 && topics_data.vod_format != 'end_live'">
+                                            <td>เปิด/ปิด การแสดงผลวีดีโอ</td>
+                                            <td>
+                                                <button id="btn-toggle-vod-display" type="button" class="btn btn-danger btn-md" ng-bind-html="txtDisplayVOD" ng-click="toggleVODDisplay(topics_data);"></button>
+                                            </td>
+                                        </tr> -->
+                                        <tr id="tr-record" ng-if="topics_data.videos.length == 0 && topics_data.state == 'live' && hasSignal">
+                                            <td>บันทึกการถ่ายทอดสด</td>
+                                            <td><button id="btn-toggle-record" type="button" class="btn btn-primary btn-md {{btnClassRecord}}" ng-click="toggleRecordStatus(topics_data)" ng-bind-html="btnStatusRecord"></button></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-6" ng-if="slides.length">
+                                    <div class="bg-black" ng-show="isFirstSyncSlide">
+                                        <div class="embed-responsive embed-responsive-4by3">
+                                            <h5 class="middle text-white text-center m-0">คลิกปุ่ม "Start Sync" เพื่อเริ่ม Sync Slide</h5>
+                                        </div>
+                                    </div>
+                                    <img ng-show="!isFirstSyncSlide" ng-src="{{base_slides_picture}}{{slidesActive.picture}}" class="img-responsive img-thumbnail">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="m-t-10">
+                                                        <strong class="" ng-show="!isFirstSyncSlide">Current Slide:</strong> <span class="c-green">{{slidesActive.title}}</span>
+                                                        <!-- <div class="bg-blue p-5 bd-3 m-0 f-12" style="text-transform: inherit; word-wrap: break-word;">
+                                                            {{slidesActive.slides_groups.title}}
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <button ng-if="topics_data.videos.length == 0" style="" type="button" class="col-md-12 text-center btn btn-default btn-md m-t-20" ng-click="toggleSlideActive(nextSlides)" ng-class="{disabled: disabledBtnSynSlide}">{{btnSyncSlide}} {{ctdSyncSlide}} <i class="fa fa-chevron-right"></i></button>
+                                                    <!-- <button ng-if="topics_data.videos.length == 0 && btnClassRecord != 'active'" style="" type="button" class="col-md-12 text-center btn btn-default btn-md m-t-20 disabled" data-toggle="tooltip" data-placement="bottom" title="Please record live video">Next Slide <i class="fa fa-chevron-right"></i></button> -->
+                                                    <!-- <button type="button" class="btn btn-primary disabled">Primary</button> -->
+                                                    <span class="text-muted">Note: หากไม่บันทึกวิดีโอ สไลด์จะไม่บันทึกเวลา</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <img ng-src="{{base_slides_picture}}{{nextSlides.picture}}" class="img-responsive img-thumbnail m-t-10">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <!-- <div class="col-xs-12 m-b-15">
+                                    <hr class="b-c-eee">
+                                </div> -->
+
+                                <!-- <div class="col-md-6">
+                                    <div id="live-example" class="col-xs-12 bg-secondary">
+                                        <h3 class="m-0 m-b-5"><i class="fa fa-sticky-note p-r-5"></i> ตัวอย่างการใช้งาน</h3>
+                                        <p>
+                                            1. ตรวจสอบสัญญาณ
+                                        </p>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-6">
+                                    <div id="suggestion" class="col-xs-12 bg-secondary m-t-10">
+                                        <h3 class="m-0 m-b-5"><i class="fa fa-question-circle p-r-5"></i> แนะนำการใช้งาน</h3>
+                                        <table class="table borderless m-b-10">
+                                            <tr>
+                                                <td width="140">
+                                                    - <button class="btn btn-xs btn-default m-b-0 m-l-5 m-r-5"><i class="fa fa-refresh p-r-5"></i> Reload</button>
+                                                </td>
+                                                <td>หากมีปัญหาในการเล่นวีดีโอ หรือต้องการตรวจสอบสัญญาณใหม่</td>
+                                            </tr>
+                                            <tr ng-show="isFirstSyncSlide">
+                                                <td>
+                                                    - <button class="btn btn-xs btn-default m-b-0 m-l-5 m-r-5">Start Sync <i class="fa fa-chevron-right"></i></button>
+                                                </td>
+                                                <td>เริ่ม Sync สไลด์แรก</td>
+                                            </tr>
+                                            <tr ng-show="!isFirstSyncSlide">
+                                                <td>
+                                                    - <button class="btn btn-xs btn-default m-b-0 m-l-5 m-r-5">Next Slide <i class="fa fa-chevron-right"></i></button>
+                                                </td>
+                                                <td>เลื่อนไปยัง Slide ถัดไป</td>
+                                            </tr>
+                                            <tr ng-show="topics_data.state == 'live' && topics_data.streaming_status == 0">
+                                                <td>
+                                                    - <button class="btn btn-xs btn-danger m-b-0 m-l-5 m-r-5"><i class="fa fa-play p-r-5"></i> Stream Now</button>
+                                                </td>
+                                                <td>
+                                                    หากคุณต้องการเริ่มถ่ายทอดสด
+                                                </td>
+                                            </tr>
+                                            <tr ng-show="topics_data.state == 'live' && !isRecord">
+                                                <td>
+                                                    - <button class="btn btn-xs btn-primary m-b-0 m-l-5 m-r-5"><i class='fa fa-circle p-r-5'></i> Start Record</button>
+                                                </td>
+                                                <td>
+                                                    หากคุณต้องการเริ่มบันทึกการถ่ายทอดสด
+                                                </td>
+                                            </tr>
+                                            <tr ng-show="topics_data.state == 'live' && topics_data.streaming_status == 1 && topics_data.streaming_pause == 0">
+                                                <td>- <button class="btn btn-xs btn-warning m-b-0 m-l-5 m-r-5"><i class="fa fa-pause p-r-5"></i> Pause Stream</button></td>
+                                                <td>พักการถ่ายทอดสด</td>
+                                            </tr>
+                                            <tr ng-show="topics_data.state == 'live' && topics_data.streaming_status == 1 && topics_data.streaming_pause == 1">
+                                                <td>- <button class="btn btn-xs btn-warning m-b-0 m-l-5 m-r-5"><i class='fa fa-play p-r-5'></i> Resume Stream</button></td>
+                                                <td>ถ่ายทอดสดต่อ</td>
+                                            </tr>
+                                            <tr ng-show="topics_data.state == 'live' && isRecord">
+                                                <td>- <button class="btn btn-xs btn-primary m-b-0 m-l-5 m-r-5"><i class='fa fa-stop p-r-5'></i> Stop Record</button></td>
+                                                <td>หยุดบันทึกการถ่ายทอดสด</td>
+                                            </tr>
+                                            <tr ng-show="topics_data.state == 'live' && topics_data.streaming_status == 1">
+                                                <td>- <button class="btn btn-xs btn-danger m-b-0 m-l-5 m-r-5"><i class='fa fa-stop p-r-5'></i> Stop Stream</button></td>
+                                                <td>หยุดถ่ายทอดสด (ต้องทำการหยุดบันทึกวีดีโอก่อน)</td>
+                                            </tr>
+                                        </table>
+                                    </div>    
+                                </div>
+
+                            </div>
+                        </div>
+                    </tab>
+                    <tab id="live-result" ng-show="topics_data.is_stop_stream == 1">
+                        <tab-heading><i class="icon-doc"></i> ผลสรุปการถ่ายทอดสด</tab-heading>
+                        <div class="row">
+                            <div id="live-result-alert" class="wrapper-alert" ng-show="live_result.is_record == 1 && live_result.video_status != 'complete'">
+                            <!-- <div id="live-result-alert" class="wrapper-alert"> -->
+                                <!-- <div class="alert alert-danger px-35 py-20 m-b-10">
+                                    <div class="inline-block alert-icon">
+                                        <i class="fa fa-exclamation-circle"></i>
+                                    </div>
+                                    <div class="inline-block alert-content">
+                                        คำเตือน! กรุณาอย่าปิดหน้าต่างนี้จนกว่าจะจัดเตรียมวีดีโอต้นฉบับเสร็จสมบูรณ์
+                                        หลังจากนั้นระบบจะเปลี่ยนไปหน้า Covert วีดีโอโดยอัตโนมัติ
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="panel-content p-t-10 p-b-20">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h1 class="m-b-20" style="font-weight: 500;">ผลสรุปการถ่ายทอดสด - {{topics_data.title}}</h1>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card {{live_result.vod_format.theme}} choice-stop-stream">
+                                        <div class="cover">
+                                            <i class="{{live_result.vod_format.icon}} fa-5x"></i>
+                                        </div>
+                                        <div class="content">
+                                            <h3 class="m-b-5">
+                                                {{live_result.vod_format.title}}
+                                            </h3>
+                                            <p class="description">
+                                                {{live_result.vod_format.description}}
+                                            </p>
+                                        </div>
+                                        <div class="footer">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div>
+                                        <div class="f-18 toggle-collapse" data-toggle="collapse" data-parent="#accordion" href="#resultLiveCollapseOne" aria-expanded="true" aria-controls="resultLiveCollapseOne">
+                                            <i class="fa fa-caret-down"></i> การถ่ายทอดสด
+                                        </div>
+                                        <div id="resultLiveCollapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                            <div class="panel-body p-t-10">
+                                                <div class="col-xs-12 m-b-20">
+                                                    <div class="row">
+                                                        <div class="col-md-3">สถานะการถ่ายทอดสด</div>
+                                                        <label class="col-md-9 m-0">สิ้นสุดการถ่ายทอดสด</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xs-12 m-b-20">
+                                                    <div class="row">
+                                                        <div class="col-md-3">เริ่มถ่ายทอดสด</div>
+                                                        <label class="col-md-9 m-0">{{live_result.live_start_datetime}}</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xs-12 m-b-20">
+                                                    <div class="row">
+                                                        <div class="col-md-3">สิ้นสุดการถ่ายทอดสด</div>
+                                                        <label class="col-md-9 m-0">{{live_result.live_end_datetime}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="f-18 toggle-collapse" data-toggle="collapse" data-parent="#accordion" href="#resultLiveCollapseTwo" aria-expanded="true" aria-controls="resultLiveCollapseTwo">
+                                            <i class="fa fa-caret-down"></i> วีดีโอต้นฉบับ
+                                        </div>
+                                        <div id="resultLiveCollapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                            <div class="panel-body p-t-10">
+                                                <div class="col-xs-12 m-b-20">
+                                                    <div class="row">
+                                                        <div class="col-md-3">ชื่อวีดีโอ</div>
+                                                        <label class="col-md-9 m-0">{{live_result.video_name}}</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xs-12 m-b-20">
+                                                    <div class="row">
+                                                        <div class="col-md-3">ความยาววีดีโอ</div>
+                                                        <label class="col-md-9 m-0">{{msgTimer}}</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xs-12 m-b-20">
+                                                    <div class="row">
+                                                        <div class="col-md-3">สถานะ</div>
+                                                        <label class="col-md-9 m-0">
+                                                            <span ng-show="live_result.video_status == 'progressing'">
+                                                                <i class="fa fa-spinner fa-spin p-0 text-primary"></i>
+                                                                <span class="m-l-4 text-primary">จัดเตรียมวีดีโอต้นฉบับ</span>
+                                                                <!-- <span class="m-l-4 text-red"><i class="fa fa-exclamation-circle p-0"></i> กรุณาอย่าปิดหน้าต่างนี้</span> -->
+                                                            </span>
+                                                            <span ng-show="live_result.video_status == 'complete'">
+                                                                <i class="fa fa-check-circle p-0 text-success"></i>
+                                                                <span class="m-l-4 text-success">เสร็จสมบูรณ์</span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-xs-12 m-t-5" ng-show="testAlert == 0">
+                                                    <div class="alert-new">
+                                                        <i class="fa fa-exclamation-circle alert-icon"></i>
+                                                        <span class="alert-content">คำเตือน! ระบบกำลังจัดเตรียมวีดีโอต้นฉบับ กรุณาอย่าปิดหน้าต่างนี้</span>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="wrapper-action" class="form-group" ng-show="live_result.video_status == 'complete'">
+                                        <div class="col-sm-3">
+                                            <a href="/elearning/download/topics/{{topics_data.streaming_record_part}}/{{live_result.video_name}}" class="btn btn-default btn-embossed">ดาวน์โหลดวีดีโอต้นฉบับ</a>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <a href="#topics/{{topics_data.id}}/edit?action=video_management" class="btn btn-success btn-embossed">Convert วีดีโอ</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+
+            <div class="panel wrapper-slides" ng-if="slides.length">
+                <div class="panel-header bg-dark">
+                    <h2 class="panel-title"><i class="icon-layers"></i> Slides</h2>
+                </div>
+                <div class="panel-content">
+                    <!-- <tabset class="tab-fade-in"> -->
+                        <!-- <tab ng-repeat="slides_data in slides" active="isActive[slides_data.id]">
+                        <tab-heading>{{slides_data.title}}</tab-heading> -->
+                        <div class="row">
+                            <div class="panel-content col-md-3" ng-repeat="slides_data in slides">
+                                <div class="img-thumbnail" ng-class="{activeSlides : activeSlides === slides_data.id}">
+                                    <div ng-if="activeSlides != slides_data.id" class="wrapper-thumbnail" ng-click="toggleSlideActive(slides_data)">
+                                        <img ng-src="{{base_slides_picture}}{{slides_data.picture}}" class="img-responsive">
+                                        <div class="overlay">
+                                            <div class="text">Click to Active</div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="activeSlides == slides_data.id">
+                                        <img ng-src="{{base_slides_picture}}{{slides_data.picture}}" class="img-responsive">
+                                    </div>
+                                    <div class="slide-tools m-t-5 m-b-5">
+                                        <div class="inline-block {{slides_data.slides_times.length > 0 ? 'dropdown' : 'disabled'}}">
+                                            <div id="dd{{$index}}" class="tools {{slides_data.slides_times.length == 0 ? 'disabled' : ''}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Time <span class="badge badge-info badge-pill m-l-5">{{slides_data.slides_times.length}}</span>
+                                                <span class="caret m-l-5"></span>
+                                            </div>
+                                            <ul class="dropdown-menu m-t-0 p-r-0" aria-labelledby="dd{{$index}}">
+                                                <h6 class="col-xs-12 m-t-5 m-b-5" style="font-weight: 500;">Time</h6>
+                                                <table class="table no-footer m-0" role="grid">
+                                                    <tbody>
+                                                        <tr ng-repeat="slides_times_data in slides_data.slides_times" role="row">
+                                                            <td class="text-center" width="15%"><span class="f-13 text-muted">{{$index + 1}}</span></td>
+                                                            <td><input class="form-control input-sm" type="text" data-mask="99:99:99"  ng-model="slides_times_data.time" ng-change="updateSlideTime(slides_times_data)" placeholder="00:00:00"></td>
+                                                            <td class="text-center">
+                                                                <div class="text-center">
+                                                                    <a class="delete btn btn-sm btn-danger m-0" ng-click="deleteSlidesTimes(slides_times_data)"><i class="icons-office-52"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </ul>
+                                        </div>
+                                        <div ng-if="activeSlides == slides_data.id" class="inline-block tools activated pull-right text-primary">
+                                            <i class="fa fa-check p-0"></i> Active
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="dropdown">
+                                    <ul class="dropdown-menu p-r-0" aria-labelledby="dLabel">
+                                        <h6 class="col-xs-12 m-t-5 m-b-5" style="font-weight: 500;">Time</h6>
+                                        <table class="table no-footer m-0" role="grid">
+                                            <tbody>
+                                                <tr ng-repeat="slides_times_data in slides_data.slides_times" role="row">
+                                                    <td><input class="form-control input-sm" type="text" data-mask="99:99:99"  ng-model="slides_times_data.time" ng-change="updateSlideTime(slides_times_data)" placeholder="00:00:00"></td>
+                                                    <td class="text-right">
+                                                        <div class="text-right">
+                                                            <a class="delete btn btn-sm btn-danger" ng-click="deleteSlidesTimes(slides_times_data)"><i class="icons-office-52"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </ul>
+                                </div> -->
+                            </div>
+                        </div>
+                        <!-- </tab>
+                    </tabset> -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Confirm Leave Page -->
+<div class="modal fade" id="modal-basic" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-red">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                <h4 class="modal-title">Mistake process recorders!!</h4>
+            </div>
+            <div class="modal-body">
+                มีข้อผิดพลาดบางอย่าง กรุณาตรวจสอบพื้นที่จัดเก็บข้อมูลหรือไม่มีสัญญานถ่ายทอดสด
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-alert" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header {{modalClassAlert}}">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                <h4 class="modal-title" ng-bind-html="modalHeaderAlert"></h4>
+            </div>
+            <div class="modal-body f-15 p-30" ng-bind-html="modalContentAlert"></div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-stop-stream" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <!-- <div class="modal-header">
+            </div> -->
+            <div class="modal-body px-30">
+                <div class="container-fluid m-t-15">
+                    <div class="row">
+                        <h4 class="col-xs-12 text-center m-t-0 m-b-30">เลือกรูปแบบที่คุณต้องการ</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card {{format_stop_stream.vod_now.theme}} choice-stop-stream">
+                                <div class="cover">
+                                    <i class="{{format_stop_stream.vod_now.icon}} fa-5x"></i>
+                                </div>
+                                <div class="content">
+                                    <h3 class="m-b-5">
+                                        {{format_stop_stream.vod_now.title}}
+                                    </h3>
+                                    <p class="description">
+                                        {{format_stop_stream.vod_now.description}}
+                                    </p>
+                                </div>
+                                <div class="footer">
+                                    <div class="text-center p-20 p-t-0">
+                                        <button ng-if="!hasRecordFile" class="btn btn-default btn-choose btn-embossed m-r-0 m-b-0" disabled>ไม่มีวีดีโอที่บันทึก</button>
+                                        <button ng-if="hasRecordFile" id="btn-on-demand-now" ng-click="chooseStopStreamFormat(format_stop_stream.vod_now.value, '#btn-on-demand-now');" class="btn btn-default btn-choose btn-embossed m-r-0 m-b-0" data-loading-text="<i class='fa fa-spinner fa-spin f-16 p-0'></i> <span class='m-l-5'>กรุณารอสักครู่...</span>">เลือก</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card {{format_stop_stream.vod_later.theme}} choice-stop-stream">
+                                <div class="cover">
+                                    <i class="{{format_stop_stream.vod_later.icon}} fa-5x"></i>
+                                </div>
+                                <div class="content">
+                                    <h3 class="m-b-5">
+                                        {{format_stop_stream.vod_later.title}}
+                                    </h3>
+                                    <p class="description">
+                                        {{format_stop_stream.vod_later.description}}
+                                    </p>
+                                </div>
+                                <div class="footer">
+                                    <div class="text-center p-20 p-t-0">
+                                        <button ng-if="!hasRecordFile" class="btn btn-default btn-choose btn-embossed m-r-0 m-b-0" disabled>ไม่มีวีดีโอที่บันทึก</button>
+                                        <button ng-if="hasRecordFile" id="btn-on-demand-later" ng-click="chooseStopStreamFormat(format_stop_stream.vod_later.value, '#btn-on-demand-later');" class="btn btn-default btn-choose btn-embossed m-r-0 m-b-0" data-loading-text="<i class='fa fa-spinner fa-spin f-16 p-0'></i> <span class='m-l-5'>กรุณารอสักครู่...</span>">เลือก</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card {{format_stop_stream.end_live.theme}} choice-stop-stream">
+                                <div class="cover">
+                                    <i class="{{format_stop_stream.end_live.icon}} fa-5x"></i>
+                                </div>
+                                <div class="content">
+                                    <h3 class="m-b-5">
+                                        {{format_stop_stream.end_live.title}}
+                                    </h3>
+                                    <p class="description">
+                                        {{format_stop_stream.end_live.description}}
+                                    </p>
+                                </div>
+                                <div class="footer">
+                                    <div class="text-center p-20 p-t-0">
+                                        <button id="btn-endlive" ng-click="chooseStopStreamFormat(format_stop_stream.end_live.value, '#btn-endlive');" class="btn btn-default btn-choose btn-embossed m-r-0 m-b-0" data-loading-text="<i class='fa fa-spinner fa-spin f-16 p-0'></i> <span class='m-l-5'>กรุณารอสักครู่...</span>">เลือก</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center">
+                <!-- <button class="btn btn-primary btn-embossed m-b-10" disabled data-toggle="tooltip" data-placement="bottom" title="ยืนยันการหยุดถ่ายทอดสด">ยืนยัน</button> -->
+                <!-- <p class="text-center">Select a format of stop streaming.</p> -->
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

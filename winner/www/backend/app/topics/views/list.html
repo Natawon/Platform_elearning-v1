@@ -1,0 +1,165 @@
+<div class="header">
+    <h2><i class="icon-note"></i> หัวข้อ <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">หัวข้อ</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fa fa-table"></i> <strong>หัวข้อ List</strong> tables</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div class="m-b-10">
+                            <div class="btn-group">
+                                <a ng-href="#topics/create{{selected_courses.id !== undefined ? '?courses_id='+selected_courses.id : ''}}" id="table-edit_new" class="btn btn-embossed btn-primary"><i class="fa fa-plus"></i> สร้าง หัวข้อ</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 p-0">
+                            <div class="col-lg-4 p-0">
+                                <div class="form-group">
+                                    <select class="form-control form-white select2" data-style="white" data-search="true" ng-model="selected_courses" ng-options="course.id as course.title for course in courses track by course.id" ng-change="changeFilter()">
+                                        <option value="">-- เลือกคอร์ส --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-left">
+                            <table class="table table-hover" ui-sortable="sortableOptions" ng-model="topics">
+                                <thead>
+                                <tr>
+                                    <th><a ng-click="sort_by('thumbnail')"><i class="fa fa-sort"></i></a>รูปหลักสูตร</th>
+                                    <th class="title"><a ng-click="sort_by('title')"><i class="fa fa-sort"></i></a>ชื่อหัวข้อ</th>
+                                    <th class="">หัวข้อย่อย</th>
+                                    <th class="order"><a ng-click="sort_by('order')"><i class="fa fa-sort"></i></a>จัดเรียง</th>
+                                    <th class="status"><a ng-click="sort_by('status')"><i class="fa fa-sort"></i></a>Public</th>
+                                    <th>แก้ไข</th>
+                                    <th>ลบ</th>
+                                </tr>
+                                </thead>
+                                <tbody class="no-border" ng-repeat="topics_data in topics" data-id="{{topics_data.id}}">
+                                <tr class="parent-items">
+                                    <td><img ng-if="topics_data.courses.thumbnail" ng-src="{{base_courses_thumbnail}}{{topics_data.courses.thumbnail}}" class="img-responsive" ng-if="!topics_data.parent" style="width: 100px;"></td>
+                                    <td>
+                                        <a ng-href="#topics/{{topics_data.id}}/edit"><i class="fa fa-minus" ng-if="topics_data.parent"></i> {{topics_data.title}} <label class="label label-success" ng-if="topics_data.free == 1">Free</label> <!-- <i class="fa fa-chevron-down" ng-if="!topics_data.parent"></i> --></a><br>
+                                        <label class="label label-default" ng-if="topics_data.modify_by!=''" ><i class="icon-user"></i><strong>{{topics_data.modify_by}}</strong> ({{topics_data.modify_datetime}})</label>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning m-r-0" ng-click="createSubTopic(topics_data)">
+                                            <i class="icon icon-plus"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-blue" type="button" data-toggle="collapse" data-target="#collapse-sub-{{topics_data.id}}" aria-expanded="false" aria-controls="collapse-sub-{{topics_data.id}}" ng-click="checkCollapsed('#collapse-sub-{{topics_data.id}}')">
+                                            <i class="fa fa-list p-0" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <input style="width: 70px; text-align: center;" class="form-control form-white" type="text" ng-model="topics_data.order" ng-blur="sortOrder(topics_data)" ng-focus="disableSortable()">
+                                    </td>
+                                    <td>
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{topics_data.id}}" ng-click="updateStatus(topics_data)" ng-checked="topics_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{topics_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#topics/{{topics_data.id}}/edit"></a></td>
+                                    <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteTopics(topics_data)"></a></td>
+                                </tr>
+                                <tr class="collapse sub-parent" id="collapse-sub-{{topics_data.id}}">
+                                    <td colspan="8" class="p-t-5 p-b-20">
+                                        <table class="table table-hover m-b-0">
+                                            <thead>
+                                            <tr>
+                                                <th width="40%" class="title">ชื่อหัวข้อย่อย</th>
+                                                <th class="">ควบคุม</th>
+                                                <th class="review">วีดีโอ หัวข้อย่อย</th>
+                                                <th class="">การสนทนา</th>
+                                                <th class="order">จัดเรียง</th>
+                                                <th class="status">Public</th>
+                                                <th>แก้ไข</th>
+                                                <th>ลบ</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody ui-sortable="sortableGroupOptions" ng-model="topics_data.sub_topics">
+                                            <tr ng-repeat="sub_topics_data in topics_data.sub_topics" data-id="{{sub_topics_data.id}}">
+                                                <td>
+                                                    <a ng-href="#topics/{{sub_topics_data.id}}/edit"><i class="fa fa-minus" ng-if="sub_topics_data.parent"></i> {{sub_topics_data.title}} <label class="label label-success" ng-if="sub_topics_data.free == 1">Free</label> <label class="label label-warning" ng-if="sub_topics_data.quiz">Quiz</label> <i class="fa fa-chevron-down" ng-if="!sub_topics_data.parent"></i></a>
+                                                    <!-- <label ng-if="sub_topics_data.state == 'vod' && sub_topics_data.streaming_status == 0 && sub_topics_data.status != 0" class="label label-warning m-l-5">
+                                                        <i class="fa fa-exclamation-triangle p-0"></i>
+                                                        ยังไม่ได้เปิดใช้งานวีดีโอ
+                                                    </label> -->
+                                                    <br>
+                                                    <!-- <div ng-if="sub_topics_data.state == 'vod' && sub_topics_data.streaming_status == 0">
+                                                    </div> -->
+                                                    <label class="label label-default" ng-if="sub_topics_data.modify_by!=''" ><i class="icon-user"></i><strong>{{sub_topics_data.modify_by}}</strong> ({{sub_topics_data.modify_datetime}})</label>
+                                                </td>
+                                                <td>
+                                                    <a ng-href="#livestreams/{{sub_topics_data.id}}/control" class="btn btn-sm btn-live icon icon-feed" ng-if="sub_topics_data.state == 'live' && sub_topics_data.use_streaming_server"> &nbsp;ถ่ายทอดสด</a>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-sm btn-dark icon icon-control-play" ng-if="sub_topics_data.parent && sub_topics_data.streaming_url_cut" ng-click="CutStreamingReview(sub_topics_data)"></a>
+                                                    <a class="btn btn-sm btn-danger" ng-if="sub_topics_data.parent && !sub_topics_data.streaming_url_cut">The file does not exist.</a>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-sm btn-info" ng-if="true" ng-href="#lives/11/chats"><i class="fa fa-comments-o"></i></a>
+                                                </td>
+                                                <td>
+                                                    <input style="width: 70px; text-align: center;" class="form-control form-white" type="text" ng-model="sub_topics_data.order" ng-blur="sortOrder(sub_topics_data)" ng-focus="disableSortable()">
+                                                </td>
+                                                <td>
+                                                    <div class="onoffswitch2">
+                                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{sub_topics_data.id}}" ng-click="updateStatus(sub_topics_data)" ng-checked="sub_topics_data.status==1">
+                                                        <label class="onoffswitch-label" for="statusOnOffSwitch{{sub_topics_data.id}}">
+                                                            <span class="onoffswitch-inner"></span>
+                                                            <span class="onoffswitch-switch"></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#topics/{{sub_topics_data.id}}/edit"></a></td>
+                                                <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteTopics(sub_topics_data)"></a></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="tbl-footer">
+                                <td colspan="9">
+                                    <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{total}}</b> record(s)</div>
+                                    <div class="pull-right">
+                                        <pagination total-items="total" ng-model="current_page" items-per-page="per_page" num-pages="last_page" class="pagination pagination-alt" boundary-links="true" max-size="max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                    </div>
+                                </td>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="modal fade" id="modal-basic" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content bg-dark">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                                        <h4 class="modal-title"><strong><i class="icon icon-control-play"></i> ตัวอย่างวีดีโอ</strong></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="embed-responsive embed-responsive-16by9">
+                                            <div id="player"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

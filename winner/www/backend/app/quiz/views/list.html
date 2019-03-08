@@ -1,0 +1,104 @@
+<div class="header">
+    <h2><i class="icon-note"></i> แบบทดสอบ <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">แบบทดสอบ</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fa fa-table"></i> <strong>แบบทดสอบ List</strong> tables</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div class="m-b-10">
+                            <div class="btn-group">
+                                <a ng-href="#quiz/create{{selected_courses.id !== undefined ? '?courses_id='+selected_courses.id : ''}}" id="table-edit_new" class="btn btn-embossed btn-primary"><i class="fa fa-plus"></i> สร้าง แบบทดสอบ</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 p-0">
+                            <div class="col-lg-4 p-0">
+                                <div class="form-group">
+                                    <select class="form-control form-white select2" data-style="white" data-search="true" ng-model="selected_courses" ng-options="course.id as course.title for course in courses track by course.id" ng-change="changeFilter()">
+                                        <option value="">-- เลือกคอร์ส --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-left">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th class="title">
+                                        <a ng-click="sort_by('title')"><i class="fa fa-sort"></i></a>ชื่อชุดข้อสอบ
+                                    </th>
+                                    <th>คอร์ส</th>
+                                    <th>
+                                        <a ng-click="sort_by('type')"><i class="fa fa-sort"></i></a>ประเภทข้อสอบ
+                                    </th>
+                                    <th>คำถาม & คำตอบ</th>
+                                    <th class="order">
+                                        <a ng-click="sort_by('order')"><i class="fa fa-sort"></i></a>จัดเรียง
+                                    </th>
+                                    <th class="status">
+                                        <a ng-click="sort_by('status')"><i class="fa fa-sort"></i></a>สถานะ
+                                    </th>
+                                    <th>แก้ไข</th>
+                                    <th>ลบ</th>
+                                </tr>
+                                </thead>
+                                <tbody ui-sortable="sortableOptions" ng-model="quiz">
+                                <tr ng-repeat="quiz_data in quiz" data-id="{{quiz_data.id}}">
+                                    <td>{{quiz_data.no}}</td>
+                                    <td>
+                                        <a ng-href="#quiz/{{quiz_data.id}}/edit">{{quiz_data.title}}</a><br>
+                                        <label class="label label-default" ng-if="quiz_data.modify_by!=''" ><i class="icon-user"></i><strong>{{quiz_data.modify_by}}</strong> ({{quiz_data.modify_datetime}})</label>
+                                    </td>
+                                    <td>{{quiz_data.courses.code}} {{quiz_data.courses.title | limitTo: 60 }}</td>
+                                    <td class="text-center">
+                                        <label class="label label-default" ng-if="quiz_data.type == 1">Pre Test</label> <!-- interpolation -->
+                                        <label class="label label-primary" ng-if="quiz_data.type == 2">Quiz</label>
+                                        <label class="label label-warning" ng-if="quiz_data.type == 3">Exam</label>
+                                        <label class="label label-default" ng-if="quiz_data.type == 4">Post Test</label>
+                                        <label class="label label-primary" ng-if="quiz_data.type == 5">Survey</label>
+                                    </td>
+                                    <td class="text-center"><a class="btn btn-sm btn-primary icon icon-note" ng-href="#quiz/{{quiz_data.id}}/questions"> <span ng-if="quiz_data.questions_count">{{quiz_data.questions_count}} ข้อ</span></a></td>
+                                    <td>
+                                        <input style="width: 70px; text-align: center;" class="form-control form-white" type="text" ng-model="quiz_data.order" ng-blur="sortOrder(quiz_data)" ng-focus="disableSortable()">
+                                    </td>
+                                    <td>
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{quiz_data.id}}" ng-click="updateStatus(quiz_data)" ng-checked="quiz_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{quiz_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#quiz/{{quiz_data.id}}/edit"></a></td>
+                                    <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteQuiz(quiz_data)"></a></td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="tbl-footer">
+                                <td colspan="9">
+                                    <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{total}}</b> record(s)</div>
+                                    <div class="pull-right">
+                                        <pagination total-items="total" ng-model="current_page" items-per-page="per_page" num-pages="last_page" class="pagination pagination-alt" boundary-links="true" max-size="max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                    </div>
+                                </td>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

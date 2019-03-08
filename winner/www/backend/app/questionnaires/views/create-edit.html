@@ -1,0 +1,126 @@
+<div class="header">
+    <h2><i class="icon-note"></i> Questions <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#questionnaires">Questions</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+            <div class="row">
+               <form class="form-horizontal questionnaires-frm" ng-submit="submitQuestionnaires(questionnaires_data)">
+               <div class="panel">
+                   <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">แบบสอบถาม <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <select id="questionnaire_packs_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="questionnaires_data.questionnaire_packs_id" ng-options="questionnaire_packs.id as questionnaire_packs.title for questionnaire_packs in questionnaire_packs" >
+                                    <option value="" ng-hide="true">-- เลือกแบบสอบถาม --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">คำถาม <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <textarea id="question" ck-editor ng-model="questionnaires_data.question"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">สิ่งที่ทราบ </label>
+                            <div class="col-sm-9">
+                                <input id="question_known" class="form-control form-white" type="text" ng-model="questionnaires_data.question_known">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ประเภทเงื่อนไขการเชื่อมโยงกลุ่มหลักสูตร </label>
+                            <div class="col-sm-9">
+                                <select id="condition_type" class="form-control form-white select2" data-search="false" data-style="white" ng-model="questionnaires_data.condition_type" ng-options="defaultConditionType.value as defaultConditionType.title for defaultConditionType in defaultConditionTypes" ng-change="changeCondition()">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ประเภทคำถาม <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <select id="type" class="form-control form-white select2" data-style="white" data-search="true" ng-model="questionnaires_data.type" ng-options="type.id as type.label for type in type">
+                                    <option value="" ng-hide="true">-- เลือกประเภทคำถาม --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="questionnaire_choices-header" class="form-group">
+                            <label class="col-sm-2 control-label"></label>
+                            <label class="col-sm-5">คำตอบ / สิ่งที่ทราบ</label>
+                            <label class="col-sm-4">เงื่อนไข <i class="icon-question" rel="popover_wide" data-container="body" data-placement="bottom" data-toggle="popover" title="คำอธิบาย" data-content="{{hints.condition_type}}"></i></label>
+                            <label class="col-sm-1">ลบ</label>
+                        </div>
+                        <div id="questionnaire_choices" ng-repeat="questionnaire_choices_data in questionnaires_data.questionnaire_choices">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-5">
+                                    <input id="answer" class="form-control form-white" type="text" placeholder="คำตอบ" ng-model="questionnaire_choices_data.answer">
+                                    <input id="answer_known" class="form-control form-darks" type="text" placeholder="สิ่งที่ทราบ" ng-model="questionnaire_choices_data.answer_known">
+                                </div>
+                                <div class="col-sm-4">
+                                    <input id="condition_list" class="form-control form-white select-tags" type="text" data-tag-class="label label-warning" placeholder="เงื่อนไข" ng-model="questionnaire_choices_data.condition_list">
+                                    <input id="condition_fix_list" class="form-control form-white select-tags" type="text" data-tag-class="label label-primary" placeholder="รหัสหลักสูตรแบบเต็ม" ng-model="questionnaire_choices_data.condition_fix_list">
+                                </div>
+                                <div class="col-sm-1"><a href="javascript:void(0);" ng-click="deleteAnswer(questionnaire_choices_data, questionnaires_data)"><i class="fa fa-times text-danger"></i></a></div>
+                            </div>
+                        </div>
+
+                        <div id="questionnaire_choices-plus" class="form-group">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="col-sm-9">
+                                <a href="javascript:void(0);" ng-click="addAnswer(questionnaires_data)"><i class="fa fa-plus"></i> เพิ่ม คำตอบ</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">สถานะ</label>
+                            <div class="col-sm-9">
+                                <div class="onoffswitch2">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{questionnaires_data.id}}" ng-click="toggleStatus(questionnaires_data)" ng-checked="questionnaires_data.status==1">
+                                    <label class="onoffswitch-label" for="statusOnOffSwitch{{questionnaires_data.id}}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="m-t-20">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                        <button type="button" class="btn btn-embossed btn-primary" ng-click="submitQuestionnaires(questionnaires_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                        <button type="button" class="btn btn-embossed btn-primary" ng-click="submitQuestionnaires(questionnaires_data, 'continue_editing')">Save and continue editing</button>
+                                        <button type="button" class="btn btn-embossed btn-warning" ng-click="submitQuestionnaires(questionnaires_data, 'continue_editing', true)">Force Change</button>
+                                        <a href="#/questionnaire_packs/{{questionnaires_data.questionnaire_packs_id}}/questionnaires" class="btn btn-embossed btn-default" ng-if="questionnaires_data.questionnaire_packs_id" >Cancel</a>
+                                        <a href="#/questionnaires" class="btn btn-embossed btn-default" ng-if="!questionnaires_data.questionnaire_packs_id" >Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                   </div>
+               </div>
+
+               </form>
+
+            </div>
+
+
+    </div>
+</div>

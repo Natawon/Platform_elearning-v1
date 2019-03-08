@@ -1,0 +1,365 @@
+<div class="header">
+    <h2><i class="icon-basket"></i> Payments <strong>Detail</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#payments">Payments</a></li>
+            <li class="active">Detail</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal payments-frm" ng-submit="submitPayments(payments_data)">
+                        <div class="col-md-12">
+
+                            <div class="form-group" ng-if="payments_data.id">
+                                <label class="col-sm-2 control-label">เลขที่การชำระเงิน</label>
+                                <div class="col-sm-9">
+                                    {{payments_data.id}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">เลขที่การสั่งซื้อ </label>
+                                <div class="col-sm-9">
+                                    <a ng-href="#orders/{{payments_data.orders_id}}/view">{{payments_data.orders_id}}</a>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label class="col-sm-2 control-label">หลักสูตร </label>
+                                <div class="col-sm-9">
+                                    {{selected_orders.courses_code}} - {{selected_orders.courses_title}}
+                                </div>
+                            </div> -->
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ยอดสั่งซื้อ </label>
+                                <div class="col-sm-9">
+                                    {{selected_orders.courses_price | number}} {{selected_orders.currency}}
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label class="col-sm-2">ชื่อ - นามสกุล</label>
+                                <div class="col-sm-9">
+                                    <a ng-href="#members/{{selected_members.id}}/edit" ng-if="selected_members.is_foreign == 0 && selected_members.groups.multi_lang_certificate == 0">{{selected_members.first_name}} {{selected_members.last_name}}</a>
+                                    <a ng-href="#members/{{selected_members.id}}/edit" ng-if="selected_members.is_foreign == 0 && selected_members.groups.multi_lang_certificate == 1">{{selected_members.first_name}} {{selected_members.last_name}} ({{selected_members.first_name_en}} {{selected_members.last_name_en}})</a>
+                                    <a ng-href="#members/{{selected_members.id}}/edit" ng-if="selected_members.is_foreign == 1 && selected_members.groups.multi_lang_certificate == 0">{{selected_members.first_name_en}} {{selected_members.last_name_en}}</a>
+                                    <a ng-href="#members/{{selected_members.id}}/edit" ng-if="selected_members.is_foreign == 1 && selected_members.groups.multi_lang_certificate == 1">{{selected_members.first_name_en}} {{selected_members.last_name_en}} ({{selected_members.first_name}} {{selected_members.last_name}})</a>
+                                </div>
+                            </div> -->
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">วิธีชำระเงิน </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.methods}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ประเภทการชำระ </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.methods_type}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ช่องทางที่ชำระเงิน </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.paid_channel || '-'}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ยอดชำระ </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.amount | number}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">สกุลเงิน </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.currency}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">รหัสอ้างอิงการทำธุรกรรม (TXN.)</label>
+                                <div class="col-sm-9">
+                                    {{payments_data.txn}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">วันเวลาที่ทำธุรกรรม</label>
+                                <div class="col-sm-9">
+                                    {{payments_data.txn_datetime}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">สถานะการชำระเงิน </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.payment_status}}
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label class="col-sm-2 control-label">รหัสสถานะการชำระเงิน </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.payment_code}}
+                                </div>
+                            </div> -->
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">คำอธิบายสถานะการชำระเงิน </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.payment_message}}
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="mode === 'Edit' && payments_data.payment_status == 'successful'">
+                                <label class="col-sm-2 control-label">วันเวลาที่อนุมัติ </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.approve_datetime}}
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="mode === 'Edit' && payments_data.payment_status == 'successful'">
+                                <label class="col-sm-2 control-label">อนุมัติโดย </label>
+                                <div class="col-sm-9">
+                                    <span ng-if="payments_data.approve_by">{{payments_data.approve_by}}</span>
+                                    <span ng-if="!payments_data.approve_by">Auto</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">สถานะการตรวจสอบ </label>
+                                <div class="col-sm-9">
+                                    <div class="inline-block" ng-switch on="payments_data.validate_status">
+                                        <span ng-switch-when="1"><i class="fa fa-check f-18 text-success"></i></span>
+                                        <span ng-switch-when="2"><i class="fa fa-times f-18 text-danger"></i></span>
+                                        <span ng-switch-default>-</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">CSV </label>
+                                <div class="col-sm-9">
+                                    <button ng-if="payments_data.validate_status == 1 && payments_data.validate_file_csv" type="button" class="btn btn-success btn-sm m-0" ng-click="downloadReconcileFile(payments_data)"><i class="fa fa-download p-0"></i></button>
+                                    <span ng-if="payments_data.validate_status != 1 || !payments_data.validate_file_csv">-</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="payments_data.validate_datetime">
+                                <label class="col-sm-2 control-label">วันเวลาที่ตรวจสอบ </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.validate_datetime}}
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="payments_data.create_datetime">
+                                <label class="col-sm-2 control-label">สร้างเมื่อ </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.create_datetime}}
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="payments_data.create_by">
+                                <label class="col-sm-2 control-label">สร้างโดยผู้ดูแลระบบ </label>
+                                <div class="col-sm-9">
+                                    {{payments_data.create_by}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">สถานะการยกเลิก </label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2 onoffswitch-red">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isCanceledOnOffSwitch{{payments_data.id}}" ng-click="updateIsCanceled(payments_data)" ng-checked="payments_data.is_canceled==1">
+                                        <label class="onoffswitch-label" for="isCanceledOnOffSwitch{{payments_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label class="col-sm-2"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitPayments(payments_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitPayments(payments_data, 'continue_editing')">Save and continue editing</button>
+                                    <a href="#payments" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div> -->
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" ng-if="mode == 'Edit'">
+            <div class="panel-header bg-dark">
+                <h2 class="panel-title"><i class="icon-info"></i> Order</h2>
+            </div>
+            <div class="panel-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-condensed">
+                            <tbody>
+                                <tr>
+                                    <td>Orders ID</td>
+                                    <td><a ng-href="#orders/{{payments_data.orders_id}}/view">{{payments_data.orders_id}}</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Members ID</td>
+                                    <td>{{selected_orders.members.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Members Email</td>
+                                    <td>{{selected_orders.members.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Members Name</td>
+                                    <td>
+                                        <span ng-if="selected_orders.members.is_foreign == 0 && selected_orders.members.groups.multi_lang_certificate == 0">{{selected_orders.members.first_name}} {{selected_orders.members.last_name}}</span>
+                                        <span ng-if="selected_orders.members.is_foreign == 0 && selected_orders.members.groups.multi_lang_certificate == 1">{{selected_orders.members.first_name}} {{selected_orders.members.last_name}} ({{selected_orders.members.first_name_en}} {{selected_orders.members.last_name_en}})</span>
+                                        <span ng-if="selected_orders.members.is_foreign == 1 && selected_orders.members.groups.multi_lang_certificate == 0">{{selected_orders.members.first_name_en}} {{selected_orders.members.last_name_en}}</span>
+                                        <span ng-if="selected_orders.members.is_foreign == 1 && selected_orders.members.groups.multi_lang_certificate == 1">{{selected_orders.members.first_name_en}} {{selected_orders.members.last_name_en}} ({{selected_orders.members.first_name}} {{selected_orders.members.last_name}})</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Members Mobile</td>
+                                    <td>{{selected_orders.members.mobile_number || '-'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Course ID</td>
+                                    <td>{{payments_data.orders.courses_id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Course Name</td>
+                                    <td>{{payments_data.orders.courses_code}} - {{payments_data.orders.courses_title}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Course Price</td>
+                                    <td>{{payments_data.orders.courses_price | number}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Currency</td>
+                                    <td>{{payments_data.orders.currency}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Method</td>
+                                    <td>{{selected_orders.methods.title}}</td>
+                                </tr>
+                                <tr>
+                                    <td>TAX Type</td>
+                                    <td>
+                                        <span ng-if="selected_orders.type_tax_invoice == 'personal'">บุคคลธรรมดา</span>
+                                        <span ng-if="selected_orders.type_tax_invoice == 'corporate'">นิติบุคคล</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>TAX Name</td>
+                                    <td>{{selected_orders.inv_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>TAX Branch</td>
+                                    <td>
+                                        <span ng-if="selected_orders.inv_branch == 0">สำนักงานใหญ่</span>
+                                        <span ng-if="selected_orders.inv_branch == 1">สาขา</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>TAX Branch No.</td>
+                                    <td>{{selected_orders.inv_branch_no}}</td>
+                                </tr>
+                                <tr>
+                                    <td>TAX ID</td>
+                                    <td>{{selected_orders.inv_tax_id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>TAX Email</td>
+                                    <td>{{selected_orders.inv_email}}</td>
+                                </tr>
+                                <tr>
+                                    <td>TAX Tel.</td>
+                                    <td>{{selected_orders.inv_tel}}</td>
+                                </tr>
+                                <tr>
+                                    <td>TAX Address</td>
+                                    <td>{{selected_orders.inv_address}}</td>
+                                </tr>
+                                <tr>
+                                    <td>TAX Zip Code</td>
+                                    <td>{{selected_orders.inv_zip_code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Token</td>
+                                    <td>{{payments_data.orders.token}}</td>
+                                </tr>
+                                <tr>
+                                    <td>User Agent</td>
+                                    <td>{{payments_data.orders.user_agent}}</td>
+                                </tr>
+                                <tr>
+                                    <td>IP</td>
+                                    <td>{{payments_data.orders.ip}}</td>
+                                </tr>
+                                <tr>
+                                    <td>isoCode</td>
+                                    <td>{{payments_data.orders.isoCode}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Country</td>
+                                    <td>{{payments_data.orders.country}}</td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td>{{payments_data.orders.city}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Timezone</td>
+                                    <td>{{payments_data.orders.timezone}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Continent</td>
+                                    <td>{{payments_data.orders.continent}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Device</td>
+                                    <td>{{payments_data.orders.device}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Platform</td>
+                                    <td>{{payments_data.orders.platform}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Platform Version</td>
+                                    <td>{{payments_data.orders.platform_version}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Browser</td>
+                                    <td>{{payments_data.orders.browser}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Browser Version</td>
+                                    <td>{{payments_data.orders.browser_version}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

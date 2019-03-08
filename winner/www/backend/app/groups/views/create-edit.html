@@ -1,0 +1,288 @@
+<div class="header">
+    <h2><i class="icon-screen-desktop"></i> กลุ่ม (Groups) <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#groups">กลุ่ม (Groups)</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal groups-frm" ng-submit="submitGroups(groups_data)">
+
+                        <div class="col-md-12" ng-if="admin.admins_groups_id != 1">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Title</label>
+                                <div class="col-sm-9">
+                                    {{groups_data.title}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ข้อความติดต่อแก้ไขโปรไฟล์</label>
+                                <div class="col-sm-9">
+                                    <textarea id="contact_profile_editing" class="form-control form-white" ng-model="groups_data.contact_profile_editing" placeholder="ตย. ** หากต้องการแก้ไขข้อมูลส่วนอื่นเพิ่มเติม กรุณาติดต่อผู้ดูแลหลักสูตร **"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitGroups(groups_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitGroups(groups_data, 'continue_editing')">Save and continue editing</button>
+                                    <a href="#groups" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" ng-if="admin.admins_groups_id == 1">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Title <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input id="title" class="form-control form-white" type="text" ng-model="groups_data.title" ng-disabled="admin.admins_groups_id != 1">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Subject <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input id="subject" class="form-control form-white" type="text" ng-model="groups_data.subject" ng-disabled="admin.admins_groups_id != 1">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Key <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input id="key" class="form-control form-white" type="text" ng-model="groups_data.key" ng-disabled="admin.admins_groups_id != 1">
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label class="col-sm-2 control-label">กลุ่มภายใน</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="internalOnOffSwitch{{groups_data.id}}" ng-click="toggleInternal(groups_data)" ng-checked="groups_data.internal==1" ng-disabled="admin.admins_groups_id != 1">
+                                        <label class="onoffswitch-label" for="internalOnOffSwitch{{groups_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">เชื่อมต่อกับระบบภายนอก</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="is_connect_regisOnOffSwitch{{groups_data.id}}" ng-click="toggleIsConnectRegis(groups_data)" ng-checked="groups_data.is_connect_regis==1" ng-disabled="admin.admins_groups_id != 1">
+                                        <label class="onoffswitch-label" for="is_connect_regisOnOffSwitch{{groups_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">จำเป็นต้องอนุมัติ?</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="need_approvalOnOffSwitch{{groups_data.id}}" ng-click="toggleNeedApproval(groups_data)" ng-checked="groups_data.need_approval==1" ng-disabled="admin.admins_groups_id != 1">
+                                        <label class="onoffswitch-label" for="need_approvalOnOffSwitch{{groups_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label class="col-sm-2 control-label">กลุ่มเป้าหมาย <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select id="targetaudience" class="form-control form-white select2" data-search="false" data-style="white" ng-model="groups_data.targetaudience" ng-options="targetaudience.value as targetaudience.title for targetaudience in targetaudiences" ng-disabled="admin.admins_groups_id != 1">
+                                    </select>
+                                </div>
+                            </div> -->
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ฟิล์ดสำหรับ Pre-Approved</label>
+                                <div class="col-sm-9">
+                                    <select id="field_approval" class="form-control form-white select2" data-search="false" data-style="white" ng-model="groups_data.field_approval" ng-options="field_approval.value as field_approval.title for field_approval in fields_approval" ng-disabled="admin.admins_groups_id != 1">
+                                        <option value="">-- กรุณาเลือก --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">
+                                    อายุบัญชีผู้ใช้ <br>
+                                    <span class="label label-danger">ค่าเริ่มต้น 90 วัน</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <input id="max_account_age" class="form-control form-white" type="number" min="0" max="9999" ng-model="groups_data.max_account_age" ng-disabled="admin.admins_groups_id != 1">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">
+                                    อายุรหัสผ่าน <br>
+                                    <span class="label label-danger">ค่าเริ่มต้น 90 วัน</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <input id="max_password_age" class="form-control form-white" type="number" min="0" max="9999" ng-model="groups_data.max_password_age" ng-disabled="admin.admins_groups_id != 1">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">
+                                    จำนวนครั้งที่รหัสผ่านสามารถผิดได้ <br>
+                                    <span class="label label-danger">ค่าเริ่มต้น 5 ครั้ง</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <input id="incorrect_password_limit" class="form-control form-white" type="number" min="0" max="9999" ng-model="groups_data.incorrect_password_limit" ng-disabled="admin.admins_groups_id != 1">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ต้องการให้สมาชิกอยู่กลุ่มหลักได้มากกว่า 1 กลุ่ม(Sub Groups)?</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="use_sub_groups_singleOnOffSwitch{{groups_data.id}}" ng-click="toggleUseSubGroupsSingle(groups_data)" ng-checked="groups_data.use_sub_groups_single==1" ng-disabled="admin.admins_groups_id != 1">
+                                        <label class="onoffswitch-label" for="use_sub_groups_singleOnOffSwitch{{groups_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">รูป
+                                    <div class="panel bg-red bd-3">
+                                        <div class="panel-content p-5 p-l-10 p-r-10">
+                                            <p class="f-12 m-0" style="line-height: 16px;">
+                                                Size: 480px * 270px<br>
+                                                Allow Type: .jpg, .png
+                                            </p>
+                                        </div>
+                                    </div>
+                                </label>
+                                <div class="col-sm-9">
+                                    <div ng-controller='groupsThumbnailUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                        <a ng-if="groups_data.thumbnail" ng-href="{{base_groups_thumbnail}}{{groups_data.thumbnail}}" target="_blank"><img ng-src="{{base_groups_thumbnail}}{{groups_data.thumbnail}}" class="img-responsive"></a>
+                                        <br>
+                                        <input type="file" class="form-control" nv-file-select="" uploader="img_uploader" ng-if="admin.admins_groups_id == 1">
+                                        <table class="table">
+                                            <tbody>
+                                            <tr ng-repeat="item in img_uploader.queue">
+                                                <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                <td width="30%" ng-show="img_uploader.isHTML5">
+                                                    <div class="progress" style="margin-bottom: 0;">
+                                                        <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                </td>
+                                                <td nowrap>
+                                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">แสดงลิ้งค์หน้า ERROR</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="pageOnOffSwitch{{groups_data.id}}" ng-click="togglePage(groups_data)" ng-checked="groups_data.page==1" ng-disabled="admin.admins_groups_id != 1">
+                                        <label class="onoffswitch-label" for="pageOnOffSwitch{{groups_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ใบประกาศนียบัตร 2 ภาษา</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="multiLangCertificateOnOffSwitch{{groups_data.id}}" ng-click="toggleMultiLangCertificate(groups_data)" ng-checked="groups_data.multi_lang_certificate==1" ng-disabled="admin.admins_groups_id != 1">
+                                        <label class="onoffswitch-label" for="multiLangCertificateOnOffSwitch{{groups_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ข้อความติดต่อแก้ไขโปรไฟล์</label>
+                                <div class="col-sm-9">
+                                    <textarea id="contact_profile_editing" class="form-control form-white" ng-model="groups_data.contact_profile_editing" placeholder="ตย. ** หากต้องการแก้ไขข้อมูลส่วนอื่นเพิ่มเติม กรุณาติดต่อผู้ดูแลหลักสูตร **"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">แสดงปุ่มสมัครสมาชิก</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isShowRegisterBtnOnOffSwitch{{groups_data.id}}" ng-click="toggleIsShowRegisterBtn(groups_data)" ng-checked="groups_data.is_show_register_btn==1" ng-disabled="admin.admins_groups_id != 1">
+                                        <label class="onoffswitch-label" for="isShowRegisterBtnOnOffSwitch{{groups_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Status</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{groups_data.id}}" ng-click="toggleStatus(groups_data)" ng-checked="groups_data.status==1" ng-disabled="admin.admins_groups_id != 1">
+                                        <label class="onoffswitch-label" for="statusOnOffSwitch{{groups_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitGroups(groups_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitGroups(groups_data, 'continue_editing')">Save and continue editing</button>
+                                    <a href="#groups" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,248 @@
+<div class="header">
+    <h2><i class="icon-note"></i> Discussions <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#discussions">Discussions</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+            <div class="row">
+               <form class="form-horizontal discussions-frm" ng-submit="submitDiscussions(discussions_data)">
+               <div class="panel">
+                   <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">กลุ่ม (Group) <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <select id="groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="discussions_data.groups_id" ng-options="group.id as group.title for group in groups" >
+                                    <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">หลักสูตร <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <select id="courses_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="discussions_data.courses_id" ng-options="course.id as course.title for course in courses" >
+                                    <option value="" ng-hide="true">-- เลือก หลักสูตร --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- <div class="form-group">
+                            <label class="col-sm-2 control-label">ตอบกลับ</label>
+                            <div class="col-sm-9">
+                                <select id="parent" class="form-control form-white select2" data-style="white" data-search="true"  ng-model="discussions_data.parent_id" ng-options="allExcept.id as allExcept.description for allExcept in allExcepts" >
+                                    <option value="">-- เลือกหัวเรื่อง --</option>
+                                </select>
+                                <label class="label label-danger">*กรณีเป็นหัวเรื่องหลัก ไม่ต้องเลือก</label>
+                            </div>
+                        </div> -->
+
+                        <div class="form-group" ng-if="discussions_data.discussion_reply">
+                            <label class="col-sm-2 control-label">หัวเรื่อง </label>
+                            <div class="col-sm-9">
+                                <div class="panel">
+                                    <div class="panel-content">
+                                        <div class="m-b-10"><strong class="m-b-10">{{discussions_data.discussion_reply.topic}}</strong></div>
+                                        <div class="p-l-10 m-b-5">{{discussions_data.discussion_reply.description}}</div>
+                                    </div>
+                                    <div class="panel-footer f-12">
+                                        โดย <strong>{{discussions_data.discussion_reply.members.first_name}} {{discussions_data.discussion_reply.members.last_name}}</strong> <i class="icon-clock p-l-5 p-r-5"></i>{{discussions_data.discussion_reply.create_datetime}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="discussions_data.sub_discussion_reply">
+                            <label class="col-sm-2 control-label">ความคิดเห็น </label>
+                            <div class="col-sm-9">
+                                <div class="panel m-l-20-x">
+                                    <div class="panel-content">
+                                        <div class="p-l-10 m-b-5">{{discussions_data.sub_discussion_reply.description}}</div>
+                                    </div>
+                                    <div class="panel-footer f-12">
+                                        โดย <strong>{{discussions_data.sub_discussion_reply.members.first_name}} {{discussions_data.sub_discussion_reply.members.last_name}}</strong> <i class="icon-clock p-l-5 p-r-5"></i>{{discussions_data.sub_discussion_reply.create_datetime}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="discussions_data.topic || mode == 'Create'">
+                            <label class="col-sm-2 control-label">หัวเรื่อง <span class="text-danger" ng-if="mode == 'Create'">*</span></label>
+                            <div class="col-sm-9">
+                                <input id="topic" class="form-control form-white" type="text" ng-model="discussions_data.topic">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" ng-if="discussions_data.parent_id == null">ข้อความ <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 control-label" ng-if="discussions_data.parent_id != null">ข้อความตอบกลับ <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <textarea id="description" class="form-control form-white" ng-model="discussions_data.description" rows="10"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                ไฟล์
+                                <!-- <span class="label label-danger">Images, PDF, Excel, Powerpoint, Word</span> -->
+                                <div class="panel bg-light bd-3">
+                                    <div class="panel-content p-5 p-l-10 p-r-10">
+                                        <p class="f-12 m-0 lh-16">
+                                            <!-- Images, PDF, Excel, Powerpoint, Word -->
+                                            Allow Image Type: .jpg, .png, .gif
+                                        </p>
+                                    </div>
+                                </div>
+                            </label>
+                            <div class="col-sm-9">
+                                <div ng-controller='discussionsFilelUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                    <a ng-if="discussions_data.file" ng-href="{{base_discussions_file}}{{discussions_data.file}}" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-paperclip"></i>
+                                    </a>
+                                    <br>
+                                    <input id="file" type="file" class="form-control" nv-file-select="" uploader="img_uploader" />
+                                    <table class="table">
+                                        <tbody>
+                                        <tr ng-repeat="item in img_uploader.queue">
+                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                <div class="progress" style="margin-bottom: 0;">
+                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                            </td>
+                                            <td nowrap>
+                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                </button>
+                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="discussions_data.members != null">
+                            <label class="col-sm-2 control-label">โดย สมาชิก</label>
+                            <div class="col-sm-9">
+                                <strong>{{discussions_data.members.first_name}} {{discussions_data.members.last_name}}</strong> <i class="icon-clock p-l-5 p-r-5"></i> {{discussions_data.create_datetime}}
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="discussions_data.members == null">
+                            <label class="col-sm-2 control-label">โดย ผู้ดูแลระบบ</label>
+                            <div class="col-sm-9">
+                                <strong>{{discussions_data.modify_by}} </strong> <i class="icon-clock p-l-5 p-r-5"></i> {{discussions_data.modify_datetime}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">สาธารณะ</label>
+                            <div class="col-sm-9">
+                                <div class="onoffswitch2">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isPublicOnOffSwitch{{discussions_data.id}}" ng-click="toggleIsPublic(discussions_data)" ng-checked="discussions_data.is_public==1">
+                                    <label class="onoffswitch-label" for="isPublicOnOffSwitch{{discussions_data.id}}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ส่งให้วิทยากร</label>
+                            <div class="col-sm-9">
+                                <div class="onoffswitch2">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isSentInstructorOnOffSwitch{{discussions_data.id}}" ng-click="toggleIsSentInstructor(discussions_data)" ng-checked="discussions_data.is_sent_instructor==1">
+                                    <label class="onoffswitch-label" for="isSentInstructorOnOffSwitch{{discussions_data.id}}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">การปฏิเสธ</label>
+                            <div class="col-sm-9">
+                                <div class="onoffswitch2 onoffswitch-red">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isRejectOnOffSwitch{{discussions_data.id}}" ng-click="toggleIsReject(discussions_data)" ng-checked="discussions_data.is_reject==1">
+                                    <label class="onoffswitch-label" for="isRejectOnOffSwitch{{discussions_data.id}}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="discussions_data.is_reject == 1">
+                            <label class="col-sm-2 control-label">หมายเหตุการปฏิเสธ</label>
+                            <div class="col-sm-9">
+                                <textarea id="reject_remark" class="form-control form-white" ng-model="discussions_data.reject_remark" rows="5"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="discussions_data.is_reject == 1">
+                            <label class="col-sm-2 control-label">ปฏิเสธโดย</label>
+                            <div class="col-sm-9">
+                                <strong>{{discussions_data.reject_by}}</strong> <i class="icon-clock p-l-5 p-r-5"></i> {{discussions_data.reject_datetime}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">สถานะ</label>
+                            <div class="col-sm-9">
+                                <div class="onoffswitch2">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{discussions_data.id}}" ng-click="toggleStatus(discussions_data)" ng-checked="discussions_data.status==1">
+                                    <label class="onoffswitch-label" for="statusOnOffSwitch{{discussions_data.id}}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="m-t-20">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                        <button type="button" class="btn btn-embossed btn-primary" ng-click="submitDiscussions(discussions_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                        <button type="button" class="btn btn-embossed btn-primary" ng-click="submitDiscussions(discussions_data, 'continue_editing')">Save and continue editing</button>
+                                        <a href="#discussions" class="btn btn-embossed btn-default">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                   </div>
+               </div>
+
+               </form>
+
+            </div>
+
+
+    </div>
+</div>

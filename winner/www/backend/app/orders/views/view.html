@@ -1,0 +1,342 @@
+<div class="header">
+    <h2><i class="icon-basket"></i> Orders <strong>Detail</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#orders">Orders</a></li>
+            <li class="active">Detail</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal orders-frm" ng-submit="submitOrders(orders_data)">
+                        <div class="col-md-12">
+
+                            <div class="form-group" ng-if="orders_data.id">
+                                <label class="col-sm-2 control-label">เลขที่การสั่งซื้อ </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.id}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">สมาชิก </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.members.email}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ชื่อ - นามสกุล</label>
+                                <div class="col-sm-9">
+                                    <a ng-href="#members/{{orders_data.members.id}}/edit" ng-if="orders_data.members.is_foreign == 0 && orders_data.members.groups.multi_lang_certificate == 0">{{orders_data.members.first_name}} {{orders_data.members.last_name}}</a>
+                                    <a ng-href="#members/{{orders_data.members.id}}/edit" ng-if="orders_data.members.is_foreign == 0 && orders_data.members.groups.multi_lang_certificate == 1">{{orders_data.members.first_name}} {{orders_data.members.last_name}} ({{orders_data.members.first_name_en}} {{orders_data.members.last_name_en}})</a>
+                                    <a ng-href="#members/{{orders_data.members.id}}/edit" ng-if="orders_data.members.is_foreign == 1 && orders_data.members.groups.multi_lang_certificate == 0">{{orders_data.members.first_name_en}} {{orders_data.members.last_name_en}}</a>
+                                    <a ng-href="#members/{{orders_data.members.id}}/edit" ng-if="orders_data.members.is_foreign == 1 && orders_data.members.groups.multi_lang_certificate == 1">{{orders_data.members.first_name_en}} {{orders_data.members.last_name_en}} ({{orders_data.members.first_name}} {{orders_data.members.last_name}})</a>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">หมายเลขโทรศัพท์มือถือ</label>
+                                <div class="col-sm-9">
+                                    {{orders_data.members.mobile_number || '-'}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">รหัสหลักสูตร </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.courses_code}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ชื่อหลักสูตร </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.courses_title}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ราคา </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.courses_price | number}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">สกุลเงิน </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.currency}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">วิธีชำระเงิน </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.methods.title}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ประเภทใบกำกับภาษี </label>
+                                <div class="col-sm-9">
+                                    <span ng-if="orders_data.type_tax_invoice == 'personal'">บุคคลธรรมดา</span>
+                                    <span ng-if="orders_data.type_tax_invoice == 'corporate'">นิติบุคคล</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ชื่อผู้เสียภาษี </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.inv_name}}
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="orders_data.type_tax_invoice == 'corporate'">
+                                <label class="col-sm-2 control-label">สำนักงาน </label>
+                                <div class="col-sm-9">
+                                    <span ng-if="orders_data.inv_branch == 0">สำนักงานใหญ่</span>
+                                    <span ng-if="orders_data.inv_branch == 1">สาขา</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="orders_data.inv_branch == 1">
+                                <label class="col-sm-2 control-label">สาขาที่ </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.inv_branch_no}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">เลขประจำตัวผู้เสียภาษี </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.inv_tax_id}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">อีเมล์ผู้เสียภาษี </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.inv_email}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">เบอร์โทรศัพท์ผู้เสียภาษี </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.inv_tel}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ที่อยู่ผู้เสียภาษี </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.inv_address}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">รหัสไปรษณีย์ </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.inv_zip_code}}
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="orders_data.create_datetime">
+                                <label class="col-sm-2 control-label">สร้างเมื่อ </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.create_datetime}}
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="orders_data.create_by">
+                                <label class="col-sm-2 control-label">สร้างโดยผู้ดูแลระบบ </label>
+                                <div class="col-sm-9">
+                                    {{orders_data.create_by}}
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label class="col-sm-2"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitOrders(orders_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitOrders(orders_data, 'continue_editing')">Save and continue editing</button>
+                                    <a href="#orders" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div> -->
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" ng-if="mode == 'Edit'">
+            <div class="panel-header bg-dark">
+                <h2 class="panel-title"><i class="icon-info"></i> Information</h2>
+            </div>
+            <div class="panel-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-condensed">
+                            <tbody>
+                                <tr>
+                                    <td>Token</td>
+                                    <td>{{orders_data.token}}</td>
+                                </tr>
+                                <tr>
+                                    <td>User Agent</td>
+                                    <td>{{orders_data.user_agent}}</td>
+                                </tr>
+                                <tr>
+                                    <td>IP</td>
+                                    <td>{{orders_data.ip}}</td>
+                                </tr>
+                                <tr>
+                                    <td>isoCode</td>
+                                    <td>{{orders_data.isoCode}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Country</td>
+                                    <td>{{orders_data.country}}</td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td>{{orders_data.city}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Timezone</td>
+                                    <td>{{orders_data.timezone}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Continent</td>
+                                    <td>{{orders_data.continent}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Device</td>
+                                    <td>{{orders_data.device}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Platform</td>
+                                    <td>{{orders_data.platform}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Platform Version</td>
+                                    <td>{{orders_data.platform_version}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Browser</td>
+                                    <td>{{orders_data.browser}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Browser Version</td>
+                                    <td>{{orders_data.browser_version}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" ng-if="mode == 'Edit'">
+            <div class="panel-header bg-dark">
+                <h2 class="panel-title"><i class="icon-action-redo"></i> Payments</h2>
+            </div>
+            <div class="panel-content">
+                <div class="row" ng-if="orders_data.payments.length == 0">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <a ng-href="#payments/create?orders_id={{orders_data.id}}" class="btn btn-embossed btn-primary m-r-0"><i class="icon-plus"></i> เพิ่มการชำระเงิน</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Payments No.</th>
+                                    <th>Amount</th>
+                                    <th>Payment Details</th>
+                                    <th>Approve</th>
+                                    <th>Valid</th>
+                                    <th>CSV</th>
+                                    <th>View</th>
+                                    <th>Cancel</th>
+                                    <!-- <th>Delete</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="payment in orders_data.payments">
+                                    <td>
+                                        <a ng-href="#payments/{{payment.id}}/view" class="label label-primary"><i class="icon-action-redo"></i> {{payment.id}}</a><br>
+                                        <div class="" ng-if="payment.create_by"><label class="label label-default"><i class="icon-user"></i> <strong>{{payment.create_by}}</strong></label></div>
+                                        <label class="label label-default"><i class="icon-calendar"></i> {{payment.create_datetime}}</label>
+                                    </td>
+                                    <td><label class="label label-default">{{payment.amount | number}} {{payment.currency}}</label></td>
+                                    <td>
+                                        <label class="label label-success" ng-if="payment.payment_status == 'successful'">Status : ชำระเงินเรียบร้อย</label>
+                                        <label class="label label-default" ng-if="payment.payment_status == 'pending'">Status : รอชำระเงิน</label>
+                                        <label class="label label-danger" ng-if="payment.payment_status == 'rejected'">Status : ถูกปฏิเสธ</label>
+                                        <label class="label label-danger" ng-if="payment.payment_status == 'canceled_by_user'">Status : ยกเลิกโดยผู้ใช้</label>
+                                        <label class="label label-danger" ng-if="payment.payment_status == 'failed'">Status : เกิดข้อผิดพลาด</label>
+                                        <!-- <label class="label label-success" ng-if="payment.payment_status == 'successful'">Status : {{payment.payment_status}}</label> -->
+                                        <!-- <label class="label label-default" ng-if="payment.payment_status != 'successful'">Status : {{payment.payment_status}}</label> -->
+                                        <!-- <div class="" ng-if="payment.payment_status != 'successful' && payment.payment_code"><label class="label label-default">Code : {{payment.payment_code}}</label></div> -->
+                                        <label class="label label-default" ng-if="(payment.payment_status == 'rejected' || payment.payment_status == 'canceled_by_user' || payment.payment_status == 'failed') && payment.payment_message">Msg : {{payment.payment_message}}</label>
+
+                                        <div class="" ng-if="payment.txn"><label class="label label-default">TXN. : {{payment.txn}}</label></div>
+                                        <label class="label label-default" ng-if="payment.methods && payment.methods_type">Method : {{payment.methods}} ({{payment.methods_type}})</label>
+                                    </td>
+                                    <td>
+                                        <!-- <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="approveStatusOnOffSwitch{{payment.id}}" ng-click="updateApproveStatus(payment)" ng-checked="payment.approve_status==1">
+                                            <label class="onoffswitch-label" for="approveStatusOnOffSwitch{{payment.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div> -->
+                                        <div class="" ng-if="payment.payment_status == 'successful'">
+                                            <!-- <br> -->
+                                            <!-- <div class="clearfix"></div> -->
+                                            <div class="" ng-if="payment.payment_status == 'successful' && payment.approve_by"><label class="label label-default"><i class="icon-user"></i> <strong>{{payment.approve_by}}</strong></label><br></div>
+                                            <label class="label label-default" ng-if="payment.payment_status == 'successful'"><i class="icon-calendar"></i> {{payment.approve_datetime}}</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="inline-block" ng-switch on="payment.validate_status">
+                                            <span ng-switch-when="1"><i class="fa fa-check f-18 text-success"></i></span>
+                                            <span ng-switch-when="2"><i class="fa fa-times f-18 text-danger"></i></span>
+                                            <span ng-switch-default>-</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button ng-if="payment.validate_status == 1 && payment.validate_file_csv" type="button" class="btn btn-success btn-sm m-0" ng-click="downloadReconcileFile(payment)"><i class="fa fa-download p-0"></i></button>
+                                        <span ng-if="payment.validate_status != 1 || !payment.validate_file_csv">-</span>
+                                    </td>
+                                    <td><a class="btn btn-sm btn-primary icon icon-eye" ng-href="#payments/{{payment.id}}/view"></a></td>
+                                    <td>
+                                        <div class="onoffswitch2 onoffswitch-red">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isCanceledOnOffSwitch{{payment.id}}" ng-click="updateIsCanceled(payment)" ng-checked="payment.is_canceled==1">
+                                            <label class="onoffswitch-label" for="isCanceledOnOffSwitch{{payment.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <!-- <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deletePayments(payment)"></a></td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

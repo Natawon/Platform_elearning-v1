@@ -1,0 +1,145 @@
+<div class="header">
+    <h2><i class="icon-briefcase"></i> กลุ่มย่อยหลัก <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#sub_groups">กลุ่มย่อยหลัก</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <tabset>
+                <tab>
+                    <tab-heading><i class="icon-note"></i> รายละเอียดทั่วไป</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal sub_groups-frm" ng-submit="submitSubGroups(sub_groups_data)">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                            <label class="col-sm-2 control-label">รหัสกลุ่มย่อยหลัก</label>
+                                            <div class="col-sm-9">
+                                                {{sub_groups_data.id}}
+                                            </div>
+                                        </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">กลุ่ม (Group) <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select id="groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="sub_groups_data.groups_id" ng-options="group.id as group.title for group in groups" >
+                                                <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">ชื่อกลุ่มย่อยหลัก <br>
+                                            (Sub Group)
+                                            <span ng-if="selected_groups.meaning_of_sub_groups_id != undefined" class="label label-default"><br>{{selected_groups.meaning_of_sub_groups_id || 'กลุ่มย่อยหลัก'}}</span> <span class="text-danger">*</span>
+                                    </label>
+                                        <div class="col-sm-9">
+                                            <input id="title" class="form-control form-white" type="text" ng-model="sub_groups_data.title">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">รหัส</label>
+                                        <div class="col-sm-9">
+                                            <input id="code" class="form-control form-white" type="text" ng-model="sub_groups_data.code">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สถานะ</label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{sub_groups_data.id}}" ng-click="toggleStatus(sub_groups_data)" ng-checked="sub_groups_data.status==1">
+                                                <label class="onoffswitch-label" for="statusOnOffSwitch{{sub_groups_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitSubGroups(sub_groups_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitSubGroups(sub_groups_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#sub_groups" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+
+                <tab>
+                    <tab-heading><i class="icon-ban"></i> การจำกัดโดเมน</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal sub_groups-frm" ng-submit="submitSubGroups(sub_groups_data)">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">โหมดการจำกัด</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <div class="icheck-inline m-t-0">
+                                                    <label id="restriction_mode"><input type="radio" ng-model="sub_groups_data.restriction_mode" value="allow" data-radio="iradio_minimal-blue"> อนุญาต</label>
+                                                    <label id="restriction_mode"><input type="radio" ng-model="sub_groups_data.restriction_mode" value="deny" data-radio="iradio_minimal-blue"> ไม่อนุญาต</label>
+                                                    <label id="restriction_mode"><input type="radio" ng-model="sub_groups_data.restriction_mode" value="off" data-radio="iradio_minimal-blue"> ไม่จำกัด</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="" ng-repeat="domains_data in sub_groups_data.domains">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label"><span ng-if="$index === 0">รายชื่อโดเมน</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">@</span>
+                                                    <input class="form-control domain_input" type="text" placeholder="Ex. gmail.com" ng-model="domains_data.title" ng-disabled="sub_groups_data.restriction_mode === 'off'" ng-class="{'disabled': sub_groups_data.restriction_mode === 'off', 'form-white ': sub_groups_data.restriction_mode !== 'off'}">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <a href="javascript:;" ng-click="deleteDomain(domains_data, sub_groups_data)"><i class="fa fa-times text-danger"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-9">
+                                            <a href="javascript:;" ng-click="addDomain(sub_groups_data)"><i class="fa fa-plus"></i> เพิ่มโดเมน</a>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitSubGroups(sub_groups_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitSubGroups(sub_groups_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#sub_groups" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</div>

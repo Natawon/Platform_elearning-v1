@@ -1,0 +1,95 @@
+<div class="header">
+    <h2><i class="icon-note"></i> Questions <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">Questions</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fa fa-table"></i> <strong>Questions List</strong> tables</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div class="m-b-10">
+                            <div class="btn-group">
+                                <a href="#questionnaires/create/{{selected_questionnaire_packs.id}}" id="table-edit_new" class="btn btn-embossed btn-primary"><i class="fa fa-plus"></i> สร้างคำถาม</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 p-0">
+                            <div class="col-lg-6 p-0">
+                                <div class="form-group">
+                                    <select class="form-control form-white select2" data-style="white" data-search="true" ng-model="selected_questionnaire_packs" ng-options="questionnaire_packs.id as questionnaire_packs.title for questionnaire_packs in questionnaire_packs track by questionnaire_packs.id" ng-change="changeFilter()">
+                                        <option value="">-- เลือกแบบสอบถาม --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-left">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th class="title">
+                                        <a ng-click="sort_by('title')"><i class="fa fa-sort"></i></a>คำถาม
+                                    </th>
+                                    <th>แบบสอบถาม</th>
+                                    <th class="order">
+                                        <a ng-click="sort_by('order')"><i class="fa fa-sort"></i></a>จัดเรียง
+                                    </th>
+                                    <th class="status">
+                                        <a ng-click="sort_by('status')"><i class="fa fa-sort"></i></a>สถานะ
+                                    </th>
+                                    <th>แก้ไข</th>
+                                    <th>ลบ</th>
+                                </tr>
+                                </thead>
+                                <tbody ui-sortable="sortableOptions" ng-model="questionnaires">
+                                <tr ng-repeat="questionnaires_data in questionnaires" data-id="{{questionnaires_data.id}}">
+                                    <td>{{questionnaires_data.no}}</td>
+                                    <td>
+                                        <a ng-href="#questionnaires/{{questionnaires_data.id}}/edit">{{questionnaires_data.question | stripTags | limitTo: 50}}</a><br>
+                                        <label class="label label-default" ng-if="questionnaires_data.modify_by!=''" ><i class="icon-user"></i><strong>{{questionnaires_data.modify_by}}</strong> ({{questionnaires_data.modify_datetime}})</label>
+                                    </td>
+                                    <td>
+                                        <label class="label label-default">แบบสอบถาม : {{questionnaires_data.questionnaire_packs.title}}</label><br>
+                                        <label class="label label-primary">กลุ่ม : {{questionnaires_data.questionnaire_packs.groups.title}}</label>
+                                    </td>
+                                    <td>
+                                        <input style="width: 70px; text-align: center;" class="form-control form-white" type="text" ng-model="questionnaires_data.order" ng-blur="sortOrder(questionnaires_data)" ng-focus="disableSortable()">
+                                    </td>
+                                    <td>
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{questionnaires_data.id}}" ng-click="updateStatus(questionnaires_data)" ng-checked="questionnaires_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{questionnaires_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#questionnaires/{{questionnaires_data.id}}/edit"></a></td>
+                                    <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteQuestionnaires(questionnaires_data)"></a></td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="tbl-footer">
+                                <td colspan="9">
+                                    <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{total}}</b> record(s)</div>
+                                    <div class="pull-right">
+                                        <pagination total-items="total" ng-model="current_page" items-per-page="per_page" num-pages="last_page" class="pagination pagination-alt" boundary-links="true" max-size="max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                    </div>
+                                </td>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,701 @@
+<div class="header">
+    <h2><i class="icon-note"></i> หัวข้อ <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#topics">หัวข้อ</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+            <div class="row">
+               <form class="form-horizontal topics-frm" ng-submit="submitTopics(topics_data)">
+               <div class="panel">
+                   <div class="panel-header bg-dark">
+                       <h2 class="panel-title"><i class="icon-note"></i> รายละเอียด</h2>
+                   </div>
+                   <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">จัดการ</label>
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" ng-click="OriginalStreamingReview(topics_data)"><i class="icon icon-control-play"></i> คลิกดูวีดีโอ (ตัวเต็ม)</button>
+                                <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" ng-click="CutStreamingReview(topics_data)"><i class="icon icon-control-play"></i> คลิกดูวีดีโอ (แบบตัดช่วงเวลา)</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">คอร์ส <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <!-- <select id="courses_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="topics_data.courses_id" ng-options="course.id as course.title for course in courses" >
+                                    <option value="" ng-hide="true">-- เลือกคอร์ส --</option>
+                                </select> -->
+                                <input id="courses_id" class="form-control form-white courses-loading-data" type="text" ng-model="topics_data.courses_id">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">หัวข้อ</label>
+                            <div class="col-sm-9">
+                                <select id="parent" class="form-control form-white select2" data-style="white" data-search="true"  ng-model="topics_data.parent" ng-options="parent.id as parent.title for parent in parents" ng-disabled="loadingParent">
+                                    <option value="">-- เลือกหัวข้อ --</option>
+                                </select>
+                                <label class="label label-danger">*กรณีเป็นหัวข้อหลัก ไม่ต้องเลือก</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ชื่อหัวข้อ <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <input id="title" class="form-control form-white" type="text" ng-model="topics_data.title" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">รายละเอียด </label>
+                            <div class="col-sm-9">
+                                <textarea id="detail" ck-editor ng-model="topics_data.detail"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="topics_data.parent">
+                            <label class="col-sm-2 control-label">State <span class="text-danger">*</span></label>
+                            <div class="col-sm-4">
+                                <select id="level" class="form-control form-white select2" data-style="white" data-search="false" data-style="white" ng-model="topics_data.state" ng-options="state.value as state.title for state in state" >
+                                    <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                </select>
+                            </div>
+                            <!-- <div ng-if="topics_data.state == 'live' && mode == 'Edit'" class="col-sm-3">
+                                <a href="#livestreams/{{topics_data.id}}/control" class="btn btn-live btn-embossed m-b-0"><i class="icon-feed icons"></i> ถ่ายทอดสด</a>
+                            </div> -->
+                        </div>
+
+                        <!-- <div class="form-group">
+                                <label class="form-label">Range Selection</label>
+                                <div class="input-daterange b-datepicker input-group" id="datepicker">
+                                    <input type="text" class="input-sm form-control" name="start" placeholder="Beginning..." />
+                                    <span class="input-group-addon">to</span>
+                                    <input type="text" class="input-sm form-control" name="end" placeholder="Ending..." />
+                                </div>
+                            </div> -->
+
+                        <div class="form-group {{topics_data.state != 'live' ? 'hidden' : ''}}" ng-show="topics_data.parent">
+                            <label class="col-sm-2 control-label">เวลาเริ่มถ่ายทอดสด <span class="text-danger">*</span></label>
+                            <div class="col-sm-4 prepend-icon">
+                                <input type="text" id="live_start_datetime" name="datetimepicker" class="datetimepicker form-control form-white" ng-model="topics_data.live_start_datetime" autocomplete="off">
+                                <i class="icon-calendar"></i>
+                                <div id="live_start_datetime_error_message" class="help-block m-0"></div>
+                            </div>
+                            <!-- <div class="col-sm-6">
+                                <span class="text-red" id="live_start_datetime_error_message"></span>
+                            </div> -->
+                        </div>
+
+                        <div class="form-group {{topics_data.state != 'live' ? 'hidden' : ''}}" ng-show="topics_data.parent">
+                            <label class="col-sm-2 control-label">เวลาสิ้นสุดถ่ายทอดสด <span class="text-danger">*</span></label>
+                            <div class="col-sm-4 prepend-icon">
+                                <input type="text" id="live_end_datetime" name="datetimepicker" class="datetimepicker form-control form-white" ng-model="topics_data.live_end_datetime" autocomplete="off">
+                                <i class="icon-calendar"></i>
+                                <div id="live_end_datetime_error_message" class="help-block m-0"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="topics_data.parent" ng-if="topics_data.state == 'vod'">
+                            <label class="col-sm-2 control-label">ระยะเวลาเริ่มต้นวีดีโอ <span class="text-danger">*</span></label>
+                            <div class="col-sm-4">
+                                <input id="start_time" class="form-control" type="text" data-mask="99:99:99"  ng-model="topics_data.start_time" placeholder="00:00:00">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="topics_data.parent" ng-if="topics_data.state == 'vod'">
+                            <label class="col-sm-2 control-label">ระยะเวลาสิ้นสุดวีดีโอ <span class="text-danger">*</span></label>
+                            <div class="col-sm-4">
+                                <input id="end_time" class="form-control" type="text" data-mask="99:99:99"  ng-model="topics_data.end_time" placeholder="00:00:00">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Public</label>
+                            <div class="col-sm-9">
+                                <div class="onoffswitch2">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{topics_data.id}}" ng-click="toggleStatus(topics_data)" ng-checked="topics_data.status==1">
+                                    <label class="onoffswitch-label" for="statusOnOffSwitch{{topics_data.id}}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="m-t-20">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-10">
+                                        <button id="btn-save" type="submit" class="btn btn-embossed btn-success btn-save" data-loading-text="<i class='fa fa-spinner fa-spin p-0'></i> Saving...">Save</button>
+                                        <button id="btn-add-another" type="button" class="btn btn-embossed btn-primary btn-save" ng-click="submitTopics(topics_data, 'add_another')" ng-if="mode === 'Create'" data-loading-text="<i class='fa fa-spinner fa-spin p-0'></i> Saving...">Save and add another</button>
+                                        <button id="btn-continue-editing" type="button" class="btn btn-embossed btn-primary btn-save" ng-click="submitTopics(topics_data, 'continue_editing')" data-loading-text="<i class='fa fa-spinner fa-spin p-0'></i> Saving...">Save and continue editing</button>
+                                        <a ng-if="!topics_data.courses_id" href="#topics" class="btn btn-embossed btn-default">Cancel</a>
+                                        <a ng-if="topics_data.courses_id" href="#courses/{{topics_data.courses_id}}/topics" class="btn btn-embossed btn-default">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                   </div>
+               </div>
+
+                <div class="panel" ng-if="mode === 'Edit' && topics_data.parent">
+                   <div class="panel-header bg-dark">
+                       <h2 class="panel-title"><i class="icon-camcorder"></i> ข้อสอบขั้นระหว่างบท</h2>
+                   </div>
+                   <div class="panel-content">
+                       <div class="row">
+                           <div class="col-md-12">
+                               <div class="form-group">
+                                   <label class="col-sm-2 control-label">ชุดข้อสอบ</label>
+                                   <div class="col-sm-9">
+                                       <select class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="topics_data.quiz_id" ng-options="quiz.id as quiz.title for quiz in quizs" >
+                                           <option value="">-- เลือกชุดข้อสอบ --</option>
+                                       </select>
+                                   </div>
+                               </div>
+
+                               <div class="form-group">
+                                   <label class="col-sm-2 control-label">Auto Quiz</label>
+                                   <div class="col-sm-9">
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="autoQuizOnOffSwitch{{topics_data.id}}" ng-click="toggleAutoQuiz(topics_data)" ng-checked="topics_data.auto_quiz==1">
+                                            <label class="onoffswitch-label" for="autoQuizOnOffSwitch{{topics_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                           </label>
+                                        </div>
+                                   </div>
+                               </div>
+
+                               <div class="m-t-20">
+                                   <div class="form-group">
+                                       <label class="col-sm-2 control-label"></label>
+                                       <div class="col-sm-10">
+                                           <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                           <button type="button" class="btn btn-embossed btn-primary" ng-click="submitTopics(topics_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                           <button type="button" class="btn btn-embossed btn-primary" ng-click="submitTopics(topics_data, 'continue_editing')">Save and continue editing</button>
+                                           <a ng-if="!topics_data.courses_id" href="#topics" class="btn btn-embossed btn-default">Cancel</a>
+                                           <a ng-if="topics_data.courses_id" href="#courses/{{topics_data.courses_id}}/topics" class="btn btn-embossed btn-default">Cancel</a>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                </div>
+
+                <div class="panel" ng-if="mode === 'Edit' && topics_data.vod_format">
+                    <div class="panel-header bg-dark">
+                        <h2 class="panel-title"><i class="icon-doc"></i> ผลสรุปการถ่ายทอดสด</h2>
+                    </div>
+                    <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">รูปแบบการเผยแพร่</label>
+                                    <div class="col-sm-9">
+                                        {{live_result.vod_format.title}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">เริ่มถ่ายทอดสด</label>
+                                    <div class="col-sm-9">{{live_result.live_start_datetime}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">สิ้นสุดการถ่ายทอดสด</label>
+                                    <div class="col-sm-9">
+                                        <span ng-show="topics_data.state == 'live' && topics_data.streaming_status == 1">-</span>
+                                        <span ng-show="topics_data.state == 'vod' || (topics_data.vod_format == 'end_live' && topics_data.state == 'live' && topics_data.streaming_status == 0)">{{live_result.live_end_datetime}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+               <div class="panel" ng-if="mode === 'Edit' && topics_data.parent">
+                   <div class="panel-header bg-dark">
+                       <h2 class="panel-title"><i class="icon-camcorder"></i> วีดีโอ หัวข้อย่อย</h2>
+                   </div>
+                   <div class="panel-content bg-dark">
+                       <div class="row">
+                           <div class="col-md-12">
+                               <div class="form-group">
+                                   <label class="col-sm-2 control-label">ลิ้งค์วีดีโอ</label>
+                                   <div ng-class="{'col-sm-8': topics_data.state === 'live', 'col-sm-9': topics_data.state === 'vod'}">
+                                       <input class="form-control form-white" type="text" ng-model="topics_data.streaming_url">
+                                   </div>
+                                   <div class="col-sm-2" ng-if="topics_data.state === 'live'">
+                                       <button type="button" class="btn btn-sm btn-default m-t-5" data-toggle="modal" ng-click="generateLiveUrl(topics_data)"><i class="fa fa-feed"></i> Generate Live URL</button>
+                                   </div>
+                               </div>
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">สนับสนุน</label>
+                                   <div class="col-sm-9">
+                                       <p>Youtube, Adobe HDS (Adobe Flash Player), Apple HLS (iPhone, iPad, iPod touch, QuickTime, and more), Microsoft Smooth Streaming (Microsoft Silverlight and more), MPEG-DASH streaming (DASH clients), Adobe RTMP (Adobe Flash Player), RTSP/RTP (QuickTime, VLC, 3GPP devices, set-top boxes, and more)</p>
+                                   </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Public stream</label>
+                                    <div class="col-sm-9">
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="streamingStatusOnOffSwitch{{topics_data.id}}" ng-click="toggleStreamingStatus(topics_data)" ng-checked="topics_data.streaming_status==1">
+                                            <label class="onoffswitch-label" for="streamingStatusOnOffSwitch{{topics_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                           </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">แสดงคำบรรยาย</label>
+                                    <div class="col-sm-9">
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="isShowSubtitlesOnOffSwitch{{topics_data.id}}" ng-click="toggleIsShowSubtitles(topics_data)" ng-checked="topics_data.is_show_subtitles==1">
+                                            <label class="onoffswitch-label" for="isShowSubtitlesOnOffSwitch{{topics_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="m-t-20">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                           <button type="submit" class="btn btn-embossed btn-success" data-loading-text="Saving...">Save</button>
+                                           <button type="button" class="btn btn-embossed btn-primary" ng-click="submitTopics(topics_data, 'continue_editing')">Save and continue editing</button>
+                                           <a ng-if="!topics_data.courses_id" href="#topics" class="btn btn-embossed btn-default">Cancel</a>
+                                           <a ng-if="topics_data.courses_id" href="#courses/{{topics_data.courses_id}}/topics" class="btn btn-embossed btn-default">Cancel</a>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+               <div class="modal fade" id="modal-basic" tabindex="-1" role="dialog" aria-hidden="true">
+                   <div class="modal-dialog">
+                       <div class="modal-content bg-dark">
+                           <div class="modal-header">
+                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                               <h4 class="modal-title"><strong><i class="icon icon-control-play"></i> ตัวอย่างวีดีโอ</strong></h4>
+                           </div>
+                           <div class="modal-body">
+                               <div class="embed-responsive embed-responsive-16by9">
+                                   <div id="player"></div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+               </form>
+
+               <div id="video_management" class="panel panel-border" ng-if="mode === 'Edit' && topics_data.parent">
+                  <div class="panel-header bg-dark">
+                      <h2 class="panel-title"><i class="icon-screen-desktop"></i> Upload VOD </h2>
+                  </div>
+
+                  <div class="panel-header">
+                      <h2 class="panel-title"></h2>
+                  </div>
+                  <div class="panel-content">
+                      <div class="row">
+                          <div class="col-md-12">
+                              <form id="fileupload" class="form-horizontal" action="" method="POST" enctype="multipart/form-data" data-ng-app="" data-ng-controller="topicsVideosUploadCtrl" data-file-upload="options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
+                                  <div class="form-group">
+                                      <label class="col-sm-2 control-label">Directory Name</label>
+                                      <div class="col-sm-9">
+                                          <input class="form-control form-white" name="dir_name" type="text" ng-model="topics_data.dir_name" ng-readonly="{{true}}">
+                                      </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <!-- <label class="col-sm-2 control-label">Video File <br><span class="label label-danger">(.mp4)</span></label> -->
+                                      <label class="col-sm-2 control-label">Video File
+                                        <div class="panel bg-light bd-3">
+                                            <div class="panel-content p-5 p-l-10 p-r-10">
+                                                <p class="f-12 m-0 lh-16">
+                                                  - <b>ชนิดไฟล์:</b> .mp4 <br>
+                                                  - <b>ชื่อไฟล์:</b> สามารถมีตัวอักษรภาษาอังกฤษ, ตัวเลข และเครื่องหมาย - _ เท่านั้น <br>
+                                                </p>
+                                            </div>
+                                        </div>
+                                      </label>
+                                      <div class="col-sm-10">
+                                          <!-- Redirect browsers with JavaScript disabled to the origin page -->
+                                          <!-- <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript> -->
+                                          <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                                          <div class="row fileupload-buttonbar">
+                                              <div class="col-xs-2">
+                                                  <!-- The fileinput-button span is used to style the file input field as button -->
+                                                  <span class="btn btn-success fileinput-button" ng-class="{disabled: disabled || isPrepareUploadExist}">
+                                                      <i class="glyphicon glyphicon-plus"></i>
+                                                      <span>Add files...</span>
+                                                      <input type="file" name="files[]" ng-disabled="disabled || isPrepareUploadExist" accept="video/mp4,.ts">
+                                                      <!-- <input type="file" name="files" ng-disabled="disabled"> -->
+                                                  </span>
+                                                  <!-- <button type="button" class="btn btn-primary start" data-ng-click="submit()">
+                                                      <i class="glyphicon glyphicon-upload"></i>
+                                                      <span>Start upload</span>
+                                                  </button> -->
+                                                  <!-- <button type="button" class="btn btn-warning cancel_s" data-ng-click="cancel()">
+                                                      <i class="glyphicon glyphicon-ban-circle"></i>
+                                                      <span>Cancel upload</span>
+                                                  </button> -->
+                                                  <!-- The global file processing state -->
+                                                  <span class="fileupload-process"></span>
+                                              </div>
+                                              <!-- <div class="col-lg-3">
+                                                  <select class="form-control form-white select2" data-search="true" data-style="white" ng-model="baseStreamUrlType">
+                                                      <option value="full">To Full Streaming</option>
+                                                      <option value="review">To Review Streaming</option>
+                                                  </select>
+                                              </div> -->
+                                              <!-- The global progress state -->
+                                              <div class="col-xs-7 fade fileupload-progress" data-ng-class="{in: active()}">
+                                                  <!-- The global progress bar -->
+                                                  <div class="progress progress-striped active m-b-10" data-file-upload-progress="progress()"><div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div></div>
+                                                  <!-- The extended global progress state -->
+                                                  <div class="progress-extended m-b-5">&nbsp;</div>
+                                              </div>
+                                          </div>
+
+                                          <!-- The table listing the files available for upload/download DB -->
+                                          <!-- <h3 class="m-0 bold f-16" ng-if="queue.length">Available Videos</h3> -->
+                                          <table class="table table-striped files ng-cloak">
+                                              <tr data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}">
+                                                  <td data-ng-switch data-on="!!file.thumbnailUrl">
+                                                      <div class="preview" data-ng-switch-when="true">
+                                                          <a data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery><img data-ng-src="{{file.thumbnailUrl}}" alt=""></a>
+                                                      </div>
+                                                      <div class="preview" data-ng-switch-default data-file-upload-preview="file"></div>
+                                                      <video id="videoPreview" ng-if="file.isVideoType" data-ng-src="{{file.url | trustUrl}}" controls></video>
+                                                  </td>
+                                                  <td>
+                                                      <p class="name wb-all" data-ng-switch data-on="!!file.url">
+                                                          <span data-ng-switch-when="true" data-ng-switch data-on="!!file.thumbnailUrl">
+                                                              <a data-ng-switch-when="true" data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery>{{file.name}}</a>
+                                                              <a data-ng-switch-default data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}">{{file.name}}</a>
+                                                          </span>
+                                                          <span data-ng-switch-default>{{file.name}}</span>
+                                                      </p>
+                                                  </td>
+                                                  <td>
+                                                      <p class="size">{{file.size | formatFileSize}}</p>
+                                                      <div class="progress progress-striped active fade" data-ng-class="{pending: 'in'}[file.$state()]" data-file-upload-progress="file.$progress()"><div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div></div>
+                                                  </td>
+                                                  <td>
+                                                      <button type="button" class="m-b-5 btn btn-primary" style="display: block; padding: 7px 22.5px;" data-ng-click="saveConvert(file)" data-ng-hide="!file.$destroy" data-ng-disabled="!file.enableConvert || isUploadingDirty">
+                                                          <i class="fa fa-bolt" aria-hidden="true"></i>
+                                                          <span>{{file.transcodings.length > 0 ? 'Re-' : ''}}Convert</span>
+                                                      </button>
+                                                      <button type="button" class="m-b-5 btn btn-primary start" data-ng-click="file.$submit()" data-ng-hide="!file.$submit || options.autoUpload" data-ng-disabled="file.$state() == 'pending' || file.$state() == 'rejected' || isUploadingDirty">
+                                                          <i class="glyphicon glyphicon-upload"></i>
+                                                          <span>Start</span>
+                                                      </button>
+                                                      <button type="button" class="m-b-5 btn btn-warning cancel" data-ng-click="file.$cancel()" data-ng-hide="!file.$cancel">
+                                                          <i class="glyphicon glyphicon-ban-circle"></i>
+                                                          <span>Cancel</span>
+                                                      </button>
+                                                      <button data-ng-controller="topicsFileDestroyController" type="button" class="btn btn-danger destroy" data-ng-click="file.$destroy($index)" data-ng-hide="!file.$destroy">
+                                                          <i class="glyphicon glyphicon-trash"></i>
+                                                          <span>Delete</span>
+                                                      </button>
+                                                  </td>
+                                              </tr>
+                                          </table>
+
+                                          <table class="table table-bordered table-hover-x" ng-class="{'hide': videos.length <= 0}">
+                                              <thead>
+                                                  <tr>
+                                                      <th class="bg-dark">Video</th>
+                                                      <th width="15%" colspan="2" class="bg-dark">1080p</th>
+                                                      <th width="15%" colspan="2" class="bg-dark">720p</th>
+                                                      <th width="15%" colspan="2" class="bg-dark">480p</th>
+                                                      <th width="15%" colspan="2" class="bg-dark">360p</th>
+                                                      <th width="15%" colspan="2" class="bg-dark">240p</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody>
+                                                  <tr ng-repeat-start="video in videos" ng-class="{'hide': video.transcodings.length <= 0}" class="bg-light">
+                                                      <td class="bold wb-all">{{video.name}}</td>
+
+                                                      <td style="width: 6em;">
+                                                          <span ng-if="video.transcodings[0].transcode_status !== 'inappropriate'" class="label {{video.transcodings[0].labelClass}} label-icon">
+                                                              <i ng-if="video.transcodings[0].transcode_status === 'converting'" class="fa fa-refresh fa-lg fa-spin p-0" aria-hidden="true"></i> {{video.transcodings[0].transcode_status | capitalize}}
+                                                          </span>
+                                                          <span ng-if="video.transcodings[0].transcode_status === 'inappropriate'"> - </span>
+                                                      </td>
+                                                      <td>
+                                                          <div class="btn-group m-0 z-0" role="group" aria-label="Group">
+                                                              <button type="button" class="btn btn-dark dropdown-toggle p-0 p-l-5 p-r-5" ng-class="{'disabled': !video.transcodings[0].enableViewTranscodeProcess && video.transcodings[0].transcode_status !== 'converted' && !videos.enableConvert}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 20px;">
+                                                                  <i class="fa fa-bars p-0" aria-hidden="true"></i>
+                                                              </button>
+                                                              <ul class="dropdown-menu p-0">
+                                                                  <li ng-if="video.transcodings[0].enableViewTranscodeProcess">
+                                                                      <a href data-toggle="modal" data-target="#modal-transcode-processing" class="btn-view-process"><i class="fa fa-spinner fa-spin p-0" aria-hidden="true"></i>&nbsp; View Processing</a>
+                                                                  </li>
+                                                                  <li ng-if="video.transcodings[0].enableViewTranscodeProcess && !isUploadingDirty">
+                                                                      <a href ng-click="checkStatusConvert(video, video.transcodings[0])"><i class="fa fa-search p-0" aria-hidden="true"></i>&nbsp; Check Process</a>
+                                                                  </li>
+                                                                  <li role="separator" class="divider m-0"></li>
+                                                                  <li ng-if="video.transcodings[0].transcode_status === 'converted' && video.transcodings[0].url"><a ng-href="{{video.transcodings[0].url}}"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i> Download</a></li>
+                                                                  <li ng-if="video.transcodings[0].transcode_status === 'converted'">
+                                                                      <a href data-toggle="modal" ng-click="showVideoInfo(video, video.transcodings[0])"><i class="fa fa-info-circle" aria-hidden="true"></i> Get Info</a>
+                                                                  </li>
+                                                                  <li ng-if="videos.enableConvert"><a href ng-click="convertTranscode(video, video.transcodings[0])"><i class="fa fa-refresh" aria-hidden="true"></i> Convert</a></li>
+                                                              </ul>
+                                                          </div>
+                                                      </td>
+
+                                                      <td style="width: 6em;">
+                                                          <span ng-if="video.transcodings[1].transcode_status !== 'inappropriate'" class="label {{video.transcodings[1].labelClass}} label-icon">
+                                                              <i ng-if="video.transcodings[1].transcode_status === 'converting'" class="fa fa-refresh fa-lg fa-spin p-0" aria-hidden="true"></i> {{video.transcodings[1].transcode_status | capitalize}}
+                                                          </span>
+                                                          <span ng-if="video.transcodings[1].transcode_status === 'inappropriate'"> - </span>
+                                                      </td>
+                                                      <td>
+                                                          <div class="btn-group m-0 z-0" role="group" aria-label="Group">
+                                                              <button type="button" class="btn btn-dark dropdown-toggle p-0 p-l-5 p-r-5" ng-class="{'disabled': !video.transcodings[1].enableViewTranscodeProcess && video.transcodings[1].transcode_status !== 'converted' && !videos.enableConvert}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 20px;">
+                                                                  <i class="fa fa-bars p-0" aria-hidden="true"></i>
+                                                              </button>
+                                                              <ul class="dropdown-menu p-0">
+                                                                  <li ng-if="video.transcodings[1].enableViewTranscodeProcess">
+                                                                      <a href data-toggle="modal" data-target="#modal-transcode-processing" class="btn-view-process"><i class="fa fa-spinner fa-spin p-0" aria-hidden="true"></i>&nbsp; View Processing</a>
+                                                                  </li>
+                                                                  <li ng-if="video.transcodings[1].enableViewTranscodeProcess && !isUploadingDirty">
+                                                                      <a href ng-click="checkStatusConvert(video, video.transcodings[1])"><i class="fa fa-search p-0" aria-hidden="true"></i>&nbsp; Check Process</a>
+                                                                  </li>
+                                                                  <li role="separator" class="divider m-0"></li>
+                                                                  <li ng-if="video.transcodings[1].transcode_status === 'converted' && video.transcodings[1].url"><a ng-href="{{video.transcodings[1].url}}"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i> Download</a></li>
+                                                                  <li ng-if="video.transcodings[1].transcode_status === 'converted'">
+                                                                      <a href data-toggle="modal" ng-click="showVideoInfo(video, video.transcodings[1])"><i class="fa fa-info-circle" aria-hidden="true"></i> Get Info</a>
+                                                                  </li>
+                                                                  <li ng-if="videos.enableConvert"><a href ng-click="convertTranscode(video, video.transcodings[1])"><i class="fa fa-refresh" aria-hidden="true"></i> Convert</a></li>
+                                                              </ul>
+                                                          </div>
+                                                      </td>
+
+                                                      <td style="width: 6em;">
+                                                          <span ng-if="video.transcodings[2].transcode_status !== 'inappropriate'" class="label {{video.transcodings[2].labelClass}} label-icon">
+                                                              <i ng-if="video.transcodings[2].transcode_status === 'converting'" class="fa fa-refresh fa-lg fa-spin p-0" aria-hidden="true"></i> {{video.transcodings[2].transcode_status | capitalize}}
+                                                          </span>
+                                                          <span ng-if="video.transcodings[2].transcode_status === 'inappropriate'"> - </span>
+                                                      </td>
+                                                      <td>
+                                                          <div class="btn-group m-0 z-0" role="group" aria-label="Group">
+                                                              <button type="button" class="btn btn-dark dropdown-toggle p-0 p-l-5 p-r-5" ng-class="{'disabled': !video.transcodings[2].enableViewTranscodeProcess && video.transcodings[2].transcode_status !== 'converted' && !videos.enableConvert}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 20px;">
+                                                                  <i class="fa fa-bars p-0" aria-hidden="true"></i>
+                                                              </button>
+                                                              <ul class="dropdown-menu p-0">
+                                                                  <li ng-if="video.transcodings[2].enableViewTranscodeProcess">
+                                                                      <a href data-toggle="modal" data-target="#modal-transcode-processing" class="btn-view-process"><i class="fa fa-spinner fa-spin p-0" aria-hidden="true"></i>&nbsp; View Processing</a>
+                                                                  </li>
+                                                                  <li ng-if="video.transcodings[2].enableViewTranscodeProcess && !isUploadingDirty">
+                                                                      <a href ng-click="checkStatusConvert(video, video.transcodings[2])"><i class="fa fa-search p-0" aria-hidden="true"></i>&nbsp; Check Process</a>
+                                                                  </li>
+                                                                  <li role="separator" class="divider m-0"></li>
+                                                                  <li ng-if="video.transcodings[2].transcode_status === 'converted' && video.transcodings[2].url"><a ng-href="{{video.transcodings[2].url}}"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i> Download</a></li>
+                                                                  <li ng-if="video.transcodings[2].transcode_status === 'converted'">
+                                                                      <a href data-toggle="modal" ng-click="showVideoInfo(video, video.transcodings[2])"><i class="fa fa-info-circle" aria-hidden="true"></i> Get Info</a>
+                                                                  </li>
+                                                                  <li ng-if="videos.enableConvert"><a href ng-click="convertTranscode(video, video.transcodings[2])"><i class="fa fa-refresh" aria-hidden="true"></i> Convert</a></li>
+                                                              </ul>
+                                                          </div>
+                                                      </td>
+
+                                                      <td style="width: 6em;">
+                                                          <span ng-if="video.transcodings[3].transcode_status !== 'inappropriate'" class="label {{video.transcodings[3].labelClass}} label-icon">
+                                                              <i ng-if="video.transcodings[3].transcode_status === 'converting'" class="fa fa-refresh fa-lg fa-spin p-0" aria-hidden="true"></i> {{video.transcodings[3].transcode_status | capitalize}}
+                                                          </span>
+                                                          <span ng-if="video.transcodings[3].transcode_status === 'inappropriate'"> - </span>
+                                                      </td>
+                                                      <td>
+                                                          <div class="btn-group m-0 z-0" role="group" aria-label="Group">
+                                                              <button type="button" class="btn btn-dark dropdown-toggle p-0 p-l-5 p-r-5" ng-class="{'disabled': !video.transcodings[3].enableViewTranscodeProcess && video.transcodings[3].transcode_status !== 'converted' && !videos.enableConvert}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 20px;">
+                                                                  <i class="fa fa-bars p-0" aria-hidden="true"></i>
+                                                              </button>
+                                                              <ul class="dropdown-menu p-0">
+                                                                  <li ng-if="video.transcodings[3].enableViewTranscodeProcess">
+                                                                      <a href data-toggle="modal" data-target="#modal-transcode-processing" class="btn-view-process"><i class="fa fa-spinner fa-spin p-0" aria-hidden="true"></i>&nbsp; View Processing</a>
+                                                                  </li>
+                                                                  <li ng-if="video.transcodings[3].enableViewTranscodeProcess && !isUploadingDirty">
+                                                                      <a href ng-click="checkStatusConvert(video, video.transcodings[3])"><i class="fa fa-search p-0" aria-hidden="true"></i>&nbsp; Check Process</a>
+                                                                  </li>
+                                                                  <li role="separator" class="divider m-0"></li>
+                                                                  <li ng-if="video.transcodings[3].transcode_status === 'converted' && video.transcodings[3].url"><a ng-href="{{video.transcodings[3].url}}"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i> Download</a></li>
+                                                                  <li ng-if="video.transcodings[3].transcode_status === 'converted'">
+                                                                      <a href data-toggle="modal" ng-click="showVideoInfo(video, video.transcodings[3])"><i class="fa fa-info-circle" aria-hidden="true"></i> Get Info</a>
+                                                                  </li>
+                                                                  <li ng-if="videos.enableConvert"><a href ng-click="convertTranscode(video, video.transcodings[3])"><i class="fa fa-refresh" aria-hidden="true"></i> Convert</a></li>
+                                                              </ul>
+                                                          </div>
+                                                      </td>
+
+                                                      <td style="width: 6em;">
+                                                          <span ng-if="video.transcodings[4].transcode_status !== 'inappropriate'" class="label {{video.transcodings[4].labelClass}} label-icon">
+                                                              <i ng-if="video.transcodings[4].transcode_status === 'converting'" class="fa fa-refresh fa-lg fa-spin p-0" aria-hidden="true"></i> {{video.transcodings[4].transcode_status | capitalize}}
+                                                          </span>
+                                                          <span ng-if="video.transcodings[4].transcode_status === 'inappropriate'"> - </span>
+                                                      </td>
+                                                      <td>
+                                                          <div class="btn-group m-0 z-0" role="group" aria-label="Group">
+                                                              <button type="button" class="btn btn-dark dropdown-toggle p-0 p-l-5 p-r-5" ng-class="{'disabled': !video.transcodings[4].enableViewTranscodeProcess && video.transcodings[4].transcode_status !== 'converted' && !videos.enableConvert}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 20px;">
+                                                                  <i class="fa fa-bars p-0" aria-hidden="true"></i>
+                                                              </button>
+                                                              <ul class="dropdown-menu p-0">
+                                                                  <li ng-if="video.transcodings[4].enableViewTranscodeProcess">
+                                                                      <a href data-toggle="modal" data-target="#modal-transcode-processing" class="btn-view-process"><i class="fa fa-spinner fa-spin p-0" aria-hidden="true"></i>&nbsp; View Processing</a>
+                                                                  </li>
+                                                                  <li ng-if="video.transcodings[4].enableViewTranscodeProcess && !isUploadingDirty">
+                                                                      <a href ng-click="checkStatusConvert(video, video.transcodings[4])"><i class="fa fa-search p-0" aria-hidden="true"></i>&nbsp; Check Process</a>
+                                                                  </li>
+                                                                  <li role="separator" class="divider m-0"></li>
+                                                                  <li ng-if="video.transcodings[4].transcode_status === 'converted' && video.transcodings[4].url"><a ng-href="{{video.transcodings[4].url}}"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i> Download</a></li>
+                                                                  <li ng-if="video.transcodings[4].transcode_status === 'converted'">
+                                                                      <a href data-toggle="modal" ng-click="showVideoInfo(video, video.transcodings[4])"><i class="fa fa-info-circle" aria-hidden="true"></i> Get Info</a>
+                                                                  </li>
+                                                                  <li ng-if="videos.enableConvert"><a href ng-click="convertTranscode(video, video.transcodings[4])"><i class="fa fa-refresh" aria-hidden="true"></i> Convert</a></li>
+                                                              </ul>
+                                                          </div>
+                                                      </td>
+                                                  </tr>
+                                                  <tr ng-repeat-end ng-hide-disable="video.smil_url === '' || video.smil_url === null"  ng-class="{'hide': video.transcodings.length <= 0}">
+                                                      <td colspan="11">
+                                                          <div class="pull-right" ng-if="video.eta != undefined && video.eta != null">
+                                                            Estimated time : <strong class="fade-animate-loop">{{video.eta}}</strong>
+                                                          </div>
+                                                          <div class="form-group m-l-0 m-r-0">
+                                                              <label for="smil_url" class="control-label f-12">Available stream URL of video on demand (VOD)</label>
+                                                              <input type="url" class="form-control input-sm" id="smil_url" ng-model="video.smil_url" ng-readonly="{{true}}" placeholder="URL Streaming of video on demand...">
+                                                          </div>
+
+                                                          <button type="button" class="btn bg-aero btn-xs pull-left" ng-disabled="video.isPreparingGenerateSmil" ng-click="generateSmil(video, 'full')"><i class="fa fa-link" aria-hidden="true"></i> Generate URL</button>
+                                                          <button type="button" class="btn btn-default btn-xs pull-left" ng-disabled="video.isPreparingGenerateSmil" ng-click="generateSmilByOriginal(video, 'full')"><i class="fa fa-link" aria-hidden="true"></i> Generate URL <span class="f-10">(By Original Video)</span></button>
+                                                          <div ng-if="video.isPreparingGenerateSmil" class="pull-left"><i class="fa fa-spinner fa-spin p-0 f-20 c-set icon-prepare-generate-smil"></i> Generating url, please wait...</div>
+                                                          <button type="button" class="btn btn-primary btn-xs pull-right m-r-0" ng-click="updateUrlStream(null, video, 'full')" ng-disabled="video.smil_url === '' || video.smil_url === null">Set Stream URL</button>
+                                                          <a ng-href="#videos/{{video.id}}/subtitles/create" class="btn btn-info btn-xs pull-right" ng-disabled="video.smil_url === '' || video.smil_url === null || !video.enableConvert"><i class="glyphicon glyphicon-subtitles f-10"></i> Subtitle</a>
+
+                                                          <!-- <div class="btn-group pull-left">
+                                                              <button type="button" class="btn btn-aero btn-xs" ng-click="generateSmil(video, 'full')"><i class="fa fa-link" aria-hidden="true"></i> Generate URL</button>
+                                                              <button type="button" class="btn btn-aero btn-xs dropdown-toggle p-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                  <span class="caret"></span>
+                                                                  <span class="sr-only">Toggle Dropdown</span>
+                                                              </button>
+                                                              <ul class="dropdown-menu dropdown-menu-right p-0">
+                                                                  <li><a href ng-click="generateSmil(video, 'review')">Review Streaming</a></li>
+                                                                  <li><a href ng-click="generateSmil(video, 'full')">Full Streaming</a></li>
+                                                              </ul>
+                                                          </div>
+                                                          <div class="btn-group pull-left">
+                                                              <button type="button" class="btn btn-default btn-xs" ng-click="generateSmilByOriginal(video, 'full')"><i class="fa fa-link" aria-hidden="true"></i> Generate URL <span class="f-10">(By Original Video)</span></button>
+                                                              <button type="button" class="btn btn-default btn-xs dropdown-toggle p-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                  <span class="caret"></span>
+                                                                  <span class="sr-only">Toggle Dropdown</span>
+                                                              </button>
+                                                              <ul class="dropdown-menu dropdown-menu-right p-0">
+                                                                  <li><a href ng-click="generateSmilByOriginal(video, 'review')">Review Streaming</a></li>
+                                                                  <li><a href ng-click="generateSmilByOriginal(video, 'full')">Full Streaming</a></li>
+                                                              </ul>
+                                                          </div>
+                                                          <div class="btn-group pull-right m-r-0">
+                                                              <button ng-disabled="video.smil_url === '' || video.smil_url === null" type="button" class="btn btn-primary btn-xs" ng-click="updateUrlStream(null, video, 'full')">Set Stream URL</button>
+                                                              <button ng-disabled="video.smil_url === '' || video.smil_url === null" type="button" class="btn btn-primary btn-xs dropdown-toggle p-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                  <span class="caret"></span>
+                                                                  <span class="sr-only">Toggle Dropdown</span>
+                                                              </button>
+                                                              <ul class="dropdown-menu p-0">
+                                                                  <li><a href ng-click="updateUrlStream(null, video, 'review')">Review Streaming</a></li>
+                                                                  <li><a href ng-click="updateUrlStream(null, video, 'full')">Full Streaming</a></li>
+                                                              </ul>
+                                                          </div> -->
+                                                      </td>
+                                                  </tr>
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+            </div>
+
+
+    </div>
+</div>
+
+<!-- Modal Transcode Processing -->
+<div class="modal fade" id="modal-transcode-processing" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg-x">
+        <div class="modal-content">
+            <div class="modal-header bg-orange">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                <h4 class="modal-title">Process of transcoding <strong class="process-bitrate"></strong>.</h4>
+            </div>
+            <div class="modal-body">
+                <pre class="process-detail">- NO VIDEO FILES ARE CURRENTLY PROCESSED -</pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Transcode Info -->
+<div class="modal fade" id="modal-transcode-info" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg-x">
+        <div class="modal-content">
+            <div class="modal-header bg-green">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                <h4 class="modal-title">Video information of <strong class="file-name"></strong></h4>
+            </div>
+            <div class="modal-body">
+                <pre class="file-detail"></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Confirm Leave Page -->
+<div class="modal fade" id="modal-confirm-leave-page" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-red">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                <h4 class="modal-title">Do you want to <strong>leave</strong> this site?</h4>
+            </div>
+            <div class="modal-body">
+                If you leave this page now, your video uploading will not be saved and may cause problems. <br>
+                <strong>Are you sure you want to leave this page?</strong>
+                <br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-embossed btn-cancel-leave-page" data-dismiss="modal">Stay</button>
+                <button type="button" class="btn btn-primary btn-embossed btn-confirm-leave-page">Leave</button>
+            </div>
+        </div>
+    </div>
+</div>

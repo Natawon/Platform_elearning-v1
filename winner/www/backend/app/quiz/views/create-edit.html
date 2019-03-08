@@ -1,0 +1,184 @@
+<div class="header">
+    <h2><i class="icon-note"></i> แบบทดสอบ <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#quiz">แบบทดสอบ</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+            <div class="row">
+               <form class="form-horizontal quiz-frm" ng-submit="submitQuiz(quiz_data)">
+               <div class="panel">
+                   <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">คอร์ส <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <select id="courses_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="quiz_data.courses_id" ng-options="course.id as course.title for course in courses" >
+                                    <option value="" ng-hide="true">-- เลือกคอร์ส --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ชื่อชุดข้อสอบ <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <input id="title" class="form-control form-white" type="text" ng-model="quiz_data.title">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">คำอธิบายแบบทดสอบ</label>
+                            <div class="col-sm-9">
+                                <textarea id="description" ck-editor ng-model="quiz_data.description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">เกณฑ์การสอบ(%)</label>
+                            <div class="col-sm-9">
+                                <input id="passing_score" class="form-control form-white" type="text" ng-model="quiz_data.passing_score">
+                                <label class="label label-danger">คิดเป็นเปอร์เซ็น(%) ของคะแนนรวม</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">การสอบใหม่</label>
+                            <div class="col-sm-9">
+                                <input id="take_new_exam" class="form-control form-white" type="text" ng-model="quiz_data.take_new_exam">
+                                <label class="label label-danger">จำนวนครั้ง</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">กำหนดเวลา <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <input id="time" class="form-control form-white" type="text" ng-model="quiz_data.time">
+                                <label class="label label-danger">นาที</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ประเภทข้อสอบ <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <select id="type" class="form-control form-white select2" data-style="white" data-search="true" ng-model="quiz_data.type" ng-options="type.id as type.label for type in type">
+                                    <option value="" ng-hide="true">-- เลือกประเภทข้อสอบ --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">เฉลยตามข้อ</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="AnswerSubmitOnOffSwitch{{quiz_data.id}}" ng-click="toggleAnswerSubmit(quiz_data)" ng-checked="quiz_data.answer_submit==1">
+                                        <label class="onoffswitch-label" for="AnswerSubmitOnOffSwitch{{quiz_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">สอบไม่ผ่านให้ทำซ้ำ</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="PassOnOffSwitch{{quiz_data.id}}" ng-click="togglePass(quiz_data)" ng-checked="quiz_data.pass==1">
+                                        <label class="onoffswitch-label" for="PassOnOffSwitch{{quiz_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">ดูคำตอบ</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="AnswerOnOffSwitch{{quiz_data.id}}" ng-click="toggleAnswer(quiz_data)" ng-checked="quiz_data.answer==1">
+                                        <label class="onoffswitch-label" for="AnswerOnOffSwitch{{quiz_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">แสดงคำถาม</label>
+                                <div class="col-sm-9">
+                                    <input id="limit_questions" class="form-control form-white" type="text" ng-model="quiz_data.limit_questions">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Random คำถาม</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="RandomQuestionsOnOffSwitch{{quiz_data.id}}" ng-click="toggleRandomQuestions(quiz_data)" ng-checked="quiz_data.random_questions==1">
+                                        <label class="onoffswitch-label" for="RandomQuestionsOnOffSwitch{{quiz_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Random คำตอบ</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="RandomAnswerOnOffSwitch{{quiz_data.id}}" ng-click="toggleRandomAnswer(quiz_data)" ng-checked="quiz_data.random_answer==1">
+                                        <label class="onoffswitch-label" for="RandomAnswerOnOffSwitch{{quiz_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">สถานะ</label>
+                            <div class="col-sm-9">
+                                <div class="onoffswitch2">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{quiz_data.id}}" ng-click="toggleStatus(quiz_data)" ng-checked="quiz_data.status==1">
+                                    <label class="onoffswitch-label" for="statusOnOffSwitch{{quiz_data.id}}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="m-t-20">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                        <button type="button" class="btn btn-embossed btn-primary" ng-click="submitQuiz(quiz_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                        <button type="button" class="btn btn-embossed btn-primary" ng-click="submitQuiz(quiz_data, 'continue_editing')">Save and continue editing</button>
+                                        <a href="#quiz" class="btn btn-embossed btn-default">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                   </div>
+               </div>
+
+               </form>
+
+            </div>
+
+
+    </div>
+</div>

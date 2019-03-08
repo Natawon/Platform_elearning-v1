@@ -1,0 +1,133 @@
+<div class="header">
+    <h2><i class="icon-note"></i> รายละเอียดข้อมูลการเรียนรายบุคคล <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">Usage Statistic</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fa fa-table"></i> <strong>Usage Statistic List</strong> tables</h3>
+                    </div>
+
+                    <div class="panel-content">
+
+                        <form class="frm-filter">
+
+                        <div class="col-lg-4 p-r-0">
+                            <div class="m-b-10">
+                                <div class="form-group">
+                                    <select class="form-control form-white select2" id="courses_id" name="courses_id" data-style="white" data-search="true" ng-model="selected_courses" ng-options="course.id as course.title for course in courses track by course.id" ng-change="changeFilter()" ng-disabled="filterLoading">
+                                        <option value="">-- เลือกคอร์ส --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 p-r-0">
+                            <div class="form-group m-b-10">
+                                <div class="col-sm-12 p-0 append-icon">
+                                    <input type="text" id="search" name="search" class="form-control form-white" placeholder="ค้นหา ชื่อหรืออีเมล์ ผู้เรียน" autofocus="" ng-model="search" ng-change="searchFilter()" ng-disabled="filterLoading">
+                                    <i class="icon-magnifier"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-1 p-r-0">
+                            <i ng-if="filterLoading" class="fa fa-refresh fa-spin p-0 f-20 m-t-7"></i>
+                        </div>
+
+                        <div class="col-lg-3 p-r-0">
+                            <div class="form-group m-b-10">
+                                <div class="col-sm-12 p-0">
+                                    <button type="button" class="btn btn-default btn-embossed pull-right" ng-click="usage_statisticExport()"><i class="fa fa-file-excel-o"></i> ข้อมูลสมาชิก</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        </form>
+
+                        <div class="filter-left force-table-responsive-2">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>สมาชิก</th>
+                                    <th>คอร์ส & การเรียน</th>
+                                    <th>แบบทดสอบก่อนเรียน</th>
+                                    <th>แบบทดสอบหลังเรียน</th>
+                                    <th>แบบทดสอบเพื่อวัดความรู้</th>
+                                    <th>แบบสอบถาม</th>
+                                    <th>วุฒิบัตร</th>
+                                    <th>ดูข้อมูล</th>
+                                </tr>
+                                </thead>
+                                <tbody ng-model="usage_statistic">
+                                <tr ng-repeat="usage_statistic_data in usage_statistic" data-id="{{usage_statistic_data.id}}">
+                                    <td>{{usage_statistic_data.id}}</td>
+                                    <td>
+                                        <label class="label label-primary">{{usage_statistic_data.groups.title}}</label><br>
+                                        <label class="label label-default">{{usage_statistic_data.members.first_name}} {{usage_statistic_data.members.last_name}}</label><br>
+                                        <label class="label label-default">{{usage_statistic_data.members.email}}</label><br>
+                                    </td>
+                                    <td>
+                                        <label class="label label-default">{{usage_statistic_data.courses.code}} : {{usage_statistic_data.courses.title}}</label><br>
+                                        <label class="label label-primary" ng-if="usage_statistic_data.duration2percentage">การเรียน : {{usage_statistic_data.duration2percentage | number}} %</label><br>
+                                        <label class="label label-danger" ng-if="!usage_statistic_data.duration2percentage">ยังไม่ได้เริ่มเรียน</label>
+                                        <label class="label label-danger" ng-if="!usage_statistic_data.courses.learning">สถานะ : ไม่ผ่าน</label>
+                                        <label class="label label-success" ng-if="usage_statistic_data.courses.learning">สถานะ : ผ่าน</label>
+                                    </td>
+                                    <td>
+                                        <label class="label label-danger" ng-if="!usage_statistic_data.pre_test">ยังไม่ได้ทำ</label>
+                                        <label class="label label-success" ng-if="usage_statistic_data.pre_test">ทำแล้ว</label><br>
+                                        <label class="label label-primary" ng-if="usage_statistic_data.pre_test">คะแนนที่ทำได้ : {{usage_statistic_data.pre_test.percentage | number}} %</label>
+                                        <label class="label label-danger" ng-if="!usage_statistic_data.pre_test.learning">สถานะ : ไม่ผ่าน</label>
+                                        <label class="label label-success" ng-if="usage_statistic_data.pre_test.learning">สถานะ : ผ่าน</label>
+                                    </td>
+                                    <td>
+                                        <label class="label label-danger" ng-if="!usage_statistic_data.post_test">ยังไม่ได้ทำ</label>
+                                        <label class="label label-success" ng-if="usage_statistic_data.post_test">ทำแล้ว</label><br>
+                                        <label class="label label-primary" ng-if="usage_statistic_data.post_test">คะแนนที่ทำได้ : {{usage_statistic_data.post_test.percentage | number}} %</label>
+                                        <label class="label label-danger" ng-if="!usage_statistic_data.post_test.learning">สถานะ : ไม่ผ่าน</label>
+                                        <label class="label label-success" ng-if="usage_statistic_data.post_test.learning">สถานะ : ผ่าน</label>
+                                    </td>
+                                    <td>
+                                        <label class="label label-danger" ng-if="!usage_statistic_data.exam">ยังไม่ได้ทำ</label>
+                                        <label class="label label-success" ng-if="usage_statistic_data.exam">ทำแล้ว</label><br>
+                                        <label class="label label-primary" ng-if="usage_statistic_data.exam">คะแนนที่ทำได้ : {{usage_statistic_data.exam.percentage | number}} %</label>
+                                        <label class="label label-danger" ng-if="!usage_statistic_data.exam.learning">สถานะ : ไม่ผ่าน</label>
+                                        <label class="label label-success" ng-if="usage_statistic_data.exam.learning">สถานะ : ผ่าน</label>
+                                    </td>
+                                    <td>
+                                        <label class="label label-danger" ng-if="!usage_statistic_data.survey">ยังไม่ได้ทำ</label>
+                                        <label class="label label-success" ng-if="usage_statistic_data.survey">ทำแล้ว</label>
+                                    </td>
+                                    <td>
+                                        <label class="label label-success" ng-if="usage_statistic_data.certificate_reference_number">{{usage_statistic_data.certificate_reference_number}}</label><br>
+                                        <label class="label label-success" ng-if="usage_statistic_data.certificate_reference_number">{{usage_statistic_data.certificate_datetime}}</label>
+                                        <label class="label label-warning" ng-if="!usage_statistic_data.certificate_reference_number">ยังไม่พิมพ์วุฒิบัตร</label>
+                                    </td>
+                                    <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#usage_statistic/{{usage_statistic_data.id}}/view"></a></td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="tbl-footer">
+                                <td colspan="9">
+                                    <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{total}}</b> record(s)</div>
+                                    <div class="pull-right">
+                                        <pagination total-items="total" ng-model="current_page" items-per-page="per_page" num-pages="last_page" class="pagination pagination-alt" boundary-links="true" max-size="max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                    </div>
+                                </td>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

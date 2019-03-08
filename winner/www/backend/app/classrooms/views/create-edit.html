@@ -1,0 +1,583 @@
+<div class="header">
+    <h2><i class="icon-vector"></i> Class Rooms <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#classrooms">Class Rooms</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <tabset>
+                <tab>
+                    <tab-heading><i class="icon-note"></i> รายละเอียดทั่วไป</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal classrooms-frm" ng-submit="submitClassRooms(classrooms_data)">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">กลุ่ม (Group) <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select id="groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="classrooms_data.groups_id" ng-options="group.id as group.title for group in groups" >
+                                                <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">ชื่อคลาส <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input id="title" class="form-control form-white" type="text" ng-model="classrooms_data.title">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">เริ่มวันเวลา <span class="text-danger">*</span></label>
+                                        <div class="col-sm-4 prepend-icon">
+                                            <input id="start_datetime" type="text" id="start_datetime" name="datetimepicker" class="form-control form-white" ng-model="classrooms_data.start_datetime">
+                                            <i class="icon-calendar"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สิ้นสุดวันเวลา <span class="text-danger">*</span></label>
+                                        <div class="col-sm-4 prepend-icon">
+                                            <input id="end_datetime" type="text" id="end_datetime" name="datetimepicker" class="form-control form-white" ng-model="classrooms_data.end_datetime">
+                                            <i class="icon-calendar"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">สถานะ</label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{classrooms_data.id}}" ng-click="toggleStatus(classrooms_data)" ng-checked="classrooms_data.status==1">
+                                                <label class="onoffswitch-label" for="statusOnOffSwitch{{classrooms_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitClassRooms(classrooms_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitClassRooms(classrooms_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#classrooms" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+                <tab ng-if="mode === 'Edit'">
+                    <tab-heading><i class="icon-note"></i> จัดการการผู้เรียน</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal" ng-submit="submitClassRooms(classrooms_data)">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">กลุ่มย่อยหลัก <br> (Sub Groups)</label>
+                                        <div class="col-sm-9">
+                                            <select ng-options="sub_group.id as sub_group.title for sub_group in sub_groups" multiple ng-model="classrooms_data.classroom2sub_group" bs-duallistbox preserve-selection="moved"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">กลุ่มย่อย <br> (Units)</label>
+                                        <div class="col-sm-9">
+                                            <select ng-options="level_group.id as level_group.title for level_group in level_groups" multiple ng-model="classrooms_data.classroom2level_group" bs-duallistbox preserve-selection="moved"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitClassRooms(classrooms_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitClassRooms(classrooms_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#classrooms" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+
+                            <div class="col-md-12">
+                                <hr class="m-t-15">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-12">สมาชิกในคณะ / ฝ่ายงาน<br> (Level Target)</label>
+                                <div class="col-sm-12">
+                                    <tabset class="">
+                                        <tab>
+                                            <tab-heading><i class="icon-users"></i> รายชื่อสมาชิก <span class="text-primary">(Pre-Approved)</span></tab-heading>
+                                            <div class="">
+                                                <div class="row">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <table class="table table-bordered table-lead m-t-10">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Group</th>
+                                                                        <th>Field Pre-Approved</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>{{classrooms_data.groups.title}}</td>
+                                                                        <td>{{classrooms_data.groups.field_approval_text}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <form enctype="multipart/form-data" ng-submit="uploadPreApprovedMembers(classrooms_data)" ng-if="admin.upload_status == 1">
+                                                            <div class="form-group">
+                                                                <p>
+                                                                    <strong>อัพโหลดสมาชิกสำหรับ Pre-Approved</strong>
+                                                                </p>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                                            <div class="form-control" data-trigger="fileinput">
+                                                                                <i class="glyphicon glyphicon-file fileinput-exists"></i><span class="fileinput-filename"></span>
+                                                                            </div>
+                                                                            <span class="input-group-addon btn btn-default btn-file">
+                                                                                <span class="fileinput-new">Choose...</span><span class="fileinput-exists">Change</span>
+                                                                                <input type="file" id="preApprovedFile" name="preApprovedFile"> <!-- accept=".csv" -->
+                                                                            </span>
+                                                                            <a href="#" id="removePreApprovedFile" class="input-group-addon btn btn-danger fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                                        </div>
+                                                                        <span class="label label-danger">*.csv only.</span>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="btn-group pull-right-disabled m-0" role="group" aria-label="Example file upload">
+                                                                            <button type="button" class="btn btn-embossed btn-default border-right p-l-10 p-r-10" rel="popover_wide" data-trigger="click" data-container="body" data-placement="bottom" data-toggle="popover" title="คำอธิบาย" data-content="{{uploadMembersOptions.exampleDescription}}"><i class="icon-question p-0"></i></button>
+                                                                            <button type="button" class="btn btn-embossed btn-default" ng-click="downloadExampleFileUpload(classrooms_data.groups.key, 'members_pre_approved')"><i class="fa fa-download" aria-hidden="true"></i> Download Example File</button>
+                                                                        </div>
+                                                                        <button type="submit" class="btn btn-embossed btn-success m-l-10" id="btn-upload-pre-approved-members">Upload</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <hr class="m-t-20 m-b-10">
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="well m-b-30" ng-if="preApprovedMembersUploaded.length || preApprovedMembersUpdated.length || preApprovedMembersRejected.length">
+                                                    <div class="row" ng-if="preApprovedMembersUploaded.length">
+                                                        <div class="col-md-12 m-l-0">
+                                                            <h3 class="m-0 text-success"><i class="fa fa-check"></i> สมาชิกที่นำเข้าสำเร็จ</h3>
+                                                            <table class="table table-success">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th width="2%">แถว</th>
+                                                                    <th width="20%">อีเมล์</th>
+                                                                    <th width="10%" ng-if="selected_group_upload.id == 3">เลขที่ใบอนุญาต</th>
+                                                                    <th width="10%">รหัสบัตรประชาชน</th>
+                                                                    <th width="10%">{{selected_group_upload.meaning_of_occupation_id}}</th>
+                                                                    <th width="15%">ชื่อ - นามกสุล</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="members_pre_approved_uploaded_data in preApprovedMembersUploaded">
+                                                                    <td width="2%">{{members_pre_approved_uploaded_data.row}}</td>
+                                                                    <td width="20%">{{members_pre_approved_uploaded_data.email}}</td>
+                                                                    <td width="10%" ng-if="selected_group_upload.id == 3">{{members_pre_approved_uploaded_data.license_id}}</td>
+                                                                    <td width="10%">{{members_pre_approved_uploaded_data.id_card}}</td>
+                                                                    <td width="10%">{{members_pre_approved_uploaded_data.occupation_id}}</td>
+                                                                    <td width="15%">{{members_pre_approved_uploaded_data.first_name}} {{members_pre_approved_uploaded_data.last_name}}</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-if="preApprovedMembersUpdated.length">
+                                                        <div class="col-md-12 m-l-0">
+                                                            <h3 class="m-0 text-blue"><i class="fa fa-check"></i> สมาชิกที่มีอยู่แล้ว (อัพเดทข้อมูล)</h3>
+                                                            <table class="table table-blue">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th width="2%">แถว</th>
+                                                                    <th width="20%">อีเมล์</th>
+                                                                    <th width="10%" ng-if="selected_group_upload.id == 3">เลขที่ใบอนุญาต</th>
+                                                                    <th width="10%">รหัสบัตรประชาชน</th>
+                                                                    <th width="10%">{{selected_group_upload.meaning_of_occupation_id}}</th>
+                                                                    <th width="15%">ชื่อ - นามกสุล</th>
+                                                                    <th>หมายเหตุ</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="members_pre_approved_updated_data in preApprovedMembersUpdated">
+                                                                    <td width="2%">{{members_pre_approved_updated_data.row}}</td>
+                                                                    <td width="20%">{{members_pre_approved_updated_data.email}}</td>
+                                                                    <td width="10%" ng-if="selected_group_upload.id == 3">{{members_pre_approved_updated_data.license_id}}</td>
+                                                                    <td width="10%">{{members_pre_approved_updated_data.id_card}}</td>
+                                                                    <td width="10%">{{members_pre_approved_updated_data.occupation_id}}</td>
+                                                                    <td width="15%">{{members_pre_approved_updated_data.first_name}} {{members_pre_approved_updated_data.last_name}}</td>
+                                                                    <td>{{members_pre_approved_updated_data.message}}</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-if="preApprovedMembersRejected.length">
+                                                        <div class="col-md-12 m-l-0">
+                                                            <h3 class="m-0 text-danger"><i class="fa fa-close"></i> สมาชิกที่นำเข้าไม่สำเร็จ</h3>
+                                                            <table class="table table-danger">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th width="2%">แถว</th>
+                                                                    <th width="20%">อีเมล์</th>
+                                                                    <th width="10%" ng-if="selected_group_upload.id == 3">เลขที่ใบอนุญาต</th>
+                                                                    <th width="10%">รหัสบัตรประชาชน</th>
+                                                                    <th width="10%">{{selected_group_upload.meaning_of_occupation_id}}</th>
+                                                                    <th width="15%">ชื่อ - นามกสุล</th>
+                                                                    <th>หมายเหตุ</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="members_pre_approved_rejected_data in preApprovedMembersRejected">
+                                                                    <td width="2%">{{members_pre_approved_rejected_data.row}}</td>
+                                                                    <td width="20%">{{members_pre_approved_rejected_data.email}}</td>
+                                                                    <td width="10%" ng-if="selected_group_upload.id == 3">{{members_pre_approved_rejected_data.license_id}}</td>
+                                                                    <td width="10%">{{members_pre_approved_rejected_data.id_card}}</td>
+                                                                    <td width="10%">{{members_pre_approved_rejected_data.occupation_id}}</td>
+                                                                    <td width="15%">{{members_pre_approved_rejected_data.first_name}} {{members_pre_approved_rejected_data.last_name}}</td>
+                                                                    <td ng-if="!_isArray(members_pre_approved_rejected_data.message)">{{members_pre_approved_rejected_data.message}}</td>
+                                                                    <td ng-if="_isArray(members_pre_approved_rejected_data.message)">
+                                                                        <span ng-repeat="message in members_pre_approved_rejected_data.message">{{message}}<br></span>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-6 col-md-offset-6 p-r-0">
+                                                            <form class="frm-filter">
+                                                                <div class="form-group m-b-10">
+                                                                    <div class="col-sm-12 p-0 append-icon">
+                                                                        <input type="text" id="finder" class="form-control form-white m-b-20" placeholder="ค้นหา..." name="filters_members_pre_approved.search" ng-model="filters_members_pre_approved.search" ng-change="changeFilterMembersPreApproved()">
+                                                                        <i class="icon-magnifier"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 m-l-0">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                            <tr>
+                                                                <th width="2%">#</th>
+                                                                <th width="25%">อีเมล์</th>
+                                                                <th width="15%" ng-if="selected_group_upload.id == 3">เลขที่ใบอนุญาต</th>
+                                                                <th width="15%">รหัสบัตรประชาชน</th>
+                                                                <th width="15%">{{selected_group_upload.meaning_of_occupation_id}}</th>
+                                                                <th width="20%">ชื่อ - นามกสุล</th>
+                                                                <th width="">ลบ</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="members_pre_approved_data in classrooms_data.members_pre_approved">
+                                                                <td width="2%">{{members_pre_approved_data.num}}</td>
+                                                                <td width="25%">{{members_pre_approved_data.email}}</td>
+                                                                <td width="15%" ng-if="selected_group_upload.id == 3">{{members_pre_approved_data.license_id}}</td>
+                                                                <td width="15%">{{members_pre_approved_data.id_card}}</td>
+                                                                <td width="15%">{{members_pre_approved_data.occupation_id}}</td>
+                                                                <td width="20%">{{members_pre_approved_data.first_name}} {{members_pre_approved_data.last_name}}</td>
+                                                                <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteMembersPreApproved(members_pre_approved_data)"></a></td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tab>
+
+                                        <tab>
+                                            <tab-heading><i class="icon-user-following"></i> รายชื่อสมาชิกในคอร์ส <span class="text-success">(ผ่านการอนุมัติแล้ว)</span></tab-heading>
+                                            <div class="">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form enctype="multipart/form-data" ng-submit="uploadMembers(classrooms_data)" ng-if="admin.upload_status == 1 && selected_group_upload.internal == 1"">
+                                                            <div class="form-group">
+                                                                <p>
+                                                                    <strong>อัพโหลดสมาชิก</strong>
+                                                                </p>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                                            <div class="form-control" data-trigger="fileinput">
+                                                                                <i class="glyphicon glyphicon-file fileinput-exists"></i><span class="fileinput-filename"></span>
+                                                                            </div>
+                                                                            <span class="input-group-addon btn btn-default btn-file">
+                                                                                <span class="fileinput-new">Choose...</span><span class="fileinput-exists">Change</span>
+                                                                                <input type="file" id="membersFile" name="membersFile"> <!-- accept=".csv" -->
+                                                                            </span>
+                                                                            <a href="#" id="removeMembersFile" class="input-group-addon btn btn-danger fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                                        </div>
+                                                                        <span class="label label-danger">*.csv only.</span>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="btn-group pull-right-disabled m-0" role="group" aria-label="Example file upload">
+                                                                            <button type="button" class="btn btn-embossed btn-default border-right p-l-10 p-r-10" rel="popover_wide" data-trigger="click" data-container="body" data-placement="bottom" data-toggle="popover" title="คำอธิบาย" data-content="{{uploadMembersOptions.exampleDescription}}"><i class="icon-question p-0"></i></button>
+                                                                            <button type="button" class="btn btn-embossed btn-default" ng-click="downloadExampleFileUpload(classrooms_data.groups.key, 'members')"><i class="fa fa-download" aria-hidden="true"></i> Download Example File</button>
+                                                                        </div>
+                                                                        <button type="submit" class="btn btn-embossed btn-success m-l-10" id="btn-upload-members">Upload</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <hr class="m-t-20 m-b-10">
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="well m-b-30" ng-if="membersUploaded.length || membersUpdated.length || membersRejected.length">
+                                                    <div class="row" ng-if="membersUploaded.length">
+                                                        <div class="col-md-12 m-l-0">
+                                                            <h3 class="m-0 text-success"><i class="fa fa-check"></i> สมาชิกที่นำเข้าสำเร็จ</h3>
+                                                            <table class="table table-success">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th width="2%">แถว</th>
+                                                                    <th width="20%">อีเมล์</th>
+                                                                    <th width="10%" ng-if="selected_group_upload.id == 3">เลขที่ใบอนุญาต</th>
+                                                                    <th width="10%">รหัสบัตรประชาชน</th>
+                                                                    <th width="10%">{{selected_group_upload.meaning_of_occupation_id}}</th>
+                                                                    <th width="15%">ชื่อ - นามกสุล</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="members_uploaded_data in membersUploaded">
+                                                                    <td width="2%">{{members_uploaded_data.row}}</td>
+                                                                    <td width="20%">{{members_uploaded_data.email}}</td>
+                                                                    <td width="10%" ng-if="selected_group_upload.id == 3">{{members_uploaded_data.license_id}}</td>
+                                                                    <td width="10%">{{members_uploaded_data.id_card}}</td>
+                                                                    <td width="10%">{{members_uploaded_data.occupation_id}}</td>
+                                                                    <td width="15%">{{members_uploaded_data.first_name}} {{members_uploaded_data.last_name}}</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-if="membersUpdated.length">
+                                                        <div class="col-md-12 m-l-0">
+                                                            <h3 class="m-0 text-blue"><i class="fa fa-check"></i> สมาชิกที่มีอยู่แล้ว (อัพเดทข้อมูล)</h3>
+                                                            <table class="table table-blue">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th width="2%">แถว</th>
+                                                                    <th width="20%">อีเมล์</th>
+                                                                    <th width="10%" ng-if="selected_group_upload.id == 3">เลขที่ใบอนุญาต</th>
+                                                                    <th width="10%">รหัสบัตรประชาชน</th>
+                                                                    <th width="10%">{{selected_group_upload.meaning_of_occupation_id}}</th>
+                                                                    <th width="15%">ชื่อ - นามกสุล</th>
+                                                                    <th>หมายเหตุ</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="members_updated_data in membersUpdated">
+                                                                    <td width="2%">{{members_updated_data.row}}</td>
+                                                                    <td width="20%">{{members_updated_data.email}}</td>
+                                                                    <td width="10%" ng-if="selected_group_upload.id == 3">{{members_updated_data.license_id}}</td>
+                                                                    <td width="10%">{{members_updated_data.id_card}}</td>
+                                                                    <td width="10%">{{members_updated_data.occupation_id}}</td>
+                                                                    <td width="15%">{{members_updated_data.first_name}} {{members_updated_data.last_name}}</td>
+                                                                    <td>{{members_updated_data.message}}</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-if="membersRejected.length">
+                                                        <div class="col-md-12 m-l-0">
+                                                            <h3 class="m-0 text-danger"><i class="fa fa-close"></i> สมาชิกที่นำเข้าไม่สำเร็จ</h3>
+                                                            <table class="table table-danger">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th width="2%">แถว</th>
+                                                                    <th width="20%">อีเมล์</th>
+                                                                    <th width="10%" ng-if="selected_group_upload.id == 3">เลขที่ใบอนุญาต</th>
+                                                                    <th width="10%">รหัสบัตรประชาชน</th>
+                                                                    <th width="10%">{{selected_group_upload.meaning_of_occupation_id}}</th>
+                                                                    <th width="15%">ชื่อ - นามกสุล</th>
+                                                                    <th>หมายเหตุ</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="members_rejected_data in membersRejected">
+                                                                    <td width="2%">{{members_rejected_data.row}}</td>
+                                                                    <td width="20%">{{members_rejected_data.email}}</td>
+                                                                    <td width="10%" ng-if="selected_group_upload.id == 3">{{members_rejected_data.license_id}}</td>
+                                                                    <td width="10%">{{members_rejected_data.id_card}}</td>
+                                                                    <td width="10%">{{members_rejected_data.occupation_id}}</td>
+                                                                    <td width="15%">{{members_rejected_data.first_name}} {{members_rejected_data.last_name}}</td>
+                                                                    <td ng-if="!_isArray(members_rejected_data.message)">{{members_rejected_data.message}}</td>
+                                                                    <td ng-if="_isArray(members_rejected_data.message)">
+                                                                        <span ng-repeat="message in members_rejected_data.message">{{message}}<br></span>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-6 col-md-offset-6 p-r-0">
+                                                            <form class="frm-filter">
+                                                                <div class="form-group m-b-10">
+                                                                    <div class="col-sm-12 p-0 append-icon">
+                                                                        <input type="text" id="finder" class="form-control form-white m-b-20" placeholder="ค้นหา..." name="filters_members.search" ng-model="filters_members.search" ng-change="changeFilterMembers()">
+                                                                        <i class="icon-magnifier"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 m-l-0">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                            <tr>
+                                                                <th width="2%">#</th>
+                                                                <th width="25%">อีเมล์</th>
+                                                                <th width="15%" ng-if="selected_group_upload.id == 3">เลขที่ใบอนุญาต</th>
+                                                                <th width="15%">รหัสบัตรประชาชน</th>
+                                                                <th width="15%">{{selected_group_upload.meaning_of_occupation_id}}</th>
+                                                                <th width="20%">ชื่อ - นามกสุล</th>
+                                                                <th>การอนุมัติ</th>
+                                                                <th>สถานะใช้งาน</th>
+                                                                <th>ลบ</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="members_data in classrooms_data.members">
+                                                                <td width="2%">{{members_data.num}}</td>
+                                                                <td width="25%">{{members_data.email}}</td>
+                                                                <td width="15%" ng-if="selected_group_upload.id == 3">{{members_data.license_id}}</td>
+                                                                <td width="15%">{{members_data.id_card}}</td>
+                                                                <td width="15%">{{members_data.occupation_id}}</td>
+                                                                <td width="20%">{{members_data.first_name}} {{members_data.last_name}}</td>
+                                                                <td>
+                                                                    <div class="" ng-switch on="members_data.approved_type">
+                                                                        <label class="label label-success" ng-switch-when="1">PRE-APPROVED< (โดย {{members_data.approved_admin.first_name}})</label>
+                                                                        <label class="label label-success" ng-switch-when="2">MANUAL (โดย {{members_data.approved_admin.first_name}})</label>
+                                                                        <label class="label label-success" ng-switch-when="3">BYPASS APPROVAL</label>
+                                                                    </div>
+                                                                    <label class="label label-success">{{members_data.approved_datetime}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <label class="label label-success" ng-if="members_data.active == 1">เปิดใช้งาน</label>
+                                                                    <label class="label label-default" ng-if="members_data.active != 1">ไม่ได้เปิดใช้งาน</label>
+                                                                </td>
+                                                                <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="detachMembers(members_data)"></a></td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tab>
+
+                                        <!-- <tab>
+                                            <tab-heading><i class="icon-user-unfollow"></i> รายชื่อสมาชิก <span class="text-danger">(ยังไม่ผ่านการอนุมัติ)</span></tab-heading>
+                                            <div class="">
+                                                <div class="row">
+                                                    <div class="col-md-12 m-l-0">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>อีเมล์</th>
+                                                                <th>รหัสบัตรประชาชน</th>
+                                                                <th>{{selected_group_upload.meaning_of_occupation_id}}</th>
+                                                                <th>ชื่อ - นามสกุล</th>
+                                                                <th>การเข้าระบบ</th>
+                                                                <th>การอนุมัติ</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="members_not_approved_data in classrooms_data.members_not_approved">
+                                                                <td>{{members_not_approved_data.num}}</td>
+                                                                <td>{{members_not_approved_data.email}}</td>
+                                                                <td>{{members_not_approved_data.id_card}}</td>
+                                                                <td>{{members_not_approved_data.occupation_id}}</td>
+                                                                <td>{{members_not_approved_data.first_name}} {{members_not_approved_data.last_name}}</td>
+                                                                <td>
+                                                                    <label class="label label-default">ประเภท : {{members_not_approved_data.created_type == 1 ? 'สมัครสมาชิก' : 'อัพโหลด (โดย '+members_not_approved_data.created_admin.first_name+')'}}</label><br>
+                                                                    <label class="label label-default">{{members_not_approved_data.create_datetime}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="btn-group" role="group" aria-label="..." ng-if="members_not_approved_data.reject_status != 1">
+                                                                        <button type="button" class="btn btn-success btn-embossed btn-sm" ng-click="approveMember($event, members_not_approved_data)"><i class="fa fa-check"></i> Approve</button>
+                                                                        <button type="button" class="btn btn-danger btn-embossed btn-sm" ng-click="rejectMember($event, members_not_approved_data)"><i class="fa fa-close"></i> Reject</button>
+                                                                    </div>
+                                                                    <div class="" ng-if="members_not_approved_data.reject_status == 1">
+                                                                        <label class="label label-danger">Rejected (โดย {{members_not_approved_data.rejected_admin.first_name}})</label><br>
+                                                                        <label class="label label-danger">{{members_not_approved_data.rejected_datetime}}</label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </tab> -->
+                                    </tabset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+                <tab ng-if="mode === 'Edit'">
+                    <tab-heading><i class="icon-note"></i> จัดการการคอร์ส</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal" ng-submit="submitClassRooms(classrooms_data)">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">คอร์ส</label>
+                                        <div class="col-sm-9">
+                                            <select ng-options="course.id as course.title for course in courses" multiple ng-model="classrooms_data.classroom2course" bs-duallistbox preserve-selection="moved"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitClassRooms(classrooms_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitClassRooms(classrooms_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#classrooms" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</div>

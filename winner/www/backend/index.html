@@ -1,0 +1,470 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="admin-themes-lab">
+    <meta name="author" content="themes-lab">
+    <meta name="robots" content="noindex,nofollow,noarchive">
+
+    <!-- Prevent framing --> <style id="antiClickjack">body{display:none !important;}</style> <script type="text/javascript"> if (self === top) {var antiClickjack = document.getElementById("antiClickjack"); antiClickjack.parentNode.removeChild(antiClickjack); } else {top.location = self.location; } </script>
+
+    <link rel="shortcut icon" href="assets/global/images/favicon.png" type="image/png">
+    <title>Admin Thai Livestream</title>
+    <link rel="shortcut icon" href="assets/global/images/favicon.png">
+    <link href="assets/global/css/style.css" rel="stylesheet">
+    <link href="assets/global/css/ui.css" rel="stylesheet">
+    <link href="assets/global/css/live-control.css" rel="stylesheet">
+    <link href="assets/global/plugins/bootstrap-loading/lada.min.css" rel="stylesheet">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- BEGIN LAYOUT STYLE -->
+    <link href="bower_components/mdl/material.min.css" rel="stylesheet">
+    <!-- <link href="bower_components/angularMultipleSelect/build/multiple-select.min.css" rel="stylesheet"> -->
+    <link href="css/chats-style.css" rel="stylesheet">
+
+    <!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="bower_components/bootstrap-duallistbox/src/bootstrap-duallistbox.css">
+
+    <!-- BEGIN ANGULARJS STYLE -->
+    <link href="css/angular-theme.css" rel="stylesheet">
+    <!-- END ANGULARJS STYLE -->
+    <!-- BEGIN LAYOUT STYLE -->
+    <link href="assets/admin/layout1/css/layout.css" rel="stylesheet">
+    <!-- END LAYOUT STYLE -->
+    <script src="assets/global/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+    <link href="bower_components/blueimp-file-upload/css/jquery.fileupload.css" rel="stylesheet">
+    <link href="bower_components/blueimp-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet">
+    <link href="bower_components/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+
+    <link href="assets/global/plugins/jstree/dist/themes/default/style.css" rel="stylesheet" />
+    <link href="assets/global/css/customize.css" rel="stylesheet">
+
+    <!-- Date picker -->
+    <!-- <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" /> -->
+
+
+</head>
+<body ng-app="newApp" class="fixed-topbar fixed-sidebar theme-sdtl color-default" ng-controller="mainCtrl">
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- BEGIN PAGE SPINNER -->
+<div ng-spinner-loader class="page-spinner-loader">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+</div>
+<!-- END PAGE SPINNER -->
+
+<section>
+    <!-- BEGIN SIDEBAR -->
+    <div class="sidebar">
+        <div class="logopanel">
+            <h1>
+                <a href="#/"></a>
+            </h1>
+        </div>
+        <div class="sidebar-inner">
+            <div class="sidebar-top">
+                <div class="userlogged clearfix">
+                    <a ng-href="#/my_profile/edit" ng-if="admin.avatar==null" title="" style="float: left;font-size: 60px;margin-bottom: -21px;"><i class="icon icons-faces-users-01"></i></a>
+                    <div ng-if="admin.avatar != null" style="float:left; height: 60px;width: 60px; overflow: hidden; margin-right: 10px;">
+                        <a ng-href="#/my_profile/edit"><img class="avatar" ng-src="{{base_admins_avatar}}{{admin.avatar}}" style="width: 60px;"/>{{base_admins_avatar}}</a>
+                    </div>
+                    <div class="user-details">
+                        <a ng-href="#/my_profile/edit">
+                            <h4 title="Hi, {{admin.username}}">Hi, {{admin.username}}</h4>
+                        </a>
+                        <div>
+                            <button type="button" class="btn btn-xs btn-danger btn-rounded" ng-click="logout()"><i class="icon-logout"></i> Sign out</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="nav nav-sidebar">
+                <li ng-class="{ active : (isActive('/'+menu.link) || activeMenu == '/'+menu.link) && !menu.sub_menu, 'nav-parent' : menu.sub_menu }" ng-repeat="menu in admin.admins_groups.admins_groups_menu">
+                    <a href="#/{{menu.link}}">
+                        <i class="{{menu.icon}}" aria-hidden="true"></i>
+                        <span>{{menu.title}} <small class="c-red" ng-if="menu.in_process == 1">(Not Available)</small></span> <span ng-if="menu.sub_menu" class="fa arrow"></span>
+                    </a>
+                    <ul ng-if="menu.sub_menu" class="children collapse">
+                        <li ng-repeat="sub_menu in menu.sub_menu" ng-class="{ active  : isActive('/'+sub_menu.link) || activeMenu == '/'+sub_menu.link}"><a href="#/{{sub_menu.link}}"> {{sub_menu.title}} <small class="c-red" ng-if="sub_menu.in_process == 1">(Not Available)</small></a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="sidebar-footer clearfix">
+                <a class="pull-left footer-settings" data-target="#" data-rel="tooltip" data-placement="top" data-original-title="Settings">
+                    <i class="icon-settings"></i>
+                </a>
+                <a class="pull-left toggle_fullscreen" data-target="#" data-rel="tooltip" data-placement="top" data-original-title="Fullscreen">
+                    <i class="icon-size-fullscreen"></i>
+                </a>
+                <a class="pull-left btn-effect" data-rel="tooltip" data-placement="top" data-original-title="Logout" ng-click="logout()">
+                    <i class="icon-power"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- END SIDEBAR -->
+    <div class="main-content">
+        <!-- BEGIN TOPBAR -->
+        <div class="topbar">
+            <div class="header-left">
+                <div class="topnav">
+                    <a class="menutoggle" href="#" data-toggle="sidebar-collapsed"><span class="menu__handle"><span>Menu</span></span></a>
+                    <ul class="nav nav-icons">
+                        <li><a href="#" class="toggle-sidebar-top"><span class="icon-user-following"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="header-right">
+                <ul class="header-menu nav navbar-nav">
+                    <!-- BEGIN MESSAGES DROPDOWN -->
+                    <li class="dropdown" id="user-header">
+                        <a href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <i ng-if="admin.avatar==null" class="icon icons-faces-users-01 default-icon c-blue"></i>
+                            <img ng-if="admin.avatar != null"  ng-src="{{base_admins_avatar}}{{admin.avatar}}" alt="{{admin.username}}">
+                            <span class="username">Hi, {{admin.username}} <br><small class="in-groups">&#8212; {{admin.admins_groups.title}}</small></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a data-target="#" ng-href="#/my_profile/edit"><i class="icon-user"></i><span>My Profile</span></a>
+                                <a data-target="#" ng-click="logout()"><i class="icon-logout"></i><span>Logout</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- END USER DROPDOWN -->
+                </ul>
+            </div>
+            <!-- header-right -->
+        </div>
+        <!-- END TOPBAR -->
+        <!-- BEGIN PAGE CONTENT -->
+        <div ng-view class="at-view-slide-in-left page-content" ng-view-class=" page-wizard : /forms-wizard , page-thin : / , page-contact : /pages-contact,
+                    page-profil : /user-profile, page-app : /user-profile" >
+        </div>
+        <!-- END PAGE CONTENT -->
+        <div class="footer">
+            <div class="copyright">
+                <p class="pull-left sm-pull-reset">
+                    <span>Copyright <span class="copyright">&copy;</span> 2017 </span>
+                    <span>Thai LiveStream</span>.
+                    <span>All rights reserved. </span>
+                    <span>(Development v. 3.0.0)</span>
+                </p>
+                <p class="pull-right sm-pull-reset">
+                    <span><a href="#" class="m-r-10">Support</a> | <a href="#" class="m-l-10 m-r-10">Terms of use</a> | <a href="#" class="m-l-10">Privacy Policy</a></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- END MAIN CONTENT -->
+</section>
+<!-- BEGIN PRELOADER -->
+<div class="loader-overlay">
+    <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/jquery-migrate/jquery-migrate.min.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="assets/global/plugins/gsap/main-gsap.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- BEGIN ANGULARJS SCRIPTS -->
+<script src="plugins/json3/lib/json3.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="bower_components/angular-touch/angular-touch.min.js"></script>
+<script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+<script src="bower_components/angular-ui-sortable/sortable.min.js"></script>
+<script src="bower_components/checklist-model/checklist-model.js"></script>
+<!-- <script src="bower_components/angularMultipleSelect/build/multiple-select.min.js"></script> -->
+<script src="bower_components/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.min.js"></script>
+<script src="bower_components/angular-bootstrap-duallistbox/dist/angular-bootstrap-duallistbox.min.js"></script>
+<script src="bower_components/angular-bootstrap-duallistbox/src/directives/bsDuallistbox.js"></script>
+
+<!--summernote dependencies-->
+<!-- <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"> -->
+<!--summernote-->
+<link rel="stylesheet" href="bower_components/summernote/dist/summernote.css" />
+<script src="bower_components/summernote/dist/summernote.js"></script>
+<script src="bower_components/summernote/lang/summernote-de-DE.js"></script>
+<!--angular-summernote dependencies -->
+<script src="bower_components/angular-summernote/src/angular-summernote.js"></script>
+
+<script src="bower_components/mdl/material.min.js"></script>
+
+<!-- jQury File Upload -->
+<script src="bower_components/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-ui.js"></script>
+<script src="bower_components/blueimp-tmpl/js/tmpl.min.js"></script>
+<script src="bower_components/blueimp-load-image/js/load-image.all.min.js"></script>
+<script src="bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.min.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-process.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-image.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-audio.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-video.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-validate.js"></script>
+<script src="bower_components/blueimp-file-upload/js/jquery.fileupload-angular.js"></script>
+
+<script src="bower_components/lodash/dist/lodash.min.js"></script>
+<script src="bower_components/jschardet/dist/jschardet.min.js"></script>
+
+<script src="app/app.js"></script>
+<script src="directives/ngViewClass.js"></script>
+<script src="app/auth/services/userStorage.js"></script>
+<script src="app/auth/services/sessionService.js"></script>
+<script src="app/auth/services/authenticationService.js"></script>
+
+<!-- END ANGULARJS SCRIPTS -->
+
+<script src="assets/global/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="assets/global/plugins/jquery-cookies/jquery.cookies.min.js"></script>
+<script src="assets/global/plugins/jquery-block-ui/jquery.blockUI.min.js"></script>
+<script src="assets/global/plugins/bootbox/bootbox.min.js"></script>
+<script src="assets/global/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/global/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+<script src="assets/global/plugins/charts-sparkline/sparkline.min.js"></script>
+<!--<script src="assets/global/plugins/retina/retina.min.js"></script>-->
+<script src="assets/global/plugins/select2/select2.min.js"></script>
+<script src="assets/global/plugins/icheck/icheck.min.js"></script>
+<script src="assets/global/plugins/backstretch/backstretch.min.js"></script>
+<script src="assets/global/plugins/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<script src="assets/global/js/sidebar_hover.js"></script>
+<script src="assets/global/js/widgets/notes.js"></script>
+<script src="assets/global/js/pages/search.js"></script>
+<script src="assets/global/plugins/quicksearch/quicksearch.js"></script>
+<script src="assets/global/plugins/slick/slick.js"></script>
+<script src="assets/global/plugins/icheck/icheck.js"></script>
+<script src="assets/global/plugins/switchery/switchery.js"></script>
+<script src="assets/global/plugins/timepicker/jquery-ui-timepicker-addon.js"></script>
+<script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="assets/global/plugins/colorpicker/spectrum.js"></script>
+<script src="assets/global/plugins/touchspin/jquery.bootstrap-touchspin.js"></script>
+<script src="assets/global/plugins/step-form-wizard/js/step-form-wizard.js"></script>
+<script src="assets/global/plugins/step-form-wizard/plugins/parsley/parsley.min.js"></script>
+<script src="assets/global/plugins/jquery-validation/jquery.validate.js"></script>
+<script src="assets/global/plugins/bootstrap-slider/bootstrap-slider.js"></script>
+<script src="assets/global/plugins/ion-slider/ion.rangeSlider.js"></script>
+<script src="assets/global/plugins/bootstrap/js/jasny-bootstrap.js"></script>
+<script src="assets/global/plugins/isotope/isotope.pkgd.min.js"></script>
+<script src="assets/global/plugins/magnific/jquery.magnific-popup.js"></script>
+<script src="assets/global/plugins/moment/moment.min.js"></script>
+<script src="assets/global/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="assets/global/plugins/countup/countUp.js"></script>
+<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
+<script src="assets/global/plugins/google-maps/gmaps.js"></script>
+<script src="assets/global/plugins/google-maps/markerclusterer.js"></script>
+<script src="assets/global/plugins/maps-amcharts/ammap/ammap.min.js"></script>
+<script src="assets/global/plugins/maps-amcharts/ammap/maps/js/worldLow.min.js"></script>
+<script src="assets/global/plugins/maps-amcharts/ammap/themes/black.min.js"></script>
+<script src="assets/global/plugins/maps-amcharts/ammap/ammap_amcharts_extension.js"></script>
+<script src="assets/global/plugins/maps-amcharts/ammap/maps/js/continentsLow.js"></script>
+<script src="assets/global/plugins/maps-amcharts/ammap/maps/js/worldLow.js"></script>
+<script src="assets/global/plugins/maps-amcharts/ammap/maps/js/usaLow.js"></script>
+<script src="assets/global/plugins/bootstrap-loading/lada.min.js"></script>
+<script src="assets/global/plugins/jstree/jstree.js"></script>
+
+<!-- Date picker -->
+<!-- <script type="text/javascript" src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script> -->
+
+<script src="assets/global/plugins/typed/typed.js"></script>
+<script src="assets/global/plugins/cke-editor/ckeditor.js"></script>
+<script src="assets/global/plugins/cke-editor/config.js"></script>
+<script src="assets/global/plugins/cke-editor/styles.js"></script>
+<script src="assets/global/plugins/cke-editor/adapters/adapters.min.js"></script>
+<script src="assets/global/plugins/cke-editor/lang/en.js"></script>
+<script src="assets/global/plugins/cke-editor/skins/bootstrapck/skin.js"></script>
+<!--<script src="assets/global/plugins/summernote/summernote.js"></script>-->
+<script src="assets/global/plugins/prettify/prettify.js"></script>
+<script src="assets/global/plugins/dropzone/dropzone.min.js"></script>
+<script src="assets/global/plugins/idle-timeout/jquery.idletimeout.min.js"></script>
+<script src="assets/global/plugins/idle-timeout/jquery.idletimer.min.js"></script>
+<script src="assets/global/plugins/cropper/cropper.js"></script>
+<script src="assets/global/plugins/noty/jquery.noty.packaged.min.js"></script>
+<script src="assets/global/plugins/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+<script src="assets/global/plugins/bootstrap-context-menu/bootstrap-contextmenu.min.js"></script>
+<script src="assets/global/plugins/multidatepicker/multidatespicker.min.js"></script>
+<script src="assets/global/js/widgets/todo_list.js"></script>
+<script src="assets/global/plugins/metrojs/metrojs.min.js"></script>
+<script src="assets/global/plugins/charts-chartjs/Chart.min.js"></script>
+<script src="assets/global/plugins/charts-highstock/js/highstock.min.js"></script>
+<script src="assets/global/plugins/charts-highstock/js/modules/exporting.min.js"></script>
+<script src="assets/global/plugins/skycons/skycons.min.js"></script>
+<script src="assets/global/plugins/simple-weather/jquery.simpleWeather.js"></script>
+<script src="assets/global/plugins/bootstrap-tags-input/bootstrap-tagsinput.js"></script>
+<script src="bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
+
+<script src="assets/global/plugins/rateit/jquery.rateit.min.js"></script>
+<script src="assets/global/plugins/charts-highstock/js/highcharts-more.min.js"></script>
+<script src="assets/global/plugins/charts-highstock/js/modules/exporting.min.js"></script>
+<script src="assets/global/plugins/autosize/autosize.min.js"></script>
+<script src="assets/global/js/widgets/widget_weather.js"></script>
+<script src="assets/global/js/pages/ecommerce.js"></script>
+<script src="assets/global/js/pages/ecommerce.js"></script>
+
+<!-- ngclipboard -->
+<script src="https://cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.min.js"></script>
+<script src="bower_components/ngclipboard/dist/ngclipboard.min.js"></script>
+
+<!-- BEGIN JWPLAYER -->
+<!-- <script src="//content.jwplatform.com/libraries/LJzMSEG6.js"></script> -->
+<script src="assets/global/js/jwplayer/jwplayer-7-11-3.js"></script>
+<script type="text/javascript" src="assets/global/js/grindplayer/swfobject.min.js"></script>
+<script>jwplayer.key="ysQTVfHC5iQ8flS72k460WTgxEPDzPg90dTu2NzjVT0=";</script>
+
+<!-- BEGIN CUSTOM ANGULARJS SCRIPTS -->
+<script src="js/pages/charts.js"></script>
+<script src="js/pages/charts_finance.js"></script>
+<script src="js/pages/layouts_api.js"></script>
+<script src="js/builder.js"></script>
+<script src="js/application.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/quickview.js"></script>
+<script src="app/mainCtrl.js"></script>
+<!-- END CUSTOM ANGULARJS SCRIPTS -->
+
+<script src="app/settings/settingService.js"></script>
+<script src="app/settings/functionsService.js"></script>
+<script src="app/dashboard/services/dashboardService.js"></script>
+<script src="app/dashboard/controllers/dashboardCtrl.js"></script>
+<script src="app/admins/services/adminsService.js"></script>
+<script src="app/admins/controllers/adminsCtrl.js"></script>
+<script src="app/admins/controllers/adminsUploadCtrl.js"></script>
+<script src="app/admins_groups/services/admins_groupsService.js"></script>
+<script src="app/admins_groups/controllers/admins_groupsCtrl.js"></script>
+<script src="app/admins_menu/services/admins_menuService.js"></script>
+<script src="app/configuration/services/configurationService.js"></script>
+<script src="app/configuration/controllers/configurationLogoUploadCtrl.js"></script>
+<script src="app/configuration/controllers/configurationCtrl.js"></script>
+<script src="app/highlights/services/highlightsService.js"></script>
+<script src="app/highlights/controllers/highlightsCtrl.js"></script>
+<script src="app/highlights/controllers/highlightsUploadCtrl.js"></script>
+<script src="app/qa/services/qaService.js"></script>
+<script src="app/qa/controllers/qaCtrl.js"></script>
+<script src="app/groups/services/groupsService.js"></script>
+<script src="app/groups/controllers/groupsCtrl.js"></script>
+<script src="app/groups/controllers/groupsThumbnailUploadCtrl.js"></script>
+<script src="app/categories/services/categoriesService.js"></script>
+<script src="app/categories/controllers/categoriesCtrl.js"></script>
+<script src="app/categories/controllers/categoriesIconUploadCtrl.js"></script>
+<script src="app/instructors/services/instructorsService.js"></script>
+<script src="app/instructors/controllers/instructorsPdfUploadCtrl.js"></script>
+<script src="app/instructors/controllers/instructorsCtrl.js"></script>
+<script src="app/courses/services/coursesService.js"></script>
+<script src="app/courses/controllers/coursesCtrl.js"></script>
+<script src="app/courses/controllers/coursesThumbnailUploadCtrl.js"></script>
+<script src="app/topics/services/topicsService.js"></script>
+<script src="app/topics/controllers/topicsCtrl.js"></script>
+<!--<script src="app/slides/services/slidesService.js"></script>-->
+<!--<script src="app/slides/controllers/slidesCtrl.js"></script>-->
+<!--<script src="app/slides/controllers/slidesPictureUploadCtrl.js"></script>-->
+<script src="app/members/services/membersService.js"></script>
+<script src="app/members/controllers/membersCtrl.js"></script>
+<script src="app/members_pre_approved/services/members_pre_approvedService.js"></script>
+<script src="app/members_pre_approved/controllers/members_pre_approvedCtrl.js"></script>
+<script src="app/documents/services/documentsService.js"></script>
+<script src="app/documents/controllers/documentsCtrl.js"></script>
+<script src="app/documents/controllers/documentsFileUploadCtrl.js"></script>
+<script src="app/quiz/services/quizService.js"></script>
+<script src="app/quiz/controllers/quizCtrl.js"></script>
+<script src="app/questions/services/questionsService.js"></script>
+<script src="app/questions/controllers/questionsCtrl.js"></script>
+<script src="app/certificates/services/certificatesService.js"></script>
+<script src="app/certificates/controllers/certificatesCtrl.js"></script>
+<script src="app/certificates/controllers/certificatesLogoUploadCtrl.js"></script>
+<script src="app/certificates/controllers/certificatesLogoEnUploadCtrl.js"></script>
+<script src="app/certificates/controllers/certificatesWatermarkUploadCtrl.js"></script>
+<script src="app/certificates/controllers/certificatesWatermarkEnUploadCtrl.js"></script>
+<script src="app/certificates/controllers/certificatesSignatureUploadCtrl.js"></script>
+<script src="app/usage_statistic/services/usage_statisticService.js"></script>
+<script src="app/usage_statistic/controllers/usage_statisticCtrl.js"></script>
+<script src="app/stats/services/statsService.js"></script>
+<script src="app/stats/controllers/statsCtrl.js"></script>
+<script src="app/stats_live/services/stats_liveService.js"></script>
+<script src="app/stats_live/controllers/stats_liveCtrl.js"></script>
+<script src="app/super_users/services/super_usersService.js"></script>
+<script src="app/super_users/controllers/super_usersCtrl.js"></script>
+<script src="app/sub_groups/services/sub_groupsService.js"></script>
+<script src="app/sub_groups/controllers/sub_groupsCtrl.js"></script>
+<script src="app/level_groups/services/level_groupsService.js"></script>
+<script src="app/level_groups/controllers/level_groupsCtrl.js"></script>
+<script src="app/classrooms/services/classroomsService.js"></script>
+<script src="app/classrooms/controllers/classroomsCtrl.js"></script>
+<script src="app/domains/services/domainsService.js"></script>
+<script src="app/license_types/services/license_typesService.js"></script>
+<script src="app/license_types/controllers/license_typesCtrl.js"></script>
+
+<script src="app/slides/services/slidesService.js"></script>
+<script src="app/slides/controllers/slidesCtrl.js"></script>
+<script src="app/slides/controllers/slidesPictureUploadCtrl.js"></script>
+<script src="app/slides/controllers/slidesPictureUploadTopicsCtrl.js"></script>
+<script src="app/slides/controllers/slidesPdfUploadCtrl.js"></script>
+<script src="app/slides_times/services/slides_timesService.js"></script>
+
+<script src="app/courses/controllers/coursesVideoUploadCtrl.js"></script>
+<script src="app/topics/controllers/topicsVideoUploadCtrl.js"></script>
+<script src="app/ffmpeg/services/ffmpegService.js"></script>
+<script src="app/sc_videos/services/scVideosService.js"></script>
+<script src="app/videos/services/videosService.js"></script>
+<script src="app/transcodings/services/transcodingsService.js"></script>
+
+<script src="app/images/services/imagesService.js"></script>
+<script src="app/images/controllers/imagesLogoUploadCtrl.js"></script>
+<script src="app/images/controllers/imagesCoursesLogoUploadCtrl.js"></script>
+<script src="app/images/controllers/imagesSignatureUploadCtrl.js"></script>
+<script src="app/images/controllers/imagesCoursesSignatureUploadCtrl.js"></script>
+
+<script src="app/questionnaire_packs/services/questionnaire_packsService.js"></script>
+<script src="app/questionnaire_packs/controllers/questionnaire_packsCtrl.js"></script>
+<script src="app/questionnaires/services/questionnairesService.js"></script>
+<script src="app/questionnaires/controllers/questionnairesCtrl.js"></script>
+
+<script src="app/my_profile/services/my_profileService.js"></script>
+<script src="app/my_profile/controllers/my_profileCtrl.js"></script>
+<script src="app/my_profile/controllers/my_profileUploadCtrl.js"></script>
+
+<script src="app/methods/services/methodsService.js"></script>
+<script src="app/methods/controllers/methodsCtrl.js"></script>
+<script src="app/methods/controllers/methodsUploadCtrl.js"></script>
+
+<script src="app/orders/services/ordersService.js"></script>
+<script src="app/orders/controllers/ordersCtrl.js"></script>
+
+<script src="app/payments/services/paymentsService.js"></script>
+<script src="app/payments/controllers/paymentsCtrl.js"></script>
+
+<script src="app/jobs/services/jobsService.js"></script>
+
+<script src="app/livestreams/services/livestreamsService.js"></script>
+<script src="app/livestreams/controllers/livestreamsCtrl.js"></script>
+
+<script src="app/cron_jobs/services/cron_jobsService.js"></script>
+
+<script src="app/discussions/services/discussionsService.js"></script>
+<script src="app/discussions/controllers/discussionsCtrl.js"></script>
+<script src="app/discussions/controllers/discussionsBoardCtrl.js"></script>
+<script src="app/discussions/controllers/discussionsFileUploadCtrl.js"></script>
+
+<script src="app/subtitles/services/subtitlesService.js"></script>
+<script src="app/subtitles/controllers/subtitlesCtrl.js"></script>
+
+</body>
+</html>

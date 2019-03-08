@@ -1,0 +1,308 @@
+<div class="header">
+    <h2><i class="icon-login"></i> กลุ่มย่อย <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">กลุ่มย่อย</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="panel">
+                    <tabset>
+                        <tab>
+                            <tab-heading><i class="fa fa-table"></i> กลุ่มย่อย (ดูแลโดยตรง)</tab-heading>
+                            <div class="panel-content">
+                                <div class="m-b-20">
+                                    <div class="btn-group">
+                                        <a href="#level_groups/create" id="table-edit_new" class="btn btn-embossed btn-primary"><i class="fa fa-plus"></i> สร้าง กลุ่มย่อย</a>
+                                    </div>
+                                    <div class="btn-group" ng-if="admin.super_users">
+                                        <label class="label label-danger">*จำกัดการสร้างได้ {{admin.limit_groups}} กลุ่มย่อย</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 p-10 m-b-10 bg-primary">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">ค้นหา</label>
+                                            <div class="col-sm-12 p-0 append-icon">
+                                                <input type="text" id="finder" name="search" class="form-control form-white" placeholder="ค้นหาชื่อ, รหัส" autofocus="" ng-model="filters_level_groups.search" ng-change="changeFilterLevelGroups()">
+                                                <i class="icon-magnifier"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="p-5"></div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">กลุ่ม (Group)</label>
+                                            <div class="col-sm-12 p-0">
+                                                <select id="filter_level_groups_groups_id" class="form-control form-white select2" data-style="white" data-search="false" data-style="white" name="groups_id" ng-model="filters_level_groups.groups_id" ng-options="group.id as group.title for group in level_groups_groups_list" ng-change="changeFilterLevelGroups()">
+                                                    <option value="">-- กลุ่ม (Group) --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">กลุ่มย่อยหลัก</label>
+                                            <div class="col-sm-12 p-0">
+                                                <select id="filter_level_groups_sub_groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" name="sub_groups_id" ng-model="filters_level_groups.sub_groups_id" ng-options="sub_group.id as sub_group.title for sub_group in level_groups_sub_groups_list" ng-change="changeFilterLevelGroups()">
+                                                    <option value="">-- กลุ่มย่อยหลัก --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 text-f-right p-l-0">
+                                        <label class="col-sm-12 p-0">&nbsp;</label>
+                                        <button type="submit" id="btnFiltersLevelGroupsSubmit" class="btn btn-dark" ng-click="changeFilterLevelGroups()"><i class="fa fa-search" aria-hidden="true"></i> &nbsp;ค้นหา</button>
+                                        <button type="button" id="btnFiltersLevelGroupsClear" class="btn btn-default m-r-0" ng-click="clearFiltersLevelGroups()"><i class="fa fa-refresh" aria-hidden="true"></i> &nbsp;ล้าง</button>
+                                    </div>
+                                </div>
+
+                                <div class="filter-left">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th class="id">
+                                                <a ng-click="sort_by('id')"><i class="fa fa-sort"></i></a>#
+                                            </th>
+                                            <th class="title">
+                                                <a ng-click="sort_by('title')"><i class="fa fa-sort"></i></a>ชื่อกลุ่มย่อย
+                                            </th>
+                                            <th class="text-center">จำนวนสมาชิก</th>
+                                            <th>ผู้ดูแล</th>
+                                            <th>กลุ่มย่อยหลัก</th>
+                                            <!-- <th class="order">
+                                                <a ng-click="sort_by('order')"><i class="fa fa-sort"></i></a>ลำดับ
+                                            </th> -->
+                                            <th class="approve">
+                                                <a ng-click="sort_by('approve')"><i class="fa fa-sort"></i></a>การอนุมัติ
+                                            </th>
+                                            <th>แก้ไข</th>
+                                            <th>ลบ</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody ui-sortable="sortableOptions" ng-model="level_groups">
+                                        <tr ng-repeat="level_groups_data in level_groups">
+                                            <td>{{level_groups_data.id}}</td>
+                                            <td>
+                                                <a ng-href="#level_groups/{{level_groups_data.id}}/edit">{{level_groups_data.title}}</a><br>
+                                                <label class="label label-default" ng-if="level_groups_data.modify_by!=''" ><i class="icon-user"></i><strong>{{level_groups_data.modify_by}}</strong> ({{level_groups_data.modify_datetime}})</label>
+                                            </td>
+                                            <td class="text-center">({{level_groups_data.members | number}})</td>
+                                            <td>
+                                                <label class="label label-primary">{{level_groups_data.admins.first_name}} {{level_groups_data.admins.last_name}}</label><br>
+                                                <label class="label label-primary">{{level_groups_data.admins.email}}</label><br>
+                                                <label class="label label-primary">{{level_groups_data.admins.mobile}}</label>
+                                            </td>
+                                            <td><label class="label label-warning">{{level_groups_data.sub_groups.title}}</label></td>
+                                            <!-- <td>
+                                                <input style="width: 70px; text-align: center;" class="form-control form-white" type="text" ng-model="level_groups_data.order" ng-blur="sortOrder(level_groups_data)" ng-focus="disableSortable()">
+                                            </td> -->
+                                            <td>
+                                                <label class="label label-warning" ng-if="!level_groups_data.approve">รออนุมัติ</label>
+                                                <label class="label label-success" ng-if="level_groups_data.approve">อนุมัติ</label>
+                                            </td>
+                                            <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#level_groups/{{level_groups_data.id}}/edit"></a></td>
+                                            <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteLevelGroups(level_groups_data)"></a></td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot class="tbl-footer">
+                                        <td colspan="10">
+                                            <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{defaultOptions.total}}</b> record(s)</div>
+                                            <div class="pull-right">
+                                                <pagination total-items="defaultOptions.total" ng-model="defaultOptions.current_page" items-per-page="defaultOptions.per_page" num-pages="defaultOptions.last_page" class="pagination pagination-alt" boundary-links="true" max-size="defaultOptions.max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                            </div>
+                                        </td>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab>
+                            <tab-heading><i class="fa fa-table"></i> กลุ่มย่อย (มีสิทธิ์เข้าถึง)</tab-heading>
+                            <div class="panel-content" ng-if="admin.super_users">
+                                <div class="col-lg-12 p-10 m-b-10 bg-primary">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">ค้นหา</label>
+                                            <div class="col-sm-12 p-0 append-icon">
+                                                <input type="text" id="finder" name="search" class="form-control form-white" placeholder="ค้นหาชื่อ, รหัส" autofocus="" ng-model="filters_access_groups.search" ng-change="changeFilterAccessGroups()">
+                                                <i class="icon-magnifier"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="p-5"></div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">กลุ่ม (Group)</label>
+                                            <div class="col-sm-12 p-0">
+                                                <select id="filter_access_groups_groups_id" class="form-control form-white select2" data-style="white" data-search="false" data-style="white" name="groups_id" ng-model="filters_access_groups.groups_id" ng-options="group.id as group.title for group in access_groups_groups_list" ng-change="changeFilterAccessGroups()">
+                                                    <option value="">-- กลุ่ม (Group) --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">กลุ่มย่อยหลัก</label>
+                                            <div class="col-sm-12 p-0">
+                                                <select id="filter_access_groups_sub_groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" name="sub_groups_id" ng-model="filters_access_groups.sub_groups_id" ng-options="sub_group.id as sub_group.title for sub_group in access_groups_sub_groups_list" ng-change="changeFilterAccessGroups()">
+                                                    <option value="">-- กลุ่มย่อยหลัก --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 text-f-right p-l-0">
+                                        <label class="col-sm-12 p-0">&nbsp;</label>
+                                        <button type="submit" id="btnFiltersAccessGroupsSubmit" class="btn btn-dark" ng-click="changeFilterAccessGroups()"><i class="fa fa-search" aria-hidden="true"></i> &nbsp;ค้นหา</button>
+                                        <button type="button" id="btnFiltersAccessGroupsClear" class="btn btn-default m-r-0" ng-click="clearFiltersAccessGroups()"><i class="fa fa-refresh" aria-hidden="true"></i> &nbsp;ล้าง</button>
+                                    </div>
+                                </div>
+
+                                <div class="filter-left">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>ชื่อกลุ่มย่อย</th>
+                                            <th class="text-center">จำนวนสมาชิก</th>
+                                            <th>ผู้ดูแล</th>
+                                            <th>กลุ่มย่อยหลัก</th>
+                                            <th>การอนุมัติ</th>
+                                            <th>แก้ไข</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody ng-model="access_groups">
+                                        <tr ng-repeat="access_groups_data in access_groups">
+                                            <td>{{access_groups_data.id}}</td>
+                                            <td>
+                                                <a ng-href="#level_groups/{{access_groups_data.id}}/edit">{{access_groups_data.title}}</a><br>
+                                                <label class="label label-default" ng-if="access_groups_data.modify_by!=''" ><i class="icon-user"></i><strong>{{access_groups_data.modify_by}}</strong> ({{access_groups_data.modify_datetime}})</label>
+                                            </td>
+                                            <td class="text-center">({{access_groups_data.members | number}})</td>
+                                            <td>
+                                                <label class="label label-primary">{{access_groups_data.admins.first_name}} {{access_groups_data.admins.last_name}}</label><br>
+                                                <label class="label label-primary">{{access_groups_data.admins.email}}</label><br>
+                                                <label class="label label-primary">{{access_groups_data.admins.mobile}}</label>
+                                            </td>
+                                            <td><label class="label label-warning">{{access_groups_data.sub_groups.title}}</label></td>
+                                            <td>
+                                                <label class="label label-warning" ng-if="!access_groups_data.approve">รออนุมัติ</label>
+                                                <label class="label label-success" ng-if="access_groups_data.approve">อนุมัติ</label>
+                                            </td>
+                                            <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#level_groups/{{access_groups_data.id}}/edit"></a></td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot class="tbl-footer">
+                                            <td colspan="7">
+                                                <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{defaultOptionsAccessGroups.total}}</b> record(s)</div>
+                                                <div class="pull-right">
+                                                    <pagination total-items="defaultOptionsAccessGroups.total" ng-model="defaultOptionsAccessGroups.current_page" items-per-page="defaultOptionsAccessGroups.per_page" num-pages="defaultOptionsAccessGroups.last_page" class="pagination pagination-alt" boundary-links="true" max-size="defaultOptionsAccessGroups.max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                                </div>
+                                            </td>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab>
+                            <tab-heading><i class="fa fa-table"></i> กลุ่มย่อย (รออนุมัติการสร้าง)</tab-heading>
+                            <div class="panel-content">
+                                <div class="col-lg-12 p-10 m-b-10 bg-primary">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">ค้นหา</label>
+                                            <div class="col-sm-12 p-0 append-icon">
+                                                <input type="text" id="finder" name="search" class="form-control form-white" placeholder="ค้นหาชื่อ, รหัส" autofocus="" ng-model="filters_waiting_groups.search" ng-change="changeFilterWaitingGroups()">
+                                                <i class="icon-magnifier"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="p-5"></div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">กลุ่ม (Group)</label>
+                                            <div class="col-sm-12 p-0">
+                                                <select id="filter_waiting_groups_groups_id" class="form-control form-white select2" data-style="white" data-search="false" data-style="white" name="groups_id" ng-model="filters_waiting_groups.groups_id" ng-options="group.id as group.title for group in waiting_groups_groups_list" ng-change="changeFilterWaitingGroups()">
+                                                    <option value="">-- กลุ่ม (Group) --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 p-0">กลุ่มย่อยหลัก</label>
+                                            <div class="col-sm-12 p-0">
+                                                <select id="filter_waiting_groups_sub_groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" name="sub_groups_id" ng-model="filters_waiting_groups.sub_groups_id" ng-options="sub_group.id as sub_group.title for sub_group in waiting_groups_sub_groups_list" ng-change="changeFilterWaitingGroups()">
+                                                    <option value="">-- กลุ่มย่อยหลัก --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 text-f-right p-l-0">
+                                        <label class="col-sm-12 p-0">&nbsp;</label>
+                                        <button type="submit" id="btnFiltersWaitingGroupsSubmit" class="btn btn-dark" ng-click="changeFilterWaitingGroups()"><i class="fa fa-search" aria-hidden="true"></i> &nbsp;ค้นหา</button>
+                                        <button type="button" id="btnFiltersWaitingGroupsClear" class="btn btn-default m-r-0" ng-click="clearFiltersWaitingGroups()"><i class="fa fa-refresh" aria-hidden="true"></i> &nbsp;ล้าง</button>
+                                    </div>
+                                </div>
+
+                                <div class="filter-left">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>ชื่อกลุ่มย่อย</th>
+                                            <th class="text-center">จำนวนสมาชิก</th>
+                                            <th>ผู้ดูแล</th>
+                                            <th>กลุ่มย่อยหลัก</th>
+                                            <th>การอนุมัติ</th>
+                                            <th>แก้ไข</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody ng-model="waiting_groups">
+                                        <tr ng-repeat="waiting_groups_data in waiting_groups">
+                                            <td>{{waiting_groups_data.id}}</td>
+                                            <td>
+                                                <a ng-href="#level_groups/{{waiting_groups_data.id}}/edit">{{waiting_groups_data.title}}</a><br>
+                                                <label class="label label-default" ng-if="waiting_groups_data.modify_by!=''" ><i class="icon-user"></i><strong>{{waiting_groups_data.modify_by}}</strong> ({{waiting_groups_data.modify_datetime}})</label>
+                                            </td>
+                                            <td class="text-center">({{waiting_groups_data.members | number}})</td>
+                                            <td>
+                                                <label class="label label-primary">{{waiting_groups_data.admins.first_name}} {{waiting_groups_data.admins.last_name}}</label><br>
+                                                <label class="label label-primary">{{waiting_groups_data.admins.email}}</label><br>
+                                                <label class="label label-primary">{{waiting_groups_data.admins.mobile}}</label>
+                                            </td>
+                                            <td><label class="label label-warning">{{waiting_groups_data.sub_groups.title}}</label></td>
+                                            <td>
+                                                <label class="label label-warning" ng-if="!waiting_groups_data.approve">รออนุมัติ</label>
+                                                <label class="label label-success" ng-if="waiting_groups_data.approve">อนุมัติ</label>
+                                            </td>
+                                            <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#level_groups/{{waiting_groups_data.id}}/edit"></a></td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot class="tbl-footer">
+                                            <td colspan="7">
+                                                <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{defaultOptionsWaitingGroups.total}}</b> record(s)</div>
+                                                <div class="pull-right">
+                                                    <pagination total-items="defaultOptionsWaitingGroups.total" ng-model="defaultOptionsWaitingGroups.current_page" items-per-page="defaultOptionsWaitingGroups.per_page" num-pages="defaultOptionsWaitingGroups.last_page" class="pagination pagination-alt" boundary-links="true" max-size="defaultOptionsWaitingGroups.max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                                </div>
+                                            </td>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+<div class="header">
+    <h2><i class="icon-note"></i> Slides <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#slides">Slides</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+            <div class="row">
+               <form class="form-horizontal" ng-submit="submitSlides(slides_data)">
+               <div class="panel">
+                   <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <div id="player"></div>
+                                </div>
+
+                                <button style="margin: 20px 0 0 0;" type="button" class="btn btn-sm btn-warning" data-toggle="modal" ng-click="ReloadPlayer(slides_data)"><i class="fa fa-repeat"></i> Reload</button>
+                                <button style="margin: 20px 0 0 0;" type="button" class="btn btn-sm btn-danger" data-toggle="modal" ng-click="ReviewTimeSync(slides_data)"><i class="icon icon-control-play"></i> Review Time Sync</button>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-controller='slidesUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                    <a ng-if="slides_data.picture" ng-href="{{base_slides_picture}}{{slides_data.picture}}" target="_blank"><img ng-src="{{base_slides_picture}}{{slides_data.picture}}" class="img-responsive"></a>
+                                    <br>
+                                    <label class="col-sm-12">Picture <span class="label label-danger">size 2000px * 1500px</span></label>
+                                    <input type="file" class="form-control" nv-file-select="" uploader="img_uploader" />
+                                    <table class="table">
+                                        <tbody>
+                                        <tr ng-repeat="item in img_uploader.queue">
+                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                <div class="progress" style="margin-bottom: 0;">
+                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                            </td>
+                                            <td nowrap>
+                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                </button>
+                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2">Courses</label>
+                            <div class="col-sm-9">
+                                <select class="form-control form-white select2" data-style="white" data-search="true" ng-model="slides_data.courses_id" ng-options="course.id as course.title for course in courses" >
+                                    <option value="">-- Select Courses --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2">Parent</label>
+                            <div class="col-sm-9">
+                                <select class="form-control form-white select2" data-style="white" data-search="true"  ng-model="slides_data.topics_id" ng-options="parent.id as parent.title for parent in parents" >
+                                    <option value="">-- Select Parent --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2">Time</label>
+                            <div class="col-sm-4">
+                                <input class="form-control" type="text" data-mask="99:99:99"  ng-model="slides_data.time" placeholder="00:00:00">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2">Status</label>
+                            <div class="col-sm-9">
+                                <div class="onoffswitch2">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{slides_data.id}}" ng-click="toggleStatus(slides_data)" ng-checked="slides_data.status==1">
+                                    <label class="onoffswitch-label" for="statusOnOffSwitch{{slides_data.id}}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="m-t-20">
+                                <div class="form-group">
+                                    <label class="col-sm-2"></label>
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                        <a href="#slides" class="btn btn-embossed btn-default">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                   </div>
+               </div>
+
+               </form>
+
+            </div>
+
+
+    </div>
+</div>

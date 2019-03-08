@@ -1,0 +1,131 @@
+<div class="header">
+    <h2><i class="icon-wrench"></i> Configuration <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li>Configuration</li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+<div class="col-lg-12">
+
+<div class="row">
+    <form class="form-horizontal configuration-frm" ng-submit="submitConfiguration(configuration_data)">
+
+        <div class="panel">
+            <div class="panel-header bg-dark">
+                <h2 class="panel-title"><i class="icon-note"></i> Information</h2>
+            </div>
+            <div class="panel-content">
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Title <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <input id="title" class="form-control form-white" type="text" ng-model="configuration_data.title">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Meta Description</label>
+                            <div class="col-sm-9">
+                                <textarea id="meta_description" class="form-control form-white" ng-model="configuration_data.meta_description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Meta Keywords</label>
+                            <div class="col-sm-9">
+                                <textarea id="meta_keywords" class="form-control form-white" ng-model="configuration_data.meta_keywords"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-9">
+                                <textarea id="description" ck-editor ng-model="configuration_data.description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Description Status</label>
+                            <div class="col-sm-9">
+                                <div class="onoffswitch2">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="descriptionStatusOnOffSwitch{{configuration_data.id}}" ng-click="toggleDescriptionStatus(configuration_data)" ng-checked="configuration_data.description_status==1">
+                                    <label class="onoffswitch-label" for="descriptionStatusOnOffSwitch{{configuration_data.id}}">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Footer</label>
+                            <div class="col-sm-9">
+                                <textarea id="footer" ck-editor ng-model="configuration_data.footer"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Logo <span class="text-danger">*</span><br><span class="label label-danger">size 320px * 100px</span></label>
+                            <div class="col-sm-9">
+                                <div ng-controller='configurationLogoUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                    <a ng-if="configuration_data.logo" ng-href="{{base_configuration_logo}}{{configuration_data.logo}}" target="_blank"><img ng-src="{{base_configuration_logo}}{{configuration_data.logo}}" class="img-responsive"></a>
+                                    <br>
+                                    <input id="logo" type="file" class="form-control" nv-file-select="" uploader="img_uploader" />
+                                    <table class="table">
+                                        <tbody>
+                                        <tr ng-repeat="item in img_uploader.queue">
+                                            <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                            <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                            <td width="30%" ng-show="img_uploader.isHTML5">
+                                                <div class="progress" style="margin-bottom: 0;">
+                                                    <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                            </td>
+                                            <td nowrap>
+                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                </button>
+                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-t-20">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+</div>
+</div>

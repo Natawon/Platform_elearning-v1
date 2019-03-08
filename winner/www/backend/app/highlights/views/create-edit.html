@@ -1,0 +1,123 @@
+<div class="header">
+    <h2><i class="icon-fire"></i> Highlights <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#highlights">Highlights</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal highlights-frm" ng-submit="submitHighlights(highlights_data)">
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">กลุ่ม (Group) <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select id="groups_id" class="form-control form-white select2" data-style="white" data-search="true" data-style="white" ng-model="highlights_data.groups_id" ng-options="group.id as group.title for group in groups" >
+                                        <option value="">-- กรุณาเลือก --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Title <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input id="title" class="form-control form-white" type="text" ng-model="highlights_data.title">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">URL <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input id="url" class="form-control form-white" type="text" ng-model="highlights_data.url">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Start Date <span class="text-danger">*</span></label>
+                                <div class="col-sm-3 prepend-icon">
+                                    <input type="text" id="start_date" name="datepicker" class="date-picker form-control" ng-model="highlights_data.start_date">
+                                    <i class="icon-calendar"></i>
+                                </div>
+                                <label class="col-sm-2 control-label">End Date <span class="text-danger">*</span></label>
+                                <div class="col-sm-3 prepend-icon">
+                                    <input type="text" id="end_date" name="datepicker" class="date-picker form-control" ng-model="highlights_data.end_date">
+                                    <i class="icon-calendar"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Picture <span class="text-danger">*</span><br><span class="label label-danger">size 1200px * 360px</span></label>
+                                <div class="col-sm-9">
+                                    <div ng-controller='highlightsUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                        <a ng-if="highlights_data.picture" ng-href="{{base_highlights_picture}}{{highlights_data.picture}}" target="_blank"><img ng-src="{{base_highlights_picture}}{{highlights_data.picture}}" class="img-responsive"></a>
+                                        <br>
+                                        <input id="picture" type="file" class="form-control" nv-file-select="" uploader="img_uploader" />
+                                        <table class="table">
+                                            <tbody>
+                                            <tr ng-repeat="item in img_uploader.queue">
+                                                <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                <td width="30%" ng-show="img_uploader.isHTML5">
+                                                    <div class="progress" style="margin-bottom: 0;">
+                                                        <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                </td>
+                                                <td nowrap>
+                                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Status</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{highlights_data.id}}" ng-click="toggleStatus(highlights_data)" ng-checked="highlights_data.status==1">
+                                        <label class="onoffswitch-label" for="statusOnOffSwitch{{highlights_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitHighlights(highlights_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                    <button type="button" class="btn btn-embossed btn-primary" ng-click="submitHighlights(highlights_data, 'continue_editing')">Save and continue editing</button>
+                                    <a href="#highlights" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

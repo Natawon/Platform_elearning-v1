@@ -1,0 +1,203 @@
+<div class="header">
+    <h2><i class="icon-users"></i> My Profile <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li>My Profile</li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal my_profile-access-frm" ng-submit="submitProfileAccess(my_profile_data)">
+                        <div class="col-md-12">
+                            <div class="form-group" ng-if="admin.super_users != 1">
+                                <label class="col-sm-2 control-label">Username <span class="text-danger">*</span></label>
+                                <div class="col-sm-9 prepend-icon">
+                                    <input id="username" class="form-control form-white" type="text" placeholder="Minimum 6 characters..." ng-model="my_profile_data.username">
+                                    <i class="icon-lock"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Old Password <span class="text-danger">*</span></label>
+                                <div class="col-sm-9 prepend-icon">
+                                    <input id="old_password" class="form-control form-white" type="password" placeholder="Old Password" ng-model="my_profile_data.old_password" autocomplete="off">
+                                    <i class="icon-lock"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">New Password <i class="fa fa-question-circle c-grey" rel="popover" data-container="body" data-toggle="popover" data-placement="bottom" data-content="{{hint.password}}" data-original-title="Hint Info."></i> <span class="text-danger">*</span></label>
+                                <div class="col-sm-9 prepend-icon">
+                                    <input id="new_password" class="form-control form-white" type="password" placeholder="New Password" ng-model="my_profile_data.new_password" autocomplete="off">
+                                    <i class="icon-lock"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Confirm Password <span class="text-danger">*</span></label>
+                                <div class="col-sm-9 prepend-icon">
+                                    <input id="confirm_new_password" class="form-control form-white" type="password" placeholder="Confirm New Password" ng-model="my_profile_data.confirm_new_password" autocomplete="off">
+                                    <i class="icon-lock"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-primary">Change</button>
+                                    <a href="#my_profile" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal my_profile-frm" ng-submit="submitMyProfile(my_profile_data)">
+                        <div class="col-md-12">
+                            <div class="form-group" ng-if="admin.super_users != 1">
+                                <label class="col-sm-2 control-label">First name <span class="text-danger">*</span></label>
+                                <div class="col-sm-9 prepend-icon">
+                                    <input id="first_name" class="form-control form-white" type="text" placeholder="Enter your first name..." ng-model="my_profile_data.first_name">
+                                    <i class="icon-user"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="admin.super_users != 1">
+                                <label class="col-sm-2 control-label">Last name <span class="text-danger">*</span></label>
+                                <div class="col-sm-9 prepend-icon">
+                                    <input id="last_name" class="form-control form-white" type="text" placeholder="Enter your last name..." ng-model="my_profile_data.last_name">
+                                    <i class="icon-user"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="admin.super_users != 1">
+                                <label class="col-sm-2 control-label">E-Mail <span class="text-danger">*</span></label>
+                                <div class="col-sm-9 prepend-icon">
+                                    <input id="email" class="form-control form-white" type="text" placeholder="Enter your email..." ng-model="my_profile_data.email">
+                                    <i class="icon-envelope"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Mobile number <span class="text-danger">*</span></label>
+                                <div class="col-sm-9 prepend-icon">
+                                    <input id="mobile" class="form-control form-white" type="text" placeholder="Mobile Number..." ng-model="my_profile_data.mobile">
+                                    <i class="icon-screen-smartphone"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Telephone number</label>
+                                <div class="col-sm-9 prepend-icon">
+                                    <input id="phone" class="form-control form-white" type="text" placeholder="Telephone Number..." ng-model="my_profile_data.phone">
+                                    <i class="icon-call-end"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="admin.super_users != 1">
+                                <label class="col-sm-2 control-label">Address</label>
+                                <div class="col-sm-9">
+                                    <textarea id="address" rows="5" class="form-control form-white" placeholder="Write your address... (minimum 30 characters)" ng-model="my_profile_data.address"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="admin.super_users != 1">
+                                <label class="col-sm-2 control-label">Picture <span class="label label-danger">size 64px * 64px</span></label>
+                                <div class="col-sm-9">
+                                    <div ng-controller='my_profileUploadCtrl' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                        <a ng-if="my_profile_data.avatar" ng-href="{{base_admins_avatar}}{{my_profile_data.avatar}}" target="_blank"><img ng-src="{{base_admins_avatar}}{{my_profile_data.avatar}}"></a>
+                                        <br>
+                                        <input type="file" class="form-control" nv-file-select="" uploader="img_uploader" />
+                                        <table class="table">
+                                            <tbody>
+                                            <tr ng-repeat="item in img_uploader.queue">
+                                                <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                <td width="30%" ng-show="img_uploader.isHTML5">
+                                                    <div class="progress" style="margin-bottom: 0;">
+                                                        <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                </td>
+                                                <td nowrap>
+                                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="admin.admins_groups_id == 1">
+                                <label class="col-sm-2 control-label">Group Administrator <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select id="admins_groups_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="my_profile_data.admins_groups_id" ng-options="admin_group.id as admin_group.title for admin_group in admins_groups" >
+                                        <option value="" ng-hide="true">-- Select Group Administrator --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="admin.admins_groups_id == 1">
+                                <label class="col-sm-2 control-label">การเปิดใช้งาน <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select id="active" class="form-control form-white select2" data-search="false" data-style="white" ng-model="my_profile_data.active" ng-options="activation.value as activation.title for activation in activations">
+                                        <option value="" ng-hide="true">-- เลือก --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="admin.admins_groups_id == 1">
+                                <label class="col-sm-2 control-label">Status</label>
+                                <div class="col-sm-9">
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{my_profile_data.id}}" ng-click="toggleStatus(my_profile_data)" ng-checked="my_profile_data.status==1">
+                                        <label class="onoffswitch-label" for="statusOnOffSwitch{{my_profile_data.id}}">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                    <!-- <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMyProfile(my_profile_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button> -->
+                                    <!-- <button type="button" class="btn btn-embossed btn-primary" ng-click="submitMyProfile(my_profile_data, 'continue_editing')">Save and continue editing</button> -->
+                                    <a href="#my_profile" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

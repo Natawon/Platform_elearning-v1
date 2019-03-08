@@ -1,0 +1,1098 @@
+<div class="header">
+    <h2>Statistics Live of : <strong>{{courses_data.title || 'Today'}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">Statistics Live</li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="col-lg-12 p-10 m-b-10 bg-primary">
+            <form class="frm-filter">
+
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="col-sm-12 p-0">Course</label>
+                        <div class="col-sm-12 p-0">
+                            <select class="form-control form-white select2" id="courses_id" name="courses_id" data-style="white" data-search="true" ng-model="selected_courses" ng-options="course.id as course.title for course in courses track by course.id" ng-change="changeFilterCourses();">
+                                <option value="">-- Select Course --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="col-sm-12 p-0">Topic</label>
+                        <div class="col-sm-12 p-0">
+                            <select class="form-control form-white select2" id="topics_id" name="topics_id" data-style="white" data-search="true" ng-model="selected_topics" ng-options="topic.id as topic.title for topic in topics track by topic.id" ng-change="changeFilterTopics();">
+                                <option value="">-- Select Topic --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 m-t-10 m-b-10">
+                    <div class="form-group">
+                        <label class="col-sm-12 p-0">Groups</label>
+                        <div class="col-sm-12 p-0">
+                            <select class="form-control form-white select2" id="groups_id" name="groups_id" data-style="white" data-search="true" ng-model="selected_groups" ng-options="group.id as group.title for group in groups track by group.id">
+                                <option value="">-- Select Groups --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 m-t-10 m-b-10">
+                    <div class="form-group">
+                        <label class="col-sm-12 p-0">Sub Groups</label>
+                        <div class="col-sm-12 p-0">
+                            <select class="form-control form-white select2" id="sub_groups_id" name="sub_groups_id" data-style="white" data-search="true" ng-model="selected_sub_groups" ng-options="sub_group.id as sub_group.title for sub_group in sub_groups track by sub_group.id">
+                                <option value="">-- Select Sub Groups --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 m-t-10 m-b-10">
+                    <div class="form-group">
+                        <label class="col-sm-12 p-0">Units</label>
+                        <div class="col-sm-12 p-0">
+                            <select class="form-control form-white select2" id="level_groups_id" name="level_groups_id" data-style="white" data-search="true" ng-model="selected_level_groups" ng-options="level_group.id as level_group.title for level_group in level_groups track by level_group.id">
+                                <option value="">-- Select Units --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 m-t-10 m-b-10">
+                    <div class="form-group">
+                        <label class="col-sm-12 p-0">Class Rooms</label>
+                        <div class="col-sm-12 p-0">
+                            <select class="form-control form-white select2" id="classrooms_id" name="classrooms_id" data-style="white" data-search="true" ng-model="selected_classrooms" ng-options="classroom.id as classroom.title for classroom in classrooms track by classroom.id">
+                                <option value="">-- Select Class Rooms --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="col-lg-3 m-t-10 m-b-10">
+                    <div class="form-group">
+                        <label class="col-sm-12 p-0">From Date</label>
+                        <div class="col-sm-12 p-0 prepend-icon">
+                            <input type="text" id="from_date" name="from_date" class="date-picker form-control form-white" ng-model="from_date" placeholder="Choose a date...">
+                            <i class="icon-calendar"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 m-t-10 m-b-10">
+                    <div class="form-group">
+                        <label class="col-sm-12 p-0">To Date</label>
+                        <div class="col-sm-12 p-0 prepend-icon">
+                            <input type="text" id="to_date" name="to_date" class="date-picker form-control form-white" ng-model="to_date" placeholder="Choose a date...">
+                            <i class="icon-calendar"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 m-t-10 m-b-10">
+                    <div class="form-group">
+                        <label class="col-sm-12 p-0">From Time</label>
+                        <div class="col-sm-12 p-0 prepend-icon">
+                            <input type="text" id="from_time" name="from_time" class="timepicker form-control custom-status-input form-white" placeholder="Choose a time..." ng-model="from_time" data-mask="99:99">
+                            <i class="icon-clock"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 m-t-10 m-b-10">
+                    <div class="form-group">
+                        <label class="col-sm-12 p-0">To Time</label>
+                        <div class="col-sm-12 p-0 prepend-icon">
+                            <input type="text" id="to_time" name="to_time" class="timepicker form-control custom-status-input form-white" placeholder="Choose a time..." ng-model="to_time" data-mask="99:99">
+                            <i class="icon-clock"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="col-lg-12 text-right">
+                    <div class=" text-right">
+                        <button type="button" id="btnFiltersSubmit" class="btn btn-dark" ng-click="changeFilter()"><i class="fa fa-search" aria-hidden="true"></i> &nbsp;Search</button>
+                        <button type="button" id="btnFiltersClear" class="btn btn-default" ng-click="clearFilters()"><i class="fa fa-refresh" aria-hidden="true"></i> &nbsp;Clear</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<tabset>
+
+<!-- <tab ng-click="tabLearning()">
+    <tab-heading><i class="icon-graph"></i> สถานะการเรียน</tab-heading>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-header bg-primary">
+                    <h3>รายละเอียดการแสดงข้อมูล Report</h3>
+                </div>
+                <div class="panel-content">
+                    <p><strong>ข้อมูลวันที่ เวลา</strong></p>
+                    <p class="bg-gray-light p-10">วันที่ {{stats_live_info.from_datetime}}</p>
+                    <p class="bg-gray-light p-10">ถึง {{stats_live_info.to_datetime}}</p>
+                    <p><strong>หลักสูตร</strong></p>
+                    <div class="bg-gray-light p-10">
+                        <p ng-repeat="courses_data in stats_live_info.courses">{{courses_data.code}} : {{courses_data.title}}</p>
+                    </div>
+                    <p><strong>Group</strong></p>
+                    <div class="bg-gray-light p-10">
+                        <p ng-repeat="groups_data in stats_live_info.groups">{{groups_data.title}}</p>
+                    </div>
+                    <div ng-if="stats_live_info.sub_groups">
+                        <p><strong>Sub Groups</strong></p>
+                        <div class="bg-gray-light p-10">
+                            <p>{{stats_live_info.sub_groups.title}}</p>
+                        </div>
+                    </div>
+                    <div ng-if="stats_live_info.level_groups">
+                        <p><strong>Unit</strong></p>
+                        <div class="bg-gray-light p-10">
+                            <p ng-repeat="level_groups_data in stats_live_info.level_groups">{{level_groups_data.title}}</p>
+                        </div>
+                    </div>
+                    <div ng-if="stats_live_info.classrooms">
+                        <p><strong>Classrooms</strong></p>
+                        <div class="bg-gray-light p-10">
+                            <p>{{stats_live_info.classrooms.title}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-content widget-info bg-blue">
+                            <div class="row">
+                                <div class="left">
+                                    <i class="fa fa-edit bg-dark"></i>
+                                </div>
+                                <div class="right">
+                                    <p class="number" ng-if="stats_live_learning.enroll_all">{{stats_live_learning.enroll_all | number}} คน</p>
+                                    <p class="number" ng-if="!stats_live_learning.enroll_all">0</p>
+                                    <p class="c-white">จำนวนคนที่ลงทะเบียนเข้าเรียนหลักสูตร</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="icon-pie-chart"></i> <strong>เรียนหลักสูตร</strong> สถานะการเรียน</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="row">
+                                <canvas id="learning-chart" class="full"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12" ng-if="stats_live_learning.quiz_process">
+                                    <p class="col-md-3 bg-dark" style="margin: 0; font-size: 13px;" ng-if="stats_live_learning.not_learning"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่เริ่มเรียน"></i> ยังไม่เริ่มเรียน : {{stats_live_learning.not_learning | number}} คน</p>
+                                    <p class="col-md-3 bg-dark" style="margin: 0; font-size: 13px;" ng-if="!stats_live_learning.not_learning"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่เริ่มเรียน"></i> ยังไม่เริ่มเรียน : 0</p>
+                                    <p class="col-md-3 bg-blue2" style="margin: 0;" ng-if="stats_live_learning.learning_not_pass"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่ทำแบบทดสอบ"></i> กำลังเรียน : {{stats_live_learning.learning_not_pass | number}} คน</p>
+                                    <p class="col-md-3 bg-blue2" style="margin: 0;" ng-if="!stats_live_learning.learning_not_pass"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่ทำแบบทดสอบ"></i> กำลังเรียน : 0</p>
+                                    <p class="col-md-3 bg-purple2" style="margin: 0;" ng-if="stats_live_learning.learning_pass_not_exam"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และยังไม่ทำแบบทดสอบ"></i> ยังไม่สอบ : {{stats_live_learning.learning_pass_not_exam | number}} คน</p>
+                                    <p class="col-md-3 bg-purple2" style="margin: 0;" ng-if="!stats_live_learning.learning_pass_not_exam"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และยังไม่ทำแบบทดสอบ"></i> ยังไม่สอบ : 0</p>
+                                    <p class="col-md-3 bg-red" style="margin: 0;" ng-if="stats_live_learning.exam_not_pass"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และทำแบบทดสอบไม่ผ่านเกณฑ์"></i> สอบไม่ผ่าน : {{stats_live_learning.exam_not_pass | number}} คน</p>
+                                    <p class="col-md-3 bg-red" style="margin: 0;" ng-if="!stats_live_learning.exam_not_pass"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และทำแบบทดสอบไม่ผ่านเกณฑ์"></i> สอบไม่ผ่าน : 0</p>
+                                    <p class="col-md-12 bg-green text-center" style="margin: 0;" ng-if="stats_live_learning.exam_pass"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และทำแบบทดสอบผ่านเกณฑ์"></i> ผ่าน : {{stats_live_learning.exam_pass | number}} คน</p>
+                                    <p class="col-md-12 bg-green text-center" style="margin: 0;" ng-if="!stats_live_learning.exam_pass"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และทำแบบทดสอบผ่านเกณฑ์"></i> ผ่าน : 0 </p>
+                                </div>
+
+                                <div class="col-md-12" ng-if="!stats_live_learning.quiz_process">
+                                    <p class="col-md-6 bg-dark" style="margin: 0; font-size: 13px;" ng-if="stats_live_learning.not_learning"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่เริ่มเรียน"></i> ยังไม่เริ่มเรียน : {{stats_live_learning.not_learning | number}} คน</p>
+                                    <p class="col-md-6 bg-dark" style="margin: 0; font-size: 13px;" ng-if="!stats_live_learning.not_learning"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่เริ่มเรียน"></i> ยังไม่เริ่มเรียน : 0</p>
+                                    <p class="col-md-6 bg-blue2" style="margin: 0;" ng-if="stats_live_learning.learning_not_pass"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังเรียนไม่ครบเกณฑ์"></i> กำลังเรียน : {{stats_live_learning.learning_not_pass | number}} คน</p>
+                                    <p class="col-md-6 bg-blue2" style="margin: 0;" ng-if="!stats_live_learning.learning_not_pass"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังเรียนไม่ครบเกณฑ์"></i> กำลังเรียน : 0</p>
+                                    <p class="col-md-12 bg-green text-center" style="margin: 0;" ng-if="stats_live_learning.learning_pass"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์"></i> ผ่าน : {{stats_live_learning.learning_pass | number}} คน</p>
+                                    <p class="col-md-12 bg-green text-center" style="margin: 0;" ng-if="!stats_live_learning.learning_pass"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์"></i> ผ่าน : 0 </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-content widget-info bg-green">
+                            <div class="row">
+                                <div class="left">
+                                    <i class="fa fa-check bg-dark"></i>
+                                </div>
+                                <div class="right" ng-if="stats_live_learning.quiz_process">
+                                    <p class="number" ng-if="stats_live_learning.exam_pass">{{stats_live_learning.exam_pass | number}} คน</p>
+                                    <p class="number" ng-if="!stats_live_learning.exam_pass">0</p>
+                                    <p class="c-white">จำนวนคนที่เรียนจบหลักสูตร <i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และทำแบบทดสอบผ่านเกณฑ์"></i></p>
+                                </div>
+                                <div class="right" ng-if="!stats_live_learning.quiz_process">
+                                    <p class="number" ng-if="stats_live_learning.learning_pass">{{stats_live_learning.learning_pass | number}} คน</p>
+                                    <p class="number" ng-if="!stats_live_learning.learning_pass">0</p>
+                                    <p class="c-white">จำนวนคนที่เรียนจบหลักสูตร <i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="icon-pie-chart"></i> <strong>เรียนหลักสูตร</strong> สถานะจบหลักสูตร</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="row">
+                                <canvas id="pass-chart" class="full"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="col-md-6 bg-orange" ng-if="stats_live_learning.not_certificate">ไม่พิมพ์วุฒิบัตร : {{stats_live_learning.not_certificate | number}} คน</p>
+                                    <p class="col-md-6 bg-orange" ng-if="!stats_live_learning.not_certificate">ไม่พิมพ์วุฒิบัตร : 0</p>
+                                    <p class="col-md-6 bg-green" ng-if="stats_live_learning.certificate">พิมพ์วุฒิบัตร : {{stats_live_learning.certificate | number}} คน</p>
+                                    <p class="col-md-6 bg-green" ng-if="!stats_live_learning.certificate">พิมพ์วุฒิบัตร : 0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-content widget-info bg-red">
+                            <div class="row">
+                                <div class="left">
+                                    <i class="fa fa-times bg-dark"></i>
+                                </div>
+                                <div class="right">
+                                    <p class="number" ng-if="stats_live_learning.not_pass">{{stats_live_learning.not_pass | number}} คน</p>
+                                    <p class="number" ng-if="!stats_live_learning.not_pass">0</p>
+                                    <p class="c-white">จำนวนคนที่ยังไม่ผ่านหลักสูตร <i class="fa fa-question-circle" tooltip="คนที่เรียนไม่ครบเกณฑ์และทำแบบทดสอบไม่ผ่านเกณฑ์"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="icon-pie-chart"></i> <strong>เรียนหลักสูตร</strong> สถานะยังไม่ผ่านหลักสูตร</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="row">
+                                <canvas id="not-pass-chart" class="full"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12" ng-if="stats_live_learning.quiz_process">
+                                    <p class="col-md-3 bg-dark" style="margin: 0; font-size: 13px;" ng-if="stats_live_learning.not_learning"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่เริ่มเรียน"></i> ลงทะเบียน : {{stats_live_learning.not_learning | number}} คน</p>
+                                    <p class="col-md-3 bg-dark" style="margin: 0; font-size: 13px;" ng-if="!stats_live_learning.not_learning"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่เริ่มเรียน"></i> ลงทะเบียน : 0</p>
+                                    <p class="col-md-3 bg-blue2" style="margin: 0;" ng-if="stats_live_learning.learning_not_pass"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่ทำแบบทดสอบ"></i> กำลังเรียน : {{stats_live_learning.learning_not_pass | number}} คน</p>
+                                    <p class="col-md-3 bg-blue2" style="margin: 0;" ng-if="!stats_live_learning.learning_not_pass"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่ทำแบบทดสอบ"></i> กำลังเรียน : 0</p>
+                                    <p class="col-md-3 bg-purple2" style="margin: 0;" ng-if="stats_live_learning.learning_pass_not_exam"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และยังไม่ทำแบบทดสอบ"></i> ยังไม่สอบ : {{stats_live_learning.learning_pass_not_exam | number}} คน</p>
+                                    <p class="col-md-3 bg-purple2" style="margin: 0;" ng-if="!stats_live_learning.learning_pass_not_exam"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และยังไม่ทำแบบทดสอบ"></i> ยังไม่สอบ : 0</p>
+                                    <p class="col-md-3 bg-red" style="margin: 0;" ng-if="stats_live_learning.exam_not_pass"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และทำแบบทดสอบไม่ผ่านเกณฑ์"></i> สอบไม่ผ่าน : {{stats_live_learning.exam_not_pass | number}} คน</p>
+                                    <p class="col-md-3 bg-red" style="margin: 0;" ng-if="!stats_live_learning.exam_not_pass"><i class="fa fa-question-circle" tooltip="คนที่เรียนครบเกณฑ์และทำแบบทดสอบไม่ผ่านเกณฑ์"></i> สอบไม่ผ่าน : 0</p>
+                                </div>
+
+                                <div class="col-md-12" ng-if="!stats_live_learning.quiz_process">
+                                    <p class="col-md-6 bg-dark" style="margin: 0; font-size: 13px;" ng-if="stats_live_learning.not_learning"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่เริ่มเรียน"></i> ลงทะเบียน : {{stats_live_learning.not_learning | number}} คน</p>
+                                    <p class="col-md-6 bg-dark" style="margin: 0; font-size: 13px;" ng-if="!stats_live_learning.not_learning"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังไม่เริ่มเรียน"></i> ลงทะเบียน : 0</p>
+                                    <p class="col-md-6 bg-blue2" style="margin: 0;" ng-if="stats_live_learning.learning_not_pass"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังเรียนไม่ครบเกณฑ์"></i> กำลังเรียน : {{stats_live_learning.learning_not_pass | number}} คน</p>
+                                    <p class="col-md-6 bg-blue2" style="margin: 0;" ng-if="!stats_live_learning.learning_not_pass"><i class="fa fa-question-circle" tooltip="คนที่ลงทะเบียนและยังเรียนไม่ครบเกณฑ์"></i> กำลังเรียน : 0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="courses_data">
+        <div class="col-xlg-12 col-lg-12">
+            <div class="panel panel-stat">
+                <div class="panel-header">
+                    <h3><i class="fa fa-edit"></i> <strong>{{stats_live_courses.courses.code}}</strong> {{stats_live_courses.courses.title}}</h3>
+                </div>
+                <div class="panel-content">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>หัวข้อ</th>
+                            <th></th>
+                            <th class="text-center"></th>
+                            <th class="text-center">เรียนจบ</th>
+                            <th class="text-center">เรียนยังไม่จบ</th>
+                            <th class="text-center">จำนวนผู้เข้าเรียน</th>
+                            <th class="text-center">เรียนโดยเฉลี่ย(%)</th>
+                            <th class="text-center">ระยะเวลาโดยเฉลี่ย</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="topics_data in stats_live_courses.topics">
+                        <tr>
+                            <td colspan="8"><strong>{{topics_data.title}}</strong></td>
+                        </tr>
+                        <tr ng-repeat="parent_data in topics_data.parent">
+                            <td></td>
+                            <td>● {{parent_data.title}}</td>
+                            <td></td>
+                            <td class="text-center"><label class="label label-success">{{parent_data.enroll2topic_success | number}}</label></td>
+                            <td class="text-center"><label class="label label-warning">{{parent_data.enroll2topic_process | number}}</label></td>
+                            <td class="text-center"><label class="label label-primary">{{parent_data.enroll2topic_count | number}}</label></td>
+                            <td class="text-center">{{parent_data.duration2percentage | number:2}} %</td>
+                            <td class="text-center">{{parent_data.duration2gmdate}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</tab> -->
+
+<!-- <tab ng-click="tabQuiz()" ng-if="stats_live_learning.quiz_process">
+    <tab-heading><i class="fa fa-pencil"></i> สถานะการสอบ</tab-heading>
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-header bg-primary">
+                    <h3>รายละเอียดการแสดงข้อมูล Report</h3>
+                </div>
+                <div class="panel-content">
+                    <p><strong>ข้อมูลวันที่ เวลา</strong></p>
+                    <p class="bg-gray-light p-10">วันที่ {{stats_live_info.from_datetime}}</p>
+                    <p class="bg-gray-light p-10">ถึง {{stats_live_info.to_datetime}}</p>
+                    <p><strong>หลักสูตร</strong></p>
+                    <div class="bg-gray-light p-10">
+                        <p ng-repeat="courses_data in stats_live_info.courses">{{courses_data.code}} : {{courses_data.title}}</p>
+                    </div>
+                    <p><strong>Group</strong></p>
+                    <div class="bg-gray-light p-10">
+                        <p ng-repeat="groups_data in stats_live_info.groups">{{groups_data.title}}</p>
+                    </div>
+                    <div ng-if="stats_live_info.sub_groups">
+                        <p><strong>Sub Groups</strong></p>
+                        <div class="bg-gray-light p-10">
+                            <p>{{stats_live_info.sub_groups.title}}</p>
+                        </div>
+                    </div>
+                    <div ng-if="stats_live_info.level_groups">
+                        <p><strong>Unit</strong></p>
+                        <div class="bg-gray-light p-10">
+                            <p ng-repeat="level_groups_data in stats_live_info.level_groups">{{level_groups_data.title}}</p>
+                        </div>
+                    </div>
+                    <div ng-if="stats_live_info.classrooms">
+                        <p><strong>Classrooms</strong></p>
+                        <div class="bg-gray-light p-10">
+                            <p>{{stats_live_info.classrooms.title}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="icon-pie-chart"></i> <strong>จำนวนการทำข้อสอบ</strong> Pre-Test, Post-Test </h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="row">
+                                <canvas id="pre-post-chart" class="full"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="col-md-6 bg-blue"><i class="fa fa-question-circle" tooltip="จำนวนครั้งที่ทำแบบทดสอบก่อนเรียน"></i> Pre-Test : {{stats_live_quiz.pre_test.count | number}} ครั้ง</p>
+                                    <p class="col-md-6 bg-purple2"><i class="fa fa-question-circle" tooltip="จำนวนครั้งที่ทำแบบทดสอบหลังเรียน"></i> Post-Test : {{stats_live_quiz.post_test.count | number}} ครั้ง</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="icon-pie-chart"></i> <strong>เทียบคะแนน</strong> Post-Test กับ Pre-Test</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="row">
+                                <canvas id="compare-chart" class="full"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="col-md-12 bg-green" style="margin:0;"><i class="fa fa-question-circle" tooltip="การเทียบคะแนนนับจากครั้งล่าสุดที่ผู้เรียนทำข้อสอบ"></i> Post Test ได้คะแนนมากกว่า Pre Test : {{stats_live_quiz.compare.over | number}} ครั้ง ( คิดเป็น {{stats_live_quiz.compare.over_percentage}} % )</p>
+                                    <p class="col-md-12 bg-orange"><i class="fa fa-question-circle" tooltip="การเทียบคะแนนนับจากครั้งล่าสุดที่ผู้เรียนทำข้อสอบ"></i> Post Test ได้คะแนนน้อยกว่าหรือเท่ากับ Pre Test : {{stats_live_quiz.compare.under | number}} ครั้ง ( คิดเป็น {{stats_live_quiz.compare.under_percentage}} % )</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-content widget-info bg-purple2">
+                            <div class="row">
+                                <div class="left">
+                                    <i class="fa fa-pencil bg-dark"></i>
+                                </div>
+                                <div class="right">
+                                    <p class="number">{{stats_live_quiz.exam.count | number}} ครั้ง</p>
+                                    <p class="c-white">จำนวนการทำแบบทดสอบ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="icon-pie-chart"></i> <strong>จำนวนการทำ</strong> แบบทดสอบ</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="row">
+                                <canvas id="exam-chart" class="full"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="col-md-6 bg-green" style="margin: 0;"><i class="fa fa-question-circle" tooltip="จำนวนครั้งที่ทำแบบทดสอบผ่านเกณฑ์"></i> ทำแบบทดสอบผ่าน : {{stats_live_quiz.exam.exam_pass | number}} ครั้ง</p>
+                                    <p class="col-md-6 bg-red" style="margin: 0;"><i class="fa fa-question-circle" tooltip="จำนวนครั้งที่ทำแบบทดสอบไม่ผ่านเกณฑ์"></i> แบบทดสอบไม่ผ่าน : {{stats_live_quiz.exam.exam_not_pass | number}} ครั้ง</p>
+                                    <p class="col-md-12 bg-purple" style="margin: 0;"><i class="fa fa-question-circle" tooltip="จำนวนครั้งที่ทำแบบทดสอบผ่านเกณฑ์คิดตามค่าเฉลี่ยของจำนวนครั้งที่ทำแบบทดสอบทั้งหมด"></i> ทำแบบทดสอบเฉลี่ยกี่ครั้งถึงผ่าน : {{stats_live_quiz.exam.average_to_quiz | number}} ครั้ง</p>
+                                    <p class="col-md-6 bg-blue2" style="margin: 0;"><i class="fa fa-question-circle" tooltip="คะแนนทำแบบทดสอบครั้งแรกเฉลี่ย"></i> คะแนนครั้งแรกเฉลี่ย : {{stats_live_quiz.exam.first_score_average | number}}</p>
+                                    <p class="col-md-6 bg-blue2" style="margin: 0;"><i class="fa fa-question-circle" tooltip="คะแนนทำแบบทดสอบครั้งล่าสุดเฉลี่ย"></i> คะแนนครั้งล่าสุดเฉลี่ย : {{stats_live_quiz.exam.last_score_average | number}}</p>
+                                    <p class="col-md-6 bg-orange" style="margin: 0;"><i class="fa fa-question-circle" tooltip="คะแนนทำแบบทดสอบคะแนนสูงสุดเฉลี่ย"></i> คะแนนสูงสุดเฉลี่ย : {{stats_live_quiz.exam.max | number}}</p>
+                                    <p class="col-md-6 bg-orange" style="margin: 0;"><i class="fa fa-question-circle" tooltip="คะแนนทำแบบทดสอบคะแนนต่ำสุดเฉลี่ย"></i> คะแนนต่ำสุดเฉลี่ย : {{stats_live_quiz.exam.min | number}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row" ng-if="courses_data && !admin.super_users">
+        <div class="col-xlg-12 col-lg-12">
+            <div class="panel panel-stat">
+                <div class="panel-content">
+                    <p><strong><i class="fa fa-question-circle"></i> แบบทดสอบก่อนเรียน (Pre Test) <button type="button" class="btn btn-default btn-embossed pull-right" ng-click="questionsExport(stats_live_quiz.pre_test.quiz_id)"><i class="fa fa-file-excel-o"></i> ข้อมูลการทำแบบทดสอบก่อนเรียน</button></strong>
+                    <table class="table table-hover">
+                        <tbody ng-repeat="pre_test_questions_data in stats_live_quiz.pre_test.questions">
+                        <tr>
+                            <td colspan="2"><strong ng-bind-html="pre_test_questions_data.questions"></strong></td>
+                        </tr>
+                        <tr ng-if="pre_test_questions_data.type != 3" ng-repeat="answer_data in pre_test_questions_data.answer">
+                            <td>
+                                <label ng-if="answer_data.correct" class="label label-success">ตอบถูก {{answer_data.passing_score}} ครั้ง</label>
+                                <label ng-if="!answer_data.correct" class="label label-danger">ตอบผิด {{answer_data.passing_score}} ครั้ง</label>
+                            </td>
+                            <td>{{answer_data.answer}}</td>
+                        </tr>
+                        <tr ng-if="pre_test_questions_data.type == 3">
+                            <td colspan="2"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xlg-12 col-lg-12">
+            <div class="panel panel-stat">
+                <div class="panel-content">
+                    <p><strong><i class="fa fa-question-circle"></i> แบบทดสอบหลังเรียน (Post Test) <button type="button" class="btn btn-default btn-embossed pull-right" ng-click="questionsExport(stats_live_quiz.post_test.quiz_id)"><i class="fa fa-file-excel-o"></i> ข้อมูลการทำแบบทดสอบหลังเรียน</button></strong>
+                    <table class="table table-hover">
+                        <tbody ng-repeat="post_test_questions_data in stats_live_quiz.post_test.questions">
+                        <tr>
+                            <td colspan="2"><strong ng-bind-html="post_test_questions_data.questions"></strong></td>
+                        </tr>
+                        <tr ng-if="post_test_questions_data.type != 3" ng-repeat="answer_data in post_test_questions_data.answer">
+                            <td>
+                                <label ng-if="answer_data.correct" class="label label-success">ตอบถูก {{answer_data.passing_score}} ครั้ง</label>
+                                <label ng-if="!answer_data.correct" class="label label-danger">ตอบผิด {{answer_data.passing_score}} ครั้ง</label>
+                            </td>
+                            <td>{{answer_data.answer}}</td>
+                        </tr>
+                        <tr ng-if="post_test_questions_data.type == 3">
+                            <td colspan="2"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xlg-12 col-lg-12">
+            <div class="panel panel-stat">
+                <div class="panel-content">
+                    <p><strong><i class="fa fa-question-circle"></i> แบบทดสอบเพื่อวัดความรู้ (Examination) <button type="button" class="btn btn-default btn-embossed pull-right" ng-click="questionsExport(stats_live_quiz.exam.quiz_id)"><i class="fa fa-file-excel-o"></i> ข้อมูลการทำแบบทดสอบเพื่อวัดความรู้</button></strong>
+                    <table class="table table-hover">
+                        <tbody ng-repeat="exam_questions_data in stats_live_quiz.exam.questions">
+                        <tr>
+                            <td colspan="2"><strong ng-bind-html="exam_questions_data.questions"></strong></td>
+                        </tr>
+                        <tr ng-if="exam_questions_data.type != 3" ng-repeat="answer_data in exam_questions_data.answer">
+                            <td>
+                                <label ng-if="answer_data.correct" class="label label-success">ตอบถูก {{answer_data.passing_score}} ครั้ง</label>
+                                <label ng-if="!answer_data.correct" class="label label-danger">ตอบผิด {{answer_data.passing_score}} ครั้ง</label>
+                            </td>
+                            <td>{{answer_data.answer}}</td>
+                        </tr>
+                        <tr ng-if="exam_questions_data.type == 3">
+                            <td colspan="2"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xlg-6 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="panel">
+                <div class="panel-content widget-info bg-blue">
+                    <div class="row">
+                        <div class="left">
+                            <i class="fa fa-edit bg-dark"></i>
+                        </div>
+                        <div class="right">
+                            <p class="number">{{stats_live_quiz.survey.count | number}} ครั้ง</p>
+                            <p class="c-white">จำนวนการทำแบบสอบถาม</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xlg-12 col-lg-12">
+            <div class="panel panel-stat">
+                <div class="panel-content">
+                    <p><strong><i class="fa fa-question-circle"></i> แบบสอบถาม (Survey) <button type="button" class="btn btn-default btn-embossed pull-right" ng-click="questionsExport(stats_live_quiz.survey.quiz_id)"><i class="fa fa-file-excel-o"></i> ข้อมูลแบบสอบถาม</button></strong>
+                    <table class="table table-hover">
+                        <tbody ng-repeat="survey_questions_data in stats_live_quiz.survey.questions">
+                        <tr>
+                            <td colspan="2"><strong ng-bind-html="survey_questions_data.questions"></strong></td>
+                        </tr>
+                        <tr ng-if="survey_questions_data.type != 3" ng-repeat="answer_data in survey_questions_data.answer">
+                            <td>
+                                <label class="label label-success">ตอบ {{answer_data.passing_score}} ครั้ง</label>
+                            </td>
+                            <td>{{answer_data.answer}}</td>
+                        </tr>
+                        <tr ng-if="survey_questions_data.type == 3">
+                            <td colspan="2"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</tab> -->
+
+<tab ng-click="tabEnroll()">
+<tab-heading><i class="icon-users"></i> จำนวนผู้เข้าเรียน</tab-heading>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="panel">
+            <div class="panel-header bg-primary">
+                <h3>รายละเอียดการแสดงข้อมูล Report</h3>
+            </div>
+            <div class="panel-content">
+                <p><strong>ข้อมูลวันที่ เวลา</strong></p>
+                <p class="bg-gray-light p-10">วันที่ {{stats_live_info.from_datetime}}</p>
+                <p class="bg-gray-light p-10">ถึง {{stats_live_info.to_datetime}}</p>
+                <p><strong>หลักสูตร</strong></p>
+                <div class="bg-gray-light p-10">
+                    <p ng-repeat="courses_data in stats_live_info.courses">{{courses_data.code}} : {{courses_data.title}}</p>
+                </div>
+                <p><strong>Group</strong></p>
+                <div class="bg-gray-light p-10">
+                    <p ng-repeat="groups_data in stats_live_info.groups">{{groups_data.title}}</p>
+                </div>
+                <div ng-if="stats_live_info.sub_groups">
+                    <p><strong>Sub Groups</strong></p>
+                    <div class="bg-gray-light p-10">
+                        <p>{{stats_live_info.sub_groups.title}}</p>
+                    </div>
+                </div>
+                <div ng-if="stats_live_info.level_groups">
+                    <p><strong>Unit</strong></p>
+                    <div class="bg-gray-light p-10">
+                        <p ng-repeat="level_groups_data in stats_live_info.level_groups">{{level_groups_data.title}}</p>
+                    </div>
+                </div>
+                <div ng-if="stats_live_info.classrooms">
+                    <p><strong>Classrooms</strong></p>
+                    <div class="bg-gray-light p-10">
+                        <p>{{stats_live_info.classrooms.title}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel">
+                <div class="panel-content widget-info bg-blue">
+                    <div class="row">
+                        <div class="left">
+                            <i class="fa fa-edit bg-dark"></i>
+                        </div>
+                        <div class="right">
+                            <p class="number">{{stats_live_enroll.enroll | number}} คน</p>
+                            <p class="c-white">จำนวนคนเข้าเรียนหลักสูตรถ่ายทอดสด</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel">
+                <div class="panel-content widget-info bg-orange">
+                    <div class="row">
+                        <div class="left">
+                            <i class="fa fa-clock-o bg-dark"></i>
+                        </div>
+                        <div class="right">
+                            <p class="number">{{stats_live_enroll.avg_duration}}</p>
+                            <p class="c-white">จำนวนเวลาที่เข้าเรียนเฉลี่ย</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel">
+                <div class="panel-content widget-info bg-primary">
+                    <div class="row">
+                        <div class="left">
+                            <i class="fa fa-calendar bg-dark"></i>
+                        </div>
+                        <div class="right">
+                            <p class="number">{{stats_live_enroll.most_enter_class}}</p>
+                            <p class="c-white">เวลาที่เข้าเรียนหลักสูตรถ่ายทอดสดมากที่สุด</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xlg-6 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="panel">
+                <div class="panel-content widget-info bg-purple2">
+                    <div class="row">
+                        <div class="left">
+                            <i class="fa fa-eye bg-dark"></i>
+                        </div>
+                        <div class="right">
+                            <p class="number">{{stats_live_enroll.page_views | number}} Page Views</p>
+                            <p class="c-white">จำนวน Page View เข้าเรียนหลักสูตร</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xlg-6 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="panel">
+                <div class="panel-content widget-info bg-red">
+                    <div class="row">
+                        <div class="left">
+                            <i class="fa fa-globe bg-dark"></i>
+                        </div>
+                        <div class="right">
+                            <p class="number">{{stats_live_enroll.uip | number}} UIPs</p>
+                            <p class="c-white">จำนวน UIPs เข้าเรียนหลักสูตร</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xlg-12 col-lg-12">
+            <div class="panel panel-stat">
+                <div class="panel-header">
+                    <h3><i class="icon-graph"></i> <strong>จำนวนคนเข้าเรียนหลักสูตรถ่ายทอดสด</strong> แยกตามช่วงวัน/เวลา</h3>
+                </div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div id="stats_live-chart"></div>
+                        <br>
+                        <table class="table table-fix table-fix-header">
+                            <thead>
+                            <tr>
+                                <th class="col-md-6">วัน/เวลา</th>
+                                <th class="col-md-6">เข้าเรียนหลักสูตรถ่ายทอดสด</th>
+                            </tr>
+                            </thead>
+                        </table>
+                        <div class="table-fix-content">
+                            <table class="table table-hover table-fix">
+                                <tbody>
+                                <tr ng-repeat="stats_live_log in stats_live_logs_data">
+                                    <td class="col-md-6">{{stats_live_log[0]}}</td>
+                                    <td class="col-md-6">{{stats_live_log[1] | number}} คน</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<div class="row">
+
+</div>
+
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-xlg-6 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="panel">
+                    <div class="panel-content widget-info bg-green">
+                        <div class="row">
+                            <div class="left">
+                                <i class="fa fa-desktop bg-dark"></i>
+                            </div>
+                            <div class="right">
+                                <p class="number">{{allDesktops | number}} ครั้ง</p>
+                                <p class="c-white">เข้าจากเครื่องคอมพิวเตอร์</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xlg-6 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="panel">
+                    <div class="panel-content widget-info bg-purple">
+                        <div class="row">
+                            <div class="left">
+                                <i class="fa fa-mobile bg-dark"></i>
+                            </div>
+                            <div class="right">
+                                <p class="number">{{allMobiles | number}} ครั้ง</p>
+                                <p class="c-white">เข้าจากอุปกรณ์สื่อสาร</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="icon-pie-chart"></i> <strong>เข้าเรียนหลักสูตรถ่ายทอดสด</strong> เข้าจากเครื่องคอมพิวเตอร์</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div class="row">
+                            <canvas id="desktop-chart" class="full"></canvas>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="col-md-12"><strong>Desktop</strong></p>
+                                <p class="col-md-4 bg-red">Windows : {{stats_live_device.all_windows | number}} ครั้ง</p>
+                                <p class="col-md-4 bg-orange">OS X : {{stats_live_device.all_osx | number}} ครั้ง</p>
+                                <p class="col-md-4 bg-yellow">Linux : {{stats_live_device.all_linux | number}} ครั้ง</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="icon-pie-chart"></i> <strong>เข้าเรียนหลักสูตรถ่ายทอดสด</strong> เข้าจากอุปกรณ์สื่อสาร</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div class="row">
+                            <canvas id="mobile-chart" class="full"></canvas>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="col-md-12"><strong>Mobile</strong></p>
+                                <p class="col-md-6 bg-blue">iOS : {{stats_live_device.all_ios | number}} ครั้ง</p>
+                                <p class="col-md-6 bg-pink">Android : {{stats_live_device.all_android | number}} ครั้ง</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel bg-dark widget-map">
+            <div class="panel-header">
+                <h3><i class="icon-globe-alt"></i> <strong>เข้าเรียนหลักสูตรถ่ายทอดสด</strong> แผนที่</h3>
+                <div class="control-btn">
+                    <a href="#" class="panel-reload hidden" ng-click="changeFilter()"><i class="icon-reload"></i></a>
+                </div>
+            </div>
+            <div class="panel-content widget-full">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="map"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-header">
+                <h3><i class="fa fa-map"></i> <strong>เรียนหลักสูตรถ่ายทอดสด </strong> เข้าจากพื้นที่</h3>
+            </div>
+            <div class="panel-content">
+                <tabset class="tab-fade-in">
+                    <tab>
+                        <tab-heading>
+                            ประเทศ
+                        </tab-heading>
+                        <div class="filter-left">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ประเทศ</th>
+                                    <th>เข้าเรียนหลักสูตรถ่ายทอดสด</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="stats_live_country in stats_live_countries">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{stats_live_country.country}} ({{stats_live_country.isoCode}})</td>
+                                    <td>{{stats_live_country.total_views | number}} ครั้ง</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </tab>
+                    <tab>
+                        <tab-heading>
+                            ประเทศ/จังหวัด
+                        </tab-heading>
+                        <div class="filter-left">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ประเทศ</th>
+                                    <th>จังหวัด</th>
+                                    <th>เข้าเรียน</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="stats_live_state in stats_live_states">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{stats_live_state.country}}</td>
+                                    <td>{{stats_live_state.state}}</td>
+                                    <td>{{stats_live_state.total_views | number}} ครั้ง</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</div>
+
+</tab>
+
+<tab ng-click="tabData()">
+    <tab-heading><i class="icon-drawer"></i> รายงานจำนวนเวลาที่เข้าเรียน</tab-heading>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-header col-xs-4 pull-left">
+                    <h3><i class="fa fa-table"></i> <strong>ข้อมูลจำนวนเวลาที่เข้าเรียน </strong></h3>
+                </div>
+                <div class="col-xs-4 pull-right">
+                    <input placeholder="ระบุชื่อ หรือ อีเมล์ เพื่อค้นหา" type="search" class="form-control" ng-model="defaultOptions.search" ng-change="changeSearch()">
+                </div>
+                <!-- <div class="col-xs-3 pull-right">
+                    <label class="btn btn-sm btn-danger" ng-click="logFilter(500)">Error <i class="fa fa-question-circle" tooltip="ค้นหา Error"></i></label>
+                    <label class="btn btn-sm btn-warning" ng-click="logFilter(401)">Warning <i class="fa fa-question-circle" tooltip="ค้นหา Warning"></i></label>
+                </div> -->
+                <div class="panel-content">
+                    <div class="filter-left">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Groups</th>
+                                <th>Topic</th>
+                                <th>Members</th>
+                                <th>จำนวนเวลาที่เข้าเรียน</th>
+                                <th>จำนวนเวลาถ่ายทอดสดทั้งหมด</th>
+                                <th>วันที่เข้าเรียน</th>
+                            </tr>
+                            </thead>
+                            <tbody disabled-ui-sortable="sortableOptions" ng-model="stats_live">
+                            <tr ng-repeat="stats_live_data in stats_live" data-id="{{stats_live_data.id}}">
+                                <td>{{stats_live_data.no}}</td>
+                                <td>
+                                    <label class="label label-warning">{{stats_live_data.groups.title}}</label>
+                                    <label class="label label-info" ng-if="stats_live_data.sub_groups">{{stats_live_data.sub_groups.title}}</label>
+                                </td>
+                                <td>
+                                    <label class="label label-primary">{{stats_live_data.topics.title}}</label>
+                                </td>
+                                <td>
+                                    {{stats_live_data.members.first_name}} {{stats_live_data.members.last_name}}<br>
+                                    {{stats_live_data.members.email}}
+                                    <span ng-if="!stats_live_data.members">-</span>
+                                </td>
+                                <td>
+                                    {{stats_live_data.study_duration}}
+                                </td>
+                                <td><span class="{{stats_live_data.live_duration == 'กำลังถ่ายทอดสด' ? 'text-red' : stats_live_data.live_duration == 'รอการถ่ายทอดสด' ? 'text-muted' : ''}}">{{stats_live_data.live_duration}}</span></td>
+                                <td>{{stats_live_data.enter_datetime}}</td>
+                            </tr>
+                            </tbody>
+                            <tfoot class="tbl-footer">
+                            <td colspan="10">
+                                <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{defaultOptions.total}}</b> record(s)</div>
+                                <div class="pull-right">
+                                    <pagination total-items="defaultOptions.total" ng-model="defaultOptions.current_page" items-per-page="defaultOptions.per_page" num-pages="defaultOptions.last_page" class="pagination pagination-alt" boundary-links="true" max-size="defaultOptions.max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                </div>
+                            </td>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</tab>
+
+<tab ng-if="selected_courses" ng-click="tabData()">
+    <tab-heading><i class="fa fa-file-excel-o"></i> Export Excel</tab-heading>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-header bg-primary">
+                    <h3>รายละเอียดการแสดงข้อมูล Report</h3>
+                </div>
+                <div class="panel-content">
+                    <p><strong>ข้อมูลวันที่ เวลา</strong></p>
+                    <p class="bg-gray-light p-10">วันที่ {{stats_live_info.from_datetime}}</p>
+                    <p class="bg-gray-light p-10">ถึง {{stats_live_info.to_datetime}}</p>
+                    <p><strong>หลักสูตร</strong></p>
+                    <div class="bg-gray-light p-10">
+                        <p ng-repeat="courses_data in stats_live_info.courses">{{courses_data.code}} : {{courses_data.title}}</p>
+                    </div>
+                    <p><strong>Group</strong></p>
+                    <div class="bg-gray-light p-10">
+                        <p ng-repeat="groups_data in stats_live_info.groups">{{groups_data.title}}</p>
+                    </div>
+                    <div ng-if="stats_live_info.sub_groups">
+                        <p><strong>Sub Groups</strong></p>
+                        <div class="bg-gray-light p-10">
+                            <p>{{stats_live_info.sub_groups.title}}</p>
+                        </div>
+                    </div>
+                    <div ng-if="stats_live_info.level_groups">
+                        <p><strong>Unit</strong></p>
+                        <div class="bg-gray-light p-10">
+                            <p ng-repeat="level_groups_data in stats_live_info.level_groups">{{level_groups_data.title}}</p>
+                        </div>
+                    </div>
+                    <div ng-if="stats_live_info.classrooms">
+                        <p><strong>Classrooms</strong></p>
+                        <div class="bg-gray-light p-10">
+                            <p>{{stats_live_info.classrooms.title}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="selected_courses" class="col-md-8">
+            <div class="panel">
+                <div class="panel-header bg-primary">
+                    <h3>Export Excel</h3>
+                </div>
+                <div class="panel-content">
+                    <!-- <button type="button" class="btn btn-default btn-embossed" ng-click="enrollExport();"><i class="fa fa-file-excel-o"></i> ข้อมูลการเข้าเรียน</button> -->
+                    <!-- <button ng-if="stats_live_learning.quiz_process" type="button" class="btn btn-warning btn-embossed" ng-click="quizExport();"><i class="fa fa-file-excel-o"></i> ข้อมูลการทำข้อสอบ</button> -->
+                    <button type="button" class="btn btn-success btn-embossed" ng-click="courseExport();"><i class="fa fa-file-excel-o"></i> ข้อมูลการเข้าเรียนถ่ายทอดสด</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</tab>
+
+</tabset>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

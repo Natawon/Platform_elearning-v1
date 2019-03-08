@@ -1,0 +1,204 @@
+<div class="header">
+    <h2><i class="icon-user-following"></i> Super Users <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#super_users">Super Users</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <tabset>
+                <tab>
+                    <tab-heading><i class="icon-note"></i> รายละเอียดทั่วไป</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal super_users-frm" ng-submit="submitSuperUsers(super_users_data)">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Username <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9 prepend-icon">
+                                            <input id="username" class="form-control form-white" type="text" minlength="6" placeholder="Minimum 6 characters..." autocomplete="off" ng-model="super_users_data.username">
+                                            <i class="icon-lock"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Password <i class="fa fa-question-circle c-grey" rel="popover" data-container="body" data-toggle="popover" data-placement="bottom" data-content="{{hint.password}}" data-original-title="Hint Info."></i> <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9 prepend-icon">
+                                            <input id="password" class="form-control form-white" type="password" placeholder="The password is at least 8 characters long." ng-model="super_users_data.password" autocomplete="new-password" readonly="readonly">
+                                            <i class="icon-lock"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">ชื่อ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9 prepend-icon">
+                                            <input id="first_name" class="form-control form-white" type="text" placeholder="Enter your first name..." ng-model="super_users_data.first_name">
+                                            <i class="icon-user"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">นามสกุล <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9 prepend-icon">
+                                            <input id="last_name" class="form-control form-white" type="text" placeholder="Enter your last name..." ng-model="super_users_data.last_name">
+                                            <i class="icon-user"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">อีเมล์ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9 prepend-icon">
+                                            <input id="email" class="form-control form-white" type="text" placeholder="Enter your email..." ng-model="super_users_data.email">
+                                            <i class="icon-envelope"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">เบอร์มือถือ <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9 prepend-icon">
+                                            <input id="mobile" class="form-control form-white" type="text" placeholder="Mobile Number..." ng-model="super_users_data.mobile">
+                                            <i class="icon-screen-smartphone"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">เบอร์ติดต่อ</label>
+                                        <div class="col-sm-9 prepend-icon">
+                                            <input id="phone" class="form-control form-white" type="text" placeholder="Telephone Number..." ng-model="super_users_data.phone">
+                                            <i class="icon-call-end"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">ที่อยู่</label>
+                                        <div class="col-sm-9">
+                                            <textarea id="address" rows="5" class="form-control form-white" placeholder="Write your address... (minimum 30 characters)" ng-model="super_users_data.address"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">จำกัดการสร้าง{{selected_groups.meaning_of_level_groups_id || 'กลุ่มย่อย'}} ({{selected_groups.meaning_of_level_groups_id_en_plural || 'Units'}}) <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9 prepend-icon">
+                                            <input id="limit_groups" class="form-control form-white" type="text" placeholder="Limit Groups..." ng-model="super_users_data.limit_groups">
+                                            <i class="icon-grid"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Level <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select id="admins_groups_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="super_users_data.admins_groups_id" ng-options="admin_group.id as admin_group.title for admin_group in admins_groups" >
+                                                <option value="" ng-hide="true">-- เลือก Level --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">กลุ่ม (Group) <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select id="groups_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="super_users_data.groups_id" ng-options="group.id as group.title for group in groups" >
+                                                <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">
+                                            กลุ่มย่อยหลัก<br>
+                                            (Sub Group) <br>
+                                            <span ng-if="selected_groups.meaning_of_sub_groups_id != 'Sub Group'" class="label label-default">{{selected_groups.meaning_of_sub_groups_id}}</span> <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select id="sub_groups_id" class="form-control form-white select2" data-style="white" data-search="true" ng-model="super_users_data.sub_groups_id" ng-options="sup_group.id as sup_group.title for sup_group in sub_groups" >
+                                                <option value="" ng-hide="true">-- กรุณาเลือก --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">การอัพโหลดสมาชิก</label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="upload_statusOnOffSwitch{{super_users_data.id}}" ng-click="toggleUploadStatus(super_users_data)" ng-checked="super_users_data.upload_status==1">
+                                                <label class="onoffswitch-label" for="upload_statusOnOffSwitch{{super_users_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">การเปิดใช้งาน <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select id="active" class="form-control form-white select2" data-search="false" data-style="white" ng-model="super_users_data.active" ng-options="activation.value as activation.title for activation in activations">
+                                                <option value="" ng-hide="true">-- เลือก --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Public</label>
+                                        <div class="col-sm-9">
+                                            <div class="onoffswitch2">
+                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{super_users_data.id}}" ng-click="toggleStatus(super_users_data)" ng-checked="super_users_data.status==1">
+                                                <label class="onoffswitch-label" for="statusOnOffSwitch{{super_users_data.id}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitSuperUsers(super_users_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitSuperUsers(super_users_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#super_users" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+                <tab>
+                    <tab-heading><i class="icon-note"></i> จัดการการเข้าถึง{{selected_groups.meaning_of_level_groups_id || 'กลุ่มย่อย'}}อื่นๆ</tab-heading>
+                    <div class="panel-content">
+                        <div class="row">
+                            <form class="form-horizontal super_users-frm" ng-submit="submitSuperUsers(super_users_data)">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">จัดการการเข้าถึง{{selected_groups.meaning_of_level_groups_id || 'กลุ่มย่อย'}}อื่นๆ <br>({{selected_groups.meaning_of_level_groups_id_en_plural || 'Units'}})</label>
+                                        <div class="col-sm-9">
+                                            <select id="admin2level_group" ng-options="level_group.id as level_group.title for level_group in level_groups" multiple ng-model="super_users_data.admin2level_group" bs-duallistbox></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitSuperUsers(super_users_data, 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitSuperUsers(super_users_data, 'continue_editing')">Save and continue editing</button>
+                                            <a href="#super_users" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</div>
+
+

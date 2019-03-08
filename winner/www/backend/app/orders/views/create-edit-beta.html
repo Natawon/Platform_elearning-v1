@@ -1,0 +1,236 @@
+<div class="header">
+    <h2><i class="icon-basket"></i> Orders <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#orders">Orders</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <form class="form-horizontal" ng-submit="submitOrders(orders_data)">
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+                                <label class="col-sm-2">Methods</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control select2 form-white" data-search="true" data-style="white" ng-model="orders_data.methods_id" ng-options="method.id as method.title for method in methods">
+                                        <option value="">-- Select Methods --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label class="col-sm-2">Members ID</label>
+                                <div class="col-sm-9">
+                                </div>
+                            </div> -->
+
+                            <!-- <div class="form-group">
+                                <label class="col-sm-2">Members Email</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control form-white" type="text" ng-model="orders_data.members_email" required>
+                                </div>
+                            </div> -->
+
+                            <div class="form-group">
+                                <label class="col-sm-2">Members</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control select2 form-white" data-search="true" data-style="white" ng-model="orders_data.members_id" ng-options="member.id as member.email for member in members" ng-change="changeMembers()">
+                                        <option value="">-- Select Members --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <input class="form-control form-white" type="hidden" ng-model="orders_data.members_email" required>
+
+                            <div class="form-group">
+                                <label class="col-sm-2">Members Mobile</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" ng-model="orders_data.members_mobile" readonly required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2">Order Categories</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control select2 form-white" data-search="true" data-style="white" ng-model="orders_data.categories" ng-options="category.id as category.title for category in categories" ng-change="changeCategories()">
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group categories-child packages">
+                                <label class="col-sm-2">Packages</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control select2 form-white" data-search="true" data-style="white" ng-model="orders_data.packages_id" ng-options="package.id as package.title for package in packages" ng-change="changePackages()">
+                                        <option value="">-- Select Packages --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <input class="form-control form-white" type="hidden" ng-model="orders_data.packages_name" required>
+
+                            <div class="form-group categories-child packages">
+                                <label class="col-sm-2">Packages Price</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" ng-model="orders_data.packages_price | number" readonly required>
+                                </div>
+                            </div>
+
+                            <div class="form-group categories-child courses">
+                                <label class="col-sm-2">Courses</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control select2 form-white" data-search="true" data-style="white" ng-model="orders_data.courses_id" ng-options="course.id as course.title for course in courses" ng-change="changeCourses()">
+                                        <option value="">-- Select Courses --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <input class="form-control form-white" type="hidden" ng-model="orders_data.courses_name" required>
+
+                            <div class="form-group categories-child courses">
+                                <label class="col-sm-2">Courses Price</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" ng-model="orders_data.courses_price | number" readonly required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2">Currency</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control select2 form-white" data-search="true" data-style="white" ng-model="orders_data.currency">
+                                        <option value="THB">THB</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <table ng-if="mode == 'Edit'" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th colspan="2"><i class="icon-action-redo"></i> Information</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Token</td>
+                                    <td>{{orders_data.token}}</td>
+                                </tr>
+                                <tr>
+                                    <td>User Agent</td>
+                                    <td>{{orders_data.user_agent}}</td>
+                                </tr>
+                                <tr>
+                                    <td>IP</td>
+                                    <td>{{orders_data.ip}}</td>
+                                </tr>
+                                <tr>
+                                    <td>isoCode</td>
+                                    <td>{{orders_data.isoCode}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Country</td>
+                                    <td>{{orders_data.country}}</td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td>{{orders_data.city}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Timezone</td>
+                                    <td>{{orders_data.timezone}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Continent</td>
+                                    <td>{{orders_data.continent}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Device</td>
+                                    <td>{{orders_data.device}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Platform</td>
+                                    <td>{{orders_data.platform}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Platform Version</td>
+                                    <td>{{orders_data.platform_version}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Browser</td>
+                                    <td>{{orders_data.browser}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Browser Version</td>
+                                    <td>{{orders_data.browser_version}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <table ng-if="mode == 'Edit'" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th colspan="2"><i class="icon-paper-plane"></i> Methods</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Title</td>
+                                    <td>{{orders_data.methods.title}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Business Email</td>
+                                    <td>{{orders_data.methods.business_email}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <table ng-if="mode == 'Edit'" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th colspan="2"><i class="icon-credit-card"></i> Payments</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Amount</td>
+                                    <td>{{orders_data.payments.amount}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Methods</td>
+                                    <td>{{orders_data.payments.methods}}</td>
+                                </tr>
+                                <tr>
+                                    <td>TXN.</td>
+                                    <td>{{orders_data.payments.txn}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Note</td>
+                                    <td>{{orders_data.payments.note}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Approve</td>
+                                    <td>{{orders_data.payments.approve_datetime}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="form-group">
+                                <label class="col-sm-2"></label>
+                                <div class="col-sm-10">
+                                    <button id="btn-save" type="submit" class="btn btn-embossed btn-success">Save</button>
+                                    <a id="btn-cancel" href="#orders" class="btn btn-embossed btn-default">Cancel</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

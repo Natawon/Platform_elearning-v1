@@ -1,0 +1,171 @@
+<div class="header">
+    <h2><i class="icon-note"></i> Sync Slides <strong>{{mode}}</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/#slides">Sync Slides</a></li>
+            <li class="active">{{mode}}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="panel">
+                <form class="form-horizontal slides-frm" ng-submit="submitSlides(slides_topics_data, 'sync_by_topics')">
+                    <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <div class="embed-responsive embed-responsive-16by9">
+                                            <div id="player-topics"></div>
+                                        </div>
+
+                                        <button style="margin: 20px 0 0 0;" type="button" class="btn btn-sm btn-danger" data-toggle="modal" ng-click="toggleReloadTopics()"><i class="fa fa-refresh"></i> Reload</button>
+
+                                        <button style="margin: 20px 0 0 0;" type="button" class="btn btn-sm btn-warning pull-right" data-toggle="modal" ng-click="addSyncTopics(slides_topics_data, 'sync_by_topics')"><i class="fa fa-plus"></i> Snap</button>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div ng-controller='slidesUploadCtrlTopics' nv-file-drop="" uploader="img_uploader" filters="queueLimit, customFilter">
+                                            <a ng-href="{{base_slides_picture}}{{sync_by_topics.picture}}" target="_blank"><img ng-src="{{base_slides_picture}}{{sync_by_topics.picture}}" class="img-responsive"></a>
+                                            <button ng-if="mode == 'Edit' && slides_topics_data.picture" type="button" class="col-md-4 pull-left text-center btn btn-default btn-md" ng-click="changeSlide(previousSlides)"><i class="fa fa-chevron-left"></i> Previous Slide</button>
+                                            <button ng-if="mode == 'Edit' && slides_topics_data.picture" type="button" class="col-md-4 pull-right text-center btn btn-default btn-md" ng-click="changeSlide(nextSlides)">Next Slide <i class="fa fa-chevron-right"></i></button>
+                                            <br>
+                                            <label class="col-sm-12 control-label">Picture  <span class="text-danger">*</span> <span class="label label-danger">size 2000px * 1500px</span></label>
+                                            <input id="picture" type="file" class="form-control" nv-file-select="" uploader="img_uploader" />
+                                            <table class="table">
+                                                <tbody>
+                                                <tr ng-repeat="item in img_uploader.queue">
+                                                    <td width="20%"><strong>{{ item.file.name }}</strong></td>
+                                                    <td width="10%" ng-show="img_uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                    <td width="30%" ng-show="img_uploader.isHTML5">
+                                                        <div class="progress" style="margin-bottom: 0;">
+                                                            <div class="progress-bar progress-striped bg-color-greenLight" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                    </td>
+                                                    <td nowrap>
+                                                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                            <span class="glyphicon glyphicon-upload"></span> Upload
+                                                        </button>
+                                                        <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                            <span class="glyphicon glyphicon-trash"></span> Remove
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Courses <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select id="courses_id" class="form-control form-white select2" data-search="true" data-style="white" ng-model="slides_topics_data.courses_id" ng-options="course.id as course.title for course in courses" ng-change="changeCoursesWithTopics()">
+                                            <option value="" ng-hide="true">-- Select Courses --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Topics</label>
+                                    <div class="col-sm-9">
+                                        <select id="slides-topics" class="form-control form-white select2" data-search="true" data-style="white" name="topics" ng-model="slides_topics_data.topics.id" ng-options="parent.id as parent.title for parent in parents_edit track by parent.id" ng-change="changeTopics()">
+                                            <option value="">-- Select Topics --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-xs-12 control-label">Time</label>
+                                    <div class="col-sm-10">
+                                        <span ng-if="slides_topics_data.slides_times == ''" class="text-muted">Please press snap button at the top.</span>
+                                        <div ng-repeat="time in slides_topics_data.slides_times">
+                                            <div class="col-sm-4 col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-sm-10 col-xs-10">
+                                                        <div class="row">
+                                                            <div class="input-group">
+                                                                <input class="form-control form-white" type="text" data-mask="99:99:99"  ng-model="time.time" placeholder="00:00:00">
+                                                                <span class="input-group-btn">
+                                                                    <!-- <button class="btn btn-warning" type="button" ng-click="syncTimeCurrentTopics($index)">SYNC</button> -->
+                                                                    <button class="btn btn-warning" type="button" ng-click="ReviewTimeSync(time.time)">Review</button>
+                                                                </span>
+                                                            </div><!-- /input-group -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2 col-xs-2">
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <a href="javascript:;" ng-click="deleteSyncSlideTopics(slides_topics_data.slides_times[$index])" style="position: relative;top: 7px;left: -9px;"><i class="fa fa-times text-danger"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Status</label>
+                                    <div class="col-sm-9">
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{slides_data.id}}" ng-click="toggleStatus(slides_data)" ng-checked="slides_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{slides_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="m-t-20">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-embossed btn-success">Save</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitSlides(slides_topics_data, 'sync_by_topics', 'add_another')" ng-if="mode === 'Create'">Save and add another</button>
+                                            <button type="button" class="btn btn-embossed btn-primary" ng-click="submitSlides(slides_topics_data, 'sync_by_topics', 'continue_editing')">Save and continue editing</button>
+                                            <a href="#slides" class="btn btn-embossed btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header bg-dark">
+                    <h2 class="panel-title"><i class="icon-layers"></i> Slides</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="panel-content col-md-3" ng-repeat="slides_for_sync_data in slides_for_sync">
+                            <a ng-click="changeSlide(slides_for_sync_data.id)"><img ng-src="{{base_slides_picture}}{{slides_for_sync_data.picture}}" ng-class="{activeSlides : activeSlides === slides_for_sync_data.id}" class="img-responsive img-thumbnail"></a>
+                            <table class="table table-hover no-footer" role="grid">
+                                <tbody>
+                                <tr ng-repeat="slides_times_data in slides_for_sync_data.slides_times" role="row">
+                                    <td><small>{{slides_times_data.topics.title}}</small></td>
+                                    <td><small>{{slides_times_data.time}}</small></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

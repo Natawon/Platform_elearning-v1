@@ -1,0 +1,102 @@
+<div class="header">
+    <h2><i class="icon-users"></i> Administrator <strong>List</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="active">Administrator</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xlg-12 col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fa fa-table"></i> <strong>Administrator List</strong> tables</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div class="col-lg-6 p-l-0">
+                            <div class="m-b-20">
+                                <div class="btn-group">
+                                    <a href="#admins/create" id="table-edit_new" class="btn btn-embossed btn-primary"><i class="fa fa-plus"></i> Create New Administrator</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 p-r-0">
+                            <form class="frm-filter">
+                                <div class="form-group m-b-10">
+                                    <div class="col-sm-12 p-0 append-icon">
+                                        <input type="text" id="finder" class="form-control form-white" placeholder="ค้นหา..." autofocus="" name="search" ng-model="search" ng-change="changeFilter()">
+                                        <i class="icon-magnifier"></i>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="filter-left">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="id">
+                                        <a ng-click="sort_by('id')"><i class="fa fa-sort"></i></a>#
+                                    </th>
+                                    <th>Avatar</th>
+                                    <th class="first_name">
+                                        <a ng-click="sort_by('first_name')"><i class="fa fa-sort"></i></a>Name
+                                    </th>
+                                    <th class="admins_groups_id">
+                                        <a ng-click="sort_by('admins_groups_id')"><i class="fa fa-sort"></i></a>Group
+                                    </th>
+                                    <th class="email">
+                                        <a ng-click="sort_by('email')"><i class="fa fa-sort"></i></a>Email
+                                    </th>
+                                    <th class="mobile">
+                                        <a ng-click="sort_by('mobile')"><i class="fa fa-sort"></i></a>Mobile
+                                    </th>
+                                    <th class="last_login">
+                                        <a ng-click="sort_by('last_login')"><i class="fa fa-sort"></i></a>Last Login
+                                    </th>
+                                    <th class="status">
+                                        <a ng-click="sort_by('status')"><i class="fa fa-sort"></i></a>Status
+                                    </th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="admins_data in admins">
+                                    <td>{{admins_data.id}}</td>
+                                    <td><img ng-if="admins_data.avatar !== null && admins_data.avatar !== ''" ng-src="{{base_admins_avatar}}{{admins_data.avatar}}" class="avatar" style="width: 40px;"></td>
+                                    <td><a ng-href="#admins/{{admins_data.id}}/edit"><i class="icon-user"></i>{{admins_data.first_name}} {{admins_data.last_name}}</a></td>
+                                    <td>{{admins_data.admins_groups.title}}</td>
+                                    <td><i class="icon-envelope"></i>{{admins_data.email}}</td>
+                                    <td><i class="icon-screen-smartphone"></i>{{admins_data.mobile}}</td>
+                                    <td><i class="icon-clock"></i>{{admins_data.last_login}}</td>
+                                    <td>
+                                        <div class="onoffswitch2">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="statusOnOffSwitch{{admins_data.id}}" ng-click="updateStatus(admins_data)" ng-checked="admins_data.status==1">
+                                            <label class="onoffswitch-label" for="statusOnOffSwitch{{admins_data.id}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td><a class="btn btn-sm btn-primary icon icon-note" ng-href="#admins/{{admins_data.id}}/edit"></a></td>
+                                    <td><a class="delete btn btn-sm btn-danger icon icon-trash" ng-click="deleteAdmins(admins_data)"></a></td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="tbl-footer">
+                                <td colspan="10">
+                                    <div class="pull-left" style="padding-top:1.5em;">Total: <b>{{total}}</b> record(s)</div>
+                                    <div class="pull-right">
+                                        <pagination total-items="total" ng-model="current_page" items-per-page="per_page" num-pages="last_page" class="pagination pagination-alt" boundary-links="true" max-size="max_size" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                    </div>
+                                </td>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
